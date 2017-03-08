@@ -1,11 +1,33 @@
-# Reblog
-Blog using React Redux Router5
+# Blog using ReactJS and Redux
 
-### Todo
-* Install flow.js and immutable.js 
-* Basic design - have a look at various travel blogs
-* Wire up to tumblr and twitter for now.
-* Add GET tumblr to API to protect key.
-* Make configurable - tumblr, twitter accounts etc to be loaded by config
-* Pages? One for each of us? One to combine all feeds??
-* Make as generic as possible so that can use for other types of blogs etc...
+Using Router5 and bootstrapped with Webpack2.
+
+## How to
+
+**Install dependencies**
+```bash
+yarn
+```
+**Run development environment**
+```bash
+yarn start
+```
+**Build the development bundle**
+```bash
+yarn run build-dev
+```
+**Build the production bundle**
+```bash
+yarn run build-prod
+```
+**Run linter**
+```bash
+yarn run lint
+```
+**Run tests**
+```bash
+yarn run test
+```
+
+## License
+[MIT license](http://opensource.org/licenses/mit-license.php)

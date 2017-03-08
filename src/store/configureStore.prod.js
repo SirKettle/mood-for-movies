@@ -1,13 +1,8 @@
-import { createStore, compose, applyMiddleware } from 'redux';
-import { router5Middleware } from 'redux-router5';
-import reduxPromise from 'redux-promise';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 
-export default function configureStore(router, initialState) {
-  const finalCreateStore = compose(
-    applyMiddleware(router5Middleware(router)),
-    applyMiddleware(reduxPromise)
-  )(createStore);
+const configureStore = preloadedState =>
+  createStore(rootReducer, preloadedState, applyMiddleware(thunk));
 
-  return finalCreateStore(rootReducer, initialState);
-}
+export default configureStore;
