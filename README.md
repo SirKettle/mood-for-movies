@@ -2,6 +2,8 @@
 
 Using Router5 and bootstrapped with Webpack2.
 
+Based on this simple [Webpack2 React seed project](https://github.com/tpina/react-webpack2-seed) and then swapping out the react-router for [Router5](https://github.com/router5/redux-router5) using this [redux-router5 example](https://github.com/router5/examples/tree/master/apps/react-redux)
+
 ## How to
 
 **Install dependencies**

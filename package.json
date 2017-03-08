@@ -75,7 +75,9 @@
     "redux-promise-middleware": "^4.2.0",
     "redux-router5": "^4.2.3",
     "redux-thunk": "^2.2.0",
-    "router5": "^4.5.1"
+    "reselect": "^2.5.4",
+    "router5": "^4.5.1",
+    "whatwg-fetch": "^2.0.3"
   },
   "jest": {
     "moduleNameMapper": {

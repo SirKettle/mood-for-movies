@@ -64,7 +64,7 @@ const loadPlugins = () => {
 };
 
 const getAppEntryPoints = () => {
-  const entry = ['./src/index.jsx'];
+  const entry = ['whatwg-fetch', path.join(__dirname, 'src', 'index.jsx')];
 
   if (!isProd) {
     entry.unshift('react-hot-loader/patch');
