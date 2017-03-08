@@ -21,42 +21,7 @@ const wrappedApp = (
   </Provider>
 );
 
-// router.start((err, state) => {
-router.start(() => {
+router.start((err, state) => {
+  console.log('router start', err, state);
   ReactDOM.render(wrappedApp, document.getElementById('app'));
 });
-
-
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import { browserHistory } from 'react-router';
-// import { syncHistoryWithStore } from 'react-router-redux';
-// import { AppContainer } from 'react-hot-loader';  eslint import/no-extraneous-dependencies: 0
-
-// import Root from './components/Root/Root';
-// import configureStore from './store/configureStore';
-
-// const rootEl = document.getElementById('app');
-
-// const store = configureStore();
-// const reduxHistory = syncHistoryWithStore(browserHistory, store);
-
-// ReactDOM.render(
-//   <AppContainer>
-//     <Root store={store} history={reduxHistory} />
-//   </AppContainer>,
-//   rootEl,
-// );
-
-// // Hot Module Replacement API
-// if (module.hot) {
-//   module.hot.accept('./components/Root/Root', () => {
-//     const NextApp = require('./components/Root/Root').default; // eslint-disable-line
-//     ReactDOM.render(
-//       <AppContainer>
-//         <NextApp store={store} history={reduxHistory} />
-//       </AppContainer>,
-//       rootEl,
-//     );
-//   });
-// }

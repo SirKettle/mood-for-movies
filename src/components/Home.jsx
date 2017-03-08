@@ -5,7 +5,7 @@ import { routeNodeSelector } from 'redux-router5';
 function Home() {
   return (
     <div className="home">
-      Home page
+      Home page goes here
     </div>
   );
 }
