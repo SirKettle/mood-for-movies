@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { routeNodeSelector } from 'redux-router5';
 import Home from './Home';
 import About from './About';
+// import MovieSuggestion from './MovieSuggestion';
 import NotFound from './NotFound';
 
 const components = {
-  home: Home,
-  compose: About
+  __root__: Home,
+  // movie: MovieSuggestion,
+  about: About
 };
 
 function Main(props) {

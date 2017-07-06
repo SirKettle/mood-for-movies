@@ -6,10 +6,7 @@ import App from './components/App';
 import createRouter from './utils/createRouter';
 import configureStore from './store/configureStore';
 
-const routes = [
-  { name: 'home', path: '/home' },
-  { name: 'about', path: '/about' }
-];
+import routes from './routes';
 
 const router = createRouter(routes);
 const store = configureStore(router);
