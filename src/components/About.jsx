@@ -2,6 +2,7 @@ import React from 'react';
 // import Post from './Post';
 import { connect } from 'react-redux';
 import { routeNodeSelector } from 'redux-router5';
+import Blog from './Blog/Blog';
 
 // function About(props) {
 //   const { route } = props;
@@ -12,6 +13,7 @@ function About() {
   return (
     <div className="about">
       About page
+      <Blog />
     </div>
   );
 }

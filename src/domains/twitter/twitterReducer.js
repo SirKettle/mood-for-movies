@@ -1,17 +1,19 @@
 import Immutable from 'immutable';
 import { actionTypes } from './twitterActions';
+import loadingStates from '../../constants/loadingStates';
 
 const reducers = {
   [actionTypes.LOAD_TWEETS_PENDING]: (state) => {
-    return state.set('isLoaded', false);
+    return state.set('loadingState', loadingStates.LOADING);
   },
   [actionTypes.LOAD_TWEETS_SUCCESS]: (state, action) => {
-    return state.set('data', Immutable.fromJS(action.payload)).set('isLoaded', true);
+    return state.set('data', Immutable.fromJS(action.payload)).set('loadingState', loadingStates.COMPLETE);
   }
 };
 
 const initialState = Immutable.Map({
-  data: null
+  data: null,
+  loadingState: loadingStates.NOT_STARTED
 });
 
 export default function reducer(state = initialState, action) {

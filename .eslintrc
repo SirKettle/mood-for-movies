@@ -36,6 +36,7 @@
     "react/jsx-uses-vars": 1,
     "no-multi-spaces": ["error", { exceptions: { "ImportDeclaration": true } }],
     "react/require-extension": 0,
-    "arrow-body-style": 0
+    "arrow-body-style": 0,
+    "no-debugger": 0
   }
 }
