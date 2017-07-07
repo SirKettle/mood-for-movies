@@ -53,11 +53,14 @@ const loadPlugins = () => {
   } else {
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }
+  // plugins.push(
+  //   new ExtractTextPlugin({
+  //     filename: 'pina.css',
+  //     allChunks: true
+  //   })
+  // );
   plugins.push(
-    new ExtractTextPlugin({
-      filename: 'pina.css',
-      allChunks: true
-    })
+    new ExtractTextPlugin('[name].bundle.css')
   );
 
   return plugins;
@@ -80,7 +83,7 @@ const config = {
   entry: getAppEntryPoints(),
   resolve: {
     modules: ['src', 'node_modules'],
-    extensions: ['.json', '.js', '.jsx']
+    extensions: ['.json', '.js', '.jsx', 'css']
   },
   output: {
     path: distPath,
@@ -99,7 +102,32 @@ const config = {
         test: /\.(js|jsx)$/,
         include: srcPath,
         loaders: ['babel-loader']
+      },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+                modules: true,
+                localIdentName: '[name]-[local]-[hash:base64:5]'
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                config: {
+                  path: './postcss.config.js'
+                }
+              }
+            }
+          ]
+        })
       }
+    ],
+    loaders: [
     ]
   },
   devServer: {

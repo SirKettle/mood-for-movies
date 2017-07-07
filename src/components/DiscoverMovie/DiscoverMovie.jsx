@@ -1,21 +1,26 @@
 import React, { Component, PropTypes } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { loadMovies, loadConfiguration } from '../../domains/movies/moviesActions';
+import { setMood } from '../../domains/mood/moodActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
-import GENRES from '../../constants/movieGenres';
+import * as moodSelectors from '../../domains/mood/moodSelectors';
+import moods from '../../constants/moods';
 
-// import styles from './styles.css';
+import styles from './styles.css';
 
 const mapStateToProps = (state) => {
   return {
     configuration: moviesSelectors.configurationSelector(state),
-    movies: moviesSelectors.moviesSelector(state)
+    movies: moviesSelectors.moviesSelector(state),
+    genres: moodSelectors.genresSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   requestConfiguration: () => { loadConfiguration(dispatch); },
-  requestMovies: (args) => { loadMovies(dispatch, args); }
+  requestMovies: (args) => { loadMovies(dispatch, args); },
+  requestSetMood: (moodId, toggleOn = true) => { setMood(dispatch, moodId, toggleOn); }
 });
 
 class DiscoverMovie extends Component {
@@ -32,31 +37,15 @@ class DiscoverMovie extends Component {
   submitRequest = () => {
     this.props.requestMovies({
       queryParams: {
-        with_genres: [
-          // GENRES.Action,
-          // GENRES.Adventure,
-          // GENRES.Animation,
-          GENRES.Comedy,
-          // GENRES.Crime,
-          // GENRES.Documentary,
-          // GENRES.Drama,
-          GENRES.Family
-          // GENRES.Fantasy,
-          // GENRES.History,
-          // GENRES.Horror,
-          // GENRES.Music,
-          // GENRES.Mystery,
-          // GENRES.Romance,
-          // GENRES['Science Fiction'],
-          // GENRES['TV Movie'],
-          // GENRES.Thriller,
-          // GENRES.War,
-          // GENRES.Western
-        ].join(','),
+        with_genres: this.props.genres.join(','),
         'primary_release_date.gte': '1985',
         'primary_release_date.lte': '1990'
       }
     });
+  }
+
+  handleToggle = (e, moodKey) => {
+    this.props.requestSetMood(moodKey, e.currentTarget.checked);
   }
 
   renderMovie = () => {
@@ -66,21 +55,40 @@ class DiscoverMovie extends Component {
       return null;
     }
 
-    const movie = movies.get('results').get(0);
-    // <img src={ backdrop_path }
+    if (!movies.get('total_results')) {
+      return <p>No results</p>;
+    }
 
+    const movie = movies.get('results').get(0);
+    const imgSrc = `${configuration.getIn(['images', 'base_url'])}w780${movie.get('poster_path')}`;
+    
     return (
-      <div>
-        <h3>{ movie.get('title') }</h3>
-        <p>{ movie.get('overview') }</p>
-        <img alt={movie.get('title')} src={`${configuration.getIn(['images', 'base_url'])}w780${movie.get('backdrop_path')}`} />
+      <div className={styles.movie}>
+        <div className={styles.movieBackdrop} style={{ backgroundImage: `url(${imgSrc})` }} />
+        <div className={styles.movieContents}>
+          <h3>{ movie.get('title') }</h3>
+          <p>{ movie.get('overview') }</p>
+          <img className={styles.movieImage} alt={movie.get('title')} src={imgSrc} />
+        </div>
       </div>
     );
   }
 
   render() {
     return (
-      <div className="discoverMovie">
+      <div className={classnames('some-class', styles.discoverMovie)}>
+        {
+          Object.keys(moods).map((key) => {
+            const mood = moods[key];
+            const name = `checkbox${key}`;
+            return (
+              <label className={styles.moodToggle} key={key} htmlFor={name}>
+                <input name={name} type="checkbox" onChange={(e) => { this.handleToggle(e, key); }} />
+                { mood.longLabel }
+              </label>
+            );
+          })
+        }
         <button onClick={this.submitRequest}>Suggest a movie</button>
         { this.renderMovie() }
       </div>
@@ -91,10 +99,12 @@ class DiscoverMovie extends Component {
 DiscoverMovie.propTypes = {
   requestMovies: PropTypes.func.isRequired,
   requestConfiguration: PropTypes.func.isRequired,
+  requestSetMood: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   movies: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
-  configuration: PropTypes.object
+  configuration: PropTypes.object,
+  genres: PropTypes.array.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiscoverMovie);
