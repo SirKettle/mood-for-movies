@@ -6,6 +6,7 @@ import { setMood } from '../../domains/mood/moodActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 import moods from '../../constants/moods';
+import Movie from '../Movie/Movie';
 
 import styles from './styles.css';
 
@@ -61,17 +62,13 @@ class DiscoverMovie extends Component {
 
     const movie = movies.get('results').get(0);
     const imgSrc = `${configuration.getIn(['images', 'base_url'])}w780${movie.get('poster_path')}`;
-    
-    return (
-      <div className={styles.movie}>
-        <div className={styles.movieBackdrop} style={{ backgroundImage: `url(${imgSrc})` }} />
-        <div className={styles.movieContents}>
-          <h3>{ movie.get('title') }</h3>
-          <p>{ movie.get('overview') }</p>
-          <img className={styles.movieImage} alt={movie.get('title')} src={imgSrc} />
-        </div>
-      </div>
-    );
+
+    return (<Movie
+      className={styles.movie}
+      title={movie.get('title')}
+      overview={movie.get('overview')}
+      imgSrc={imgSrc}
+    />);
   }
 
   render() {
