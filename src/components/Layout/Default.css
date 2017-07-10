@@ -1,0 +1,8 @@
+
+.pinned {
+  transform: translateY(0);
+}
+
+.unpinned {
+	transform: translateY(rem(-52));
+}

@@ -1,0 +1,26 @@
+
+.phil {
+  font-size: 30px;
+}
+
+.ted {
+  font-size: 25px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.tom {
+  font-size: 20px;
+}
+
+.harrison {
+  font-size: 16px;
+}
+
+.elliot {
+  font-size: 13px;
+}
+
+.bottomMargin {
+  margin-bottom: 1rem;
+}

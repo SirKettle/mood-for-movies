@@ -1,0 +1,29 @@
+
+
+.currentMovie {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.button {
+  background: #ccc;
+  color: white;
+  display: block;
+  flex: 0 0 100px;
+  outline: none;
+  border: none;
+  
+	&:focus, &:hover, &:active {
+    border: none;
+    outline: none;
+    background: #ddd;
+	}
+}
+
+.movie {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+

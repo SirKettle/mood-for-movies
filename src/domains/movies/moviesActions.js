@@ -43,7 +43,10 @@ export const loadConfiguration = (dispatch) => {
 
 export const loadMovies = (dispatch, args) => {
   dispatch({
-    type: actionTypes.LOAD_MOVIES_PENDING
+    type: actionTypes.LOAD_MOVIES_PENDING,
+    payload: {
+      genres: args.queryParams.with_genres
+    }
   });
 
   const queryParams = {
@@ -68,9 +71,13 @@ export const loadMovies = (dispatch, args) => {
     });
   }).then((payload) => {
     console.log(payload);
+    window.location.href = '/#/movie';
     dispatch({
       type: actionTypes.LOAD_MOVIES_SUCCESS,
-      payload
+      payload: {
+        ...payload,
+        genres: args.queryParams.with_genres
+      }
     });
   });
 };

@@ -1,0 +1,27 @@
+
+@import '../css/reset.css';
+
+:global(html) {
+  display: flex;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex: 1 1 auto;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 100;
+  line-height: 1.5;
+}
+
+:global(#app) {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
