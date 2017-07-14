@@ -3,7 +3,10 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { loadMovies, loadConfiguration } from '../../domains/movies/moviesActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
+import * as moodSelectors from '../../domains/mood/moodSelectors';
 import Movie from '../Movie/Movie';
+// import projectorImage from '../../assets/movie_reel.png';
+// import reelImage from '../../assets/reel.png';
 
 import styles from './CurrentMovie.css';
 import typography from '../../css/typography.css';
@@ -11,7 +14,9 @@ import typography from '../../css/typography.css';
 const mapStateToProps = (state) => {
   return {
     configuration: moviesSelectors.configurationSelector(state),
-    movies: moviesSelectors.moviesSelector(state)
+    movies: moviesSelectors.moviesSelector(state),
+    genres: moodSelectors.genresSelector(state),
+    moodsSelected: moodSelectors.moodsSelector(state)
   };
 };
 
@@ -31,30 +36,68 @@ class CurrentMovie extends Component {
     this.props.requestConfiguration();
   }
 
+  getMovies = () => {
+    const { configuration, movies, moodsSelected } = this.props;
+    
+    if (!configuration || !movies) {
+      return null;
+    }
+
+    const movieSet = movies.getIn([moodsSelected.join('_'), 'data']);
+    
+    if (!movieSet || !movieSet.get('total_results')) {
+      return null;
+    }
+
+    return movieSet;
+  }
+
   submitRequest = () => {
     history.back();
   }
 
-  canDisplayMovie = () => {
-    const { configuration, movies } = this.props;
-
-    if (!configuration || !movies || !movies.get('total_results')) {
-      return false;
-    }
-
-    return true;
-  }
+  // renderLoading = () => {
+  //   return (
+  //     <div className={styles.loading}>
+  //       <img
+  //         className={classnames(styles.reel, styles.reel1)}
+  //         src={reelImage}
+  //         alt="reel"
+  //         width="70"
+  //         height="70"
+  //       />
+  //       <img
+  //         className={classnames(styles.reel, styles.reel2)}
+  //         src={reelImage}
+  //         alt="reel"
+  //         width="70"
+  //         height="70"
+  //       />
+  //       <img
+  //         className={classnames(styles.projector)}
+  //         src={projectorImage}
+  //         alt="projector"
+  //         width="596"
+  //         height="563"
+  //       />
+  //     </div>
+  //   );
+  // }
 
   renderMovie = () => {
-    const { configuration, movies } = this.props;
+    // return this.renderLoading();
+    const { configuration } = this.props;
+    const movieSet = this.getMovies();
 
-    if (!this.canDisplayMovie()) {
-      return (<p>Error: should not see this</p>);
+    if (!movieSet) {
+      return (<p>No movies</p>);
     }
 
-    const movie = movies.get('results').get(0);
-    const posterImgSrc = `${configuration.getIn(['images', 'base_url'])}w780${movie.get('poster_path')}`;
-    const backdropImgSrc = `${configuration.getIn(['images', 'base_url'])}w780${movie.get('backdrop_path')}`;
+    const movie = movieSet.get('results').get(0);
+    const posterImgSrc =
+    `${configuration.getIn(['images', 'base_url'])}w780${movie.get('poster_path')}`;
+    const backdropImgSrc =
+    `${configuration.getIn(['images', 'base_url'])}w780${movie.get('backdrop_path')}`;
     const movieProps = {
       className: styles.movie,
       title: movie.get('title'),
@@ -97,7 +140,8 @@ CurrentMovie.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   movies: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
-  configuration: PropTypes.object
+  configuration: PropTypes.object,
+  moodsSelected: PropTypes.array.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentMovie);

@@ -104,6 +104,10 @@ const config = {
         loaders: ['babel-loader']
       },
       {
+        test: /\.png$/,
+        use: 'url-loader?mimetype=image/png'
+      },
+      {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           use: [
@@ -126,8 +130,6 @@ const config = {
           ]
         })
       }
-    ],
-    loaders: [
     ]
   },
   devServer: {

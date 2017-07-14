@@ -6,16 +6,15 @@ import { setMood } from '../../domains/mood/moodActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 import moods from '../../constants/moods';
-import Movie from '../Movie/Movie';
 
 import styles from './DiscoverMovie.css';
 import typography from '../../css/typography.css';
 
 const mapStateToProps = (state) => {
   return {
-    configuration: moviesSelectors.configurationSelector(state),
     movies: moviesSelectors.moviesSelector(state),
-    genres: moodSelectors.genresSelector(state)
+    genres: moodSelectors.genresSelector(state),
+    moodsSelected: moodSelectors.moodsSelector(state)
   };
 };
 
@@ -36,56 +35,24 @@ class DiscoverMovie extends Component {
     this.props.requestConfiguration();
   }
 
-  submitRequest = () => {
-    this.props.requestMovies({
-      queryParams: {
-        with_genres: this.props.genres.join(','),
-        'primary_release_date.gte': '1985',
-        'primary_release_date.lte': '1990'
-      }
-    });
+  getIsChecked = (key) => {
+    return this.props.moodsSelected.indexOf(key) !== -1;
   }
 
   handleToggle = (e, moodKey) => {
     this.props.requestSetMood(moodKey, e.currentTarget.checked);
   }
 
-  canDisplayMovie = () => {
-    const { configuration, movies } = this.props;
-
-    if (!configuration || !movies || !movies.get('total_results')) {
-      return false;
-    }
-
-    return true;
-  }
-
-  renderMovie = () => {
-    const { configuration, movies } = this.props;
-
-    if (!this.canDisplayMovie()) {
-      return null;
-    }
-
-    const movie = movies.get('results').get(0);
-    const posterImgSrc = `${configuration.getIn(['images', 'base_url'])}w780${movie.get('poster_path')}`;
-    const backdropImgSrc = `${configuration.getIn(['images', 'base_url'])}w780${movie.get('backdrop_path')}`;
-    const movieProps = {
-      className: styles.movie,
-      title: movie.get('title'),
-      overview: movie.get('overview'),
-      posterImgSrc,
-      backdropImgSrc
-    };
-
-    return (<Movie {...movieProps} />);
+  submitRequest = () => {
+    this.props.requestMovies({
+      moodsKey: this.props.moodsSelected.join('_'),
+      queryParams: {
+        with_genres: this.props.genres.join(',')
+      }
+    });
   }
 
   renderMoods = () => {
-    if (this.canDisplayMovie()) {
-      return null;
-    }
-
     return (
       <div className={styles.moods}>
         {
@@ -94,7 +61,12 @@ class DiscoverMovie extends Component {
             const name = `checkbox${key}`;
             return (
               <label className={styles.moodToggle} key={key} htmlFor={name}>
-                <input name={name} type="checkbox" onChange={(e) => { this.handleToggle(e, key); }} />
+                <input
+                  name={name}
+                  type="checkbox"
+                  onChange={(e) => { this.handleToggle(e, key); }}
+                  checked={this.getIsChecked(key)}
+                />
                 { mood.longLabel }
               </label>
             );
@@ -124,7 +96,6 @@ class DiscoverMovie extends Component {
     return (
       <div className={classnames(styles.discoverMovie)}>
         { this.renderMoods() }
-        { this.renderMovie() }
         { this.renderButton() }
       </div>
     );
@@ -138,8 +109,8 @@ DiscoverMovie.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   movies: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
-  configuration: PropTypes.object,
-  genres: PropTypes.array.isRequired
+  genres: PropTypes.array.isRequired,
+  moodsSelected: PropTypes.array.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DiscoverMovie);

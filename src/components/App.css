@@ -13,6 +13,8 @@ body {
   font-size: 16px;
   font-weight: 100;
   line-height: 1.5;
+  background: #bf3b31;
+  color: #333;
 }
 
 :global(#app) {

@@ -45,7 +45,7 @@ export const loadMovies = (dispatch, args) => {
   dispatch({
     type: actionTypes.LOAD_MOVIES_PENDING,
     payload: {
-      genres: args.queryParams.with_genres
+      moodsKey: args.moodsKey
     }
   });
 
@@ -54,10 +54,12 @@ export const loadMovies = (dispatch, args) => {
     page: 1,
     include_video: false,
     include_adult: false,
-    sort_by: 'popularity.desc',
+    sort_by: 'vote_average.desc', // TODO: sort by Vote average desc and use votecount gte 100
     language: 'en-US',
-    original_language: 'en',
-    api_key: API_KEY
+    with_original_language: 'en',
+    'vote_count.gte': 200,
+    api_key: API_KEY,
+    'primary_release_date.gte': '2014'
   };
   const url = buildUrlWithQueryParams(`${BASE_URL}${ENDPOINTS.DISCOVER_MOVIES}`, queryParams);
   return fetch(url, {
@@ -75,8 +77,8 @@ export const loadMovies = (dispatch, args) => {
     dispatch({
       type: actionTypes.LOAD_MOVIES_SUCCESS,
       payload: {
-        ...payload,
-        genres: args.queryParams.with_genres
+        data: payload,
+        moodsKey: args.moodsKey
       }
     });
   });

@@ -3,11 +3,12 @@ import { actionTypes } from './moviesActions';
 import loadingStates from '../../constants/loadingStates';
 
 const moviesReducers = {
-  [actionTypes.LOAD_MOVIES_PENDING]: (state) => {
-    return state.set('loadingState', loadingStates.LOADING);
+  [actionTypes.LOAD_MOVIES_PENDING]: (state, action) => {
+    return state.setIn([action.payload.moodsKey, 'loadingState'], loadingStates.LOADING);
   },
   [actionTypes.LOAD_MOVIES_SUCCESS]: (state, action) => {
-    return state.set('data', Immutable.fromJS(action.payload)).set('loadingState', loadingStates.COMPLETE);
+    return state.setIn([action.payload.moodsKey, 'data'], Immutable.fromJS(action.payload.data))
+      .setIn([action.payload.moodsKey, 'loadingState'], loadingStates.COMPLETE);
   }
 };
 
@@ -21,10 +22,7 @@ const configurationReducers = {
 };
 
 const initialStates = {
-  movies: Immutable.Map({
-    data: null,
-    loadingState: loadingStates.NOT_STARTED
-  }),
+  movies: Immutable.Map({}),
   configuration: Immutable.Map({
     data: null,
     loadingState: loadingStates.NOT_STARTED

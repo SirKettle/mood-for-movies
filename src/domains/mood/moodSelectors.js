@@ -7,7 +7,7 @@ export const modelSelector = (state) => {
 
 export const moodsSelector = createSelector(
   modelSelector,
-  model => model.get('moods')
+  model => model.get('moods').sort()
 );
 
 export const genresSelector = createSelector(

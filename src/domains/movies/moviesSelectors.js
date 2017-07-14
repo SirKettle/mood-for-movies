@@ -5,7 +5,7 @@ export const configurationModelSelector = state => state.configuration;
 
 export const moviesSelector = createSelector(
   moviesModelSelector,
-  model => model.get('data')
+  model => model
 );
 
 export const configurationSelector = createSelector(
