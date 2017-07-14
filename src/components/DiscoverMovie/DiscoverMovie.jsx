@@ -5,7 +5,8 @@ import { loadMovies, loadConfiguration } from '../../domains/movies/moviesAction
 import { setMood } from '../../domains/mood/moodActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
-import moods from '../../constants/moods';
+import MoodOptions from '../MoodOptions/MoodOptions';
+import MOODS from '../../constants/moods';
 
 import styles from './DiscoverMovie.css';
 import typography from '../../css/typography.css';
@@ -24,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
   requestSetMood: (moodId, toggleOn = true) => { setMood(dispatch, moodId, toggleOn); }
 });
 
-class DiscoverMovie extends Component {
+export class DiscoverMovie extends Component {
 
   static defaultProps = {
     movies: null,
@@ -33,10 +34,6 @@ class DiscoverMovie extends Component {
 
   componentWillMount() {
     this.props.requestConfiguration();
-  }
-
-  getIsChecked = (key) => {
-    return this.props.moodsSelected.indexOf(key) !== -1;
   }
 
   handleToggle = (e, moodKey) => {
@@ -54,25 +51,12 @@ class DiscoverMovie extends Component {
 
   renderMoods = () => {
     return (
-      <div className={styles.moods}>
-        {
-          Object.keys(moods).map((key) => {
-            const mood = moods[key];
-            const name = `checkbox${key}`;
-            return (
-              <label className={styles.moodToggle} key={key} htmlFor={name}>
-                <input
-                  name={name}
-                  type="checkbox"
-                  onChange={(e) => { this.handleToggle(e, key); }}
-                  checked={this.getIsChecked(key)}
-                />
-                { mood.longLabel }
-              </label>
-            );
-          })
-        }
-      </div>
+      <MoodOptions
+        className={styles.moods}
+        moods={MOODS}
+        moodsSelected={this.props.moodsSelected}
+        onSelected={this.handleToggle}
+      />
     );
   }
 

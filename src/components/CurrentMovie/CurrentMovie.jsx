@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
   requestMovies: (args) => { loadMovies(dispatch, args); }
 });
 
-class CurrentMovie extends Component {
+export class CurrentMovie extends Component {
 
   static defaultProps = {
     movies: null,

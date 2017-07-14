@@ -1,10 +1,7 @@
-@keyframes spin { 
-  from { 
-    transform: rotate(0deg); 
-  } to { 
-    transform: rotate(360deg); 
-  }
-  }
+
+.loading {
+  flex: 1 1 auto;
+}
 
 .currentMovie {
   display: flex;
@@ -31,32 +28,4 @@
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-}
-
-.loading {
-  position: relative;
-  flex: 1 1 auto;
-  overflow: hidden;
-}
-
-.reel {
-  position: absolute;
-  top: 182px;
-  animation-name: spin;
-  animation-duration: 3000ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-.reel1 {
-  left: 49px;
-}
-
-.reel2 {
-  left: 123px;
-}
-
-.projector {
-  position: absolute;
-  margin-left: 50px;
 }
