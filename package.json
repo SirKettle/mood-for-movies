@@ -1,11 +1,11 @@
 {
-  "name": "reblog",
+  "name": "mood-for-a-movie",
   "version": "0.0.1",
   "description": "A blog using React + Redux + Router5",
   "main": "index.jsx",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SirKettle/reblog.git"
+    "url": "https://github.com/SirKettle/mood-for-movies"
   },
   "author": "SirKettle",
   "license": "MIT",
@@ -27,9 +27,19 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --open",
     "build-dev": "yarn run clean && cross-env NODE_ENV=development webpack",
     "build-prod": "yarn run clean && cross-env NODE_ENV=production webpack",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.1.8",
+    "@storybook/addon-knobs": "^3.1.6",
+    "@storybook/addon-links": "^3.1.6",
+    "@storybook/addon-options": "^3.1.6",
+    "@storybook/addons": "^3.1.6",
+    "@storybook/channel-postmessage": "^3.1.6",
+    "@storybook/channels": "^3.1.6",
+    "@storybook/react": "^3.1.6",
+    "@storybook/ui": "^3.1.6",
     "babel-core": "^6.23.1",
     "babel-eslint": "^7.1.1",
     "babel-jest": "^19.0.0",
