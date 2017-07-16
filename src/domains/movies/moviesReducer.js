@@ -18,7 +18,7 @@ const moviesReducers = {
     const currentIndex = state.getIn([action.payload.moodsKey, 'currentIndex']);
     let nextIndex = currentIndex + 1;
 
-    if (!state.getIn([action.payload.moodsKey, 'data', 'results']).size < nextIndex) {
+    if (nextIndex >= state.getIn([action.payload.moodsKey, 'data', 'results']).size) {
       nextIndex = 0;
     }
 
