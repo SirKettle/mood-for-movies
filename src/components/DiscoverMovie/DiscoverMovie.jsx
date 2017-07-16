@@ -15,7 +15,8 @@ const mapStateToProps = (state) => {
   return {
     movies: moviesSelectors.moviesSelector(state),
     genres: moodSelectors.genresSelector(state),
-    moodsSelected: moodSelectors.moodsSelector(state)
+    moodsSelected: moodSelectors.moodsSelector(state),
+    moodsKey: moodSelectors.moodsKeySelector(state)
   };
 };
 
@@ -37,7 +38,7 @@ export class DiscoverMovie extends Component {
 
   submitRequest = () => {
     this.props.requestMovies({
-      moodsKey: this.props.moodsSelected.join('_'),
+      moodsKey: this.props.moodsKey,
       queryParams: {
         with_genres: this.props.genres.join(',')
       }
@@ -89,7 +90,8 @@ DiscoverMovie.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   genres: PropTypes.array.isRequired,
   /* eslint react/forbid-prop-types: 0 */
-  moodsSelected: PropTypes.object.isRequired
+  moodsSelected: PropTypes.object.isRequired,
+  moodsKey: PropTypes.string.isRequired
 };
 
 export const Connected = connect(mapStateToProps, mapDispatchToProps)(DiscoverMovie);

@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { loadMovies, loadConfiguration } from '../../domains/movies/moviesActions';
+import { requestNextMovie } from '../../domains/movies/moviesActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 import Loading from '../Loading/Loading';
 import Movie from '../Movie/Movie';
-import loadingStates from '../../constants/loadingStates';
 
 import styles from './CurrentMovie.css';
 import typography from '../../css/typography.css';
@@ -14,76 +13,46 @@ import typography from '../../css/typography.css';
 const mapStateToProps = (state) => {
   return {
     configuration: moviesSelectors.configurationSelector(state),
-    movies: moviesSelectors.moviesSelector(state),
+    currentMovie: moviesSelectors.currentMovieSelector(state),
+    loadingStatus: moviesSelectors.currentMoviesLoadingStatusSelector(state),
     genres: moodSelectors.genresSelector(state),
-    moodsSelected: moodSelectors.moodsSelector(state)
+    moodsKey: moodSelectors.moodsKeySelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  requestConfiguration: () => { loadConfiguration(dispatch); },
-  requestMovies: (args) => { loadMovies(dispatch, args); }
+  requestNext: (args) => { requestNextMovie(dispatch, args); }
 });
 
 export class CurrentMovie extends Component {
 
   static defaultProps = {
-    movies: null,
+    currentMovie: null,
     configuration: null
   }
 
-  componentWillMount() {
-    this.props.requestConfiguration();
-  }
-
-  getLoadingState = () => {
-    // do the same as below but for the movie key's loading state
-    const { configuration, movies, moodsSelected } = this.props;
-    
-    if (!configuration || !movies) {
-      return loadingStates.LOADING;
-    }
-
-    return movies.getIn([moodsSelected.join('_'), 'loadingState']);
-  };
-
-  getMovies = () => {
-    const { configuration, movies, moodsSelected } = this.props;
-    
-    if (!configuration || !movies) {
-      return null;
-    }
-
-    const movieSet = movies.getIn([moodsSelected.join('_'), 'data']);
-    
-    if (!movieSet || !movieSet.get('total_results')) {
-      return null;
-    }
-
-    return movieSet;
-  }
-
   submitRequest = () => {
-    history.back();
+    // history.back();
+    this.props.requestNext({
+      moodsKey: this.props.moodsKey
+    });
   }
 
   renderMovie = () => {
-    const { configuration } = this.props;
-    const movieSet = this.getMovies();
+    const { configuration, currentMovie } = this.props;
 
-    if (!movieSet) {
+    if (!currentMovie) {
       return (<p>No movies</p>);
     }
 
-    const movie = movieSet.get('results').get(0);
     const posterImgSrc =
-    `${configuration.getIn(['images', 'base_url'])}w780${movie.get('poster_path')}`;
+    `${configuration.getIn(['images', 'base_url'])}w780${currentMovie.get('poster_path')}`;
     const backdropImgSrc =
-    `${configuration.getIn(['images', 'base_url'])}w780${movie.get('backdrop_path')}`;
+    `${configuration.getIn(['images', 'base_url'])}w780${currentMovie.get('backdrop_path')}`;
     const movieProps = {
       className: styles.movie,
-      title: movie.get('title'),
-      overview: movie.get('overview'),
+      title: currentMovie.get('title'),
+      overview: currentMovie.get('overview'),
       posterImgSrc,
       backdropImgSrc
     };
@@ -92,10 +61,10 @@ export class CurrentMovie extends Component {
   }
 
   renderButton = () => {
-    const { movies } = this.props;
+    const { currentMovie } = this.props;
     let buttonText = 'Suggest a movie';
     
-    if (movies && !movies.get('total_results')) {
+    if (!currentMovie) {
       buttonText = 'Try again - no results';
     }
 
@@ -108,9 +77,10 @@ export class CurrentMovie extends Component {
   }
 
   render() {
+    const { loadingStatus } = this.props;
     return (
       <div className={classnames(styles.currentMovie)}>
-        <Loading className={styles.loading} loadingStatus={this.getLoadingState()}>
+        <Loading className={styles.loading} loadingStatus={loadingStatus}>
           { this.renderMovie() }
         </Loading>
         { this.renderButton() }
@@ -120,13 +90,13 @@ export class CurrentMovie extends Component {
 }
 
 CurrentMovie.propTypes = {
-  requestConfiguration: PropTypes.func.isRequired,
+  requestNext: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */
-  movies: PropTypes.object,
+  currentMovie: PropTypes.object,
+  loadingStatus: PropTypes.string.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   configuration: PropTypes.object,
-  /* eslint react/forbid-prop-types: 0 */
-  moodsSelected: PropTypes.object.isRequired
+  moodsKey: PropTypes.string.isRequired
 };
 
 export const Connected = connect(mapStateToProps, mapDispatchToProps)(CurrentMovie);

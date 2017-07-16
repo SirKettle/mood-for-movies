@@ -4,7 +4,8 @@ import loadingStates from '../../constants/loadingStates';
 
 const moviesReducers = {
   [actionTypes.LOAD_MOVIES_PENDING]: (state, action) => {
-    return state.setIn([action.payload.moodsKey, 'loadingState'], loadingStates.LOADING);
+    return state.setIn([action.payload.moodsKey, 'loadingState'], loadingStates.LOADING)
+      .setIn([action.payload.moodsKey, 'currentIndex'], 0);
   },
   [actionTypes.LOAD_MOVIES_ERROR]: (state, action) => {
     return state.setIn([action.payload.moodsKey, 'loadingState'], loadingStates.ERROR);
@@ -12,6 +13,16 @@ const moviesReducers = {
   [actionTypes.LOAD_MOVIES_SUCCESS]: (state, action) => {
     return state.setIn([action.payload.moodsKey, 'data'], Immutable.fromJS(action.payload.data))
       .setIn([action.payload.moodsKey, 'loadingState'], loadingStates.COMPLETE);
+  },
+  [actionTypes.REQUEST_NEXT_MOVIES]: (state, action) => {
+    const currentIndex = state.getIn([action.payload.moodsKey, 'currentIndex']);
+    let nextIndex = currentIndex + 1;
+
+    if (!state.getIn([action.payload.moodsKey, 'data', 'results']).size < nextIndex) {
+      nextIndex = 0;
+    }
+
+    return state.setIn([action.payload.moodsKey, 'currentIndex'], nextIndex);
   }
 };
 

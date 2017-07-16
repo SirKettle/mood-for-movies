@@ -10,6 +10,11 @@ export const moodsSelector = createSelector(
   model => model.get('moods').sort()
 );
 
+export const moodsKeySelector = createSelector(
+  moodsSelector,
+  moods => moods.join('_')
+);
+
 export const genresSelector = createSelector(
   moodsSelector,
   (moods) => {
