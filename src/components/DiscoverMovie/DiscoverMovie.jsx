@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { loadMovies, loadConfiguration } from '../../domains/movies/moviesActions';
+import { loadMovies } from '../../domains/movies/moviesActions';
 import { setMood } from '../../domains/mood/moodActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
@@ -20,7 +20,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  requestConfiguration: () => { loadConfiguration(dispatch); },
   requestMovies: (args) => { loadMovies(dispatch, args); },
   requestSetMood: (moodId, toggleOn = true) => { setMood(dispatch, moodId, toggleOn); }
 });
@@ -30,10 +29,6 @@ export class DiscoverMovie extends Component {
   static defaultProps = {
     movies: null,
     configuration: null
-  }
-
-  componentWillMount() {
-    this.props.requestConfiguration();
   }
 
   handleToggle = (e, moodKey) => {
@@ -88,7 +83,6 @@ export class DiscoverMovie extends Component {
 
 DiscoverMovie.propTypes = {
   requestMovies: PropTypes.func.isRequired,
-  requestConfiguration: PropTypes.func.isRequired,
   requestSetMood: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   movies: PropTypes.object,

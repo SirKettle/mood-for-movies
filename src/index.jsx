@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router5';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+import { Connected as App } from './components/App';
 import createRouter from './utils/createRouter';
 import configureStore from './store/configureStore';
 

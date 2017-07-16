@@ -15,15 +15,18 @@ const MoodOptions = ({ className, moods, moodsSelected, onSelected }) => {
           const mood = moods[key];
           const name = `checkbox${key}`;
           return (
-            <label className={styles.moodToggle} key={key} htmlFor={name}>
+            <div className={styles.option} key={key}>
               <input
-                name={name}
+                className={styles.input}
+                id={name}
                 type="checkbox"
                 onChange={(e) => { onSelected(e, key); }}
                 checked={getIsChecked(key)}
               />
-              { mood.longLabel }
-            </label>
+              <label className={styles.label} htmlFor={name}>
+                <span>{ mood.longLabel }</span>
+              </label>
+            </div>
           );
         })
       }

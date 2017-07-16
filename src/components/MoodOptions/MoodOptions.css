@@ -2,9 +2,44 @@
 .moodOptions {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
 }
 
-.moodToggle {
-  display: block;
-  margin-bottom: 1rem;
+.option {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  align-items: stretch;
+  border-bottom: solid 1px rgba(255,255,255,0.1);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 1;
+  color: white;
+  padding: 0 1rem;
+  
+  /* &:hover {
+    background: rgba(0,0,0,0.1);
+  } */
+}
+
+.input:checked + .label {
+  background: rgba(0,0,0,0.2);
+
+  /* &:hover {
+    background: rgba(0,0,0,0.4);
+  } */
 }

@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { routeNodeSelector } from 'redux-router5';
+import { loadConfiguration } from '../domains/movies/moviesActions';
+
 import Home from './Home';
 import About from './About';
 import Movie from './Movie';
-// import MovieSuggestion from './MovieSuggestion';
 import NotFound from './NotFound';
 
+import resetStyles from '../css/reset.css';
 import styles from './App.css';
 import typography from '../css/typography.css';
 
@@ -18,19 +20,38 @@ const components = {
   movie: Movie
 };
 
-function Main(props) {
-  const { route } = props;
-  const segment = route ? route.name.split('.')[0] : undefined;
-  return (
-    <div className={classnames(typography.elliot, styles.App)}>
-      { React.createElement(components[segment] || NotFound) }
-    </div>
-  );
+const mergedStyles = {
+  ...resetStyles,
+  ...styles
+};
+
+const mapStateToProps = () => routeNodeSelector('');
+
+const mapDispatchToProps = dispatch => ({
+  requestConfiguration: () => { loadConfiguration(dispatch); }
+});
+
+export class Main extends Component {
+
+  componentWillMount() {
+    this.props.requestConfiguration();
+  }
+
+  render() {
+    const { route } = this.props;
+    const segment = route ? route.name.split('.')[0] : undefined;
+    return (
+      <div className={classnames(typography.elliot, mergedStyles.App)}>
+        { React.createElement(components[segment] || NotFound) }
+      </div>
+    );
+  }
 }
 
 Main.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
-  route: React.PropTypes.object.isRequired
+  route: PropTypes.object.isRequired,
+  requestConfiguration: PropTypes.func.isRequired
 };
 
-export default connect(() => routeNodeSelector(''))(Main);
+export const Connected = connect(mapStateToProps, mapDispatchToProps)(Main);

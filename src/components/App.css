@@ -1,6 +1,4 @@
 
-@import '../css/reset.css';
-
 :global(html) {
   display: flex;
   height: 100%;
