@@ -4,10 +4,9 @@ import styles from './MoodOptions.css';
 // import typography from '../../css/typography.css';
 
 const MoodOptions = ({ className, moods, moodsSelected, onSelected }) => {
-
   const getIsChecked = (key) => {
     return moodsSelected.indexOf(key) !== -1;
-  }
+  };
 
   return (
     <div className={classnames(className, styles.moodOptions)}>
@@ -36,7 +35,8 @@ MoodOptions.propTypes = {
   className: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
   moods: PropTypes.object.isRequired,
-  moodsSelected: PropTypes.array.isRequired,
+  /* eslint react/forbid-prop-types: 0 */
+  moodsSelected: PropTypes.object.isRequired,
   onSelected: PropTypes.func.isRequired
 };
 

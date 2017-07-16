@@ -48,6 +48,8 @@ export const loadMovies = (dispatch, args) => {
       moodsKey: args.moodsKey
     }
   });
+  
+  window.location.href = '/#/movie';
 
   const queryParams = {
     ...args.queryParams,
@@ -62,6 +64,7 @@ export const loadMovies = (dispatch, args) => {
     'primary_release_date.gte': '2014'
   };
   const url = buildUrlWithQueryParams(`${BASE_URL}${ENDPOINTS.DISCOVER_MOVIES}`, queryParams);
+
   return fetch(url, {
     method: 'GET'
   }).then(response => response.json()
@@ -72,8 +75,9 @@ export const loadMovies = (dispatch, args) => {
       error
     });
   }).then((payload) => {
-    console.log(payload);
-    window.location.href = '/#/movie';
+    if (!payload) {
+      return;
+    }
     dispatch({
       type: actionTypes.LOAD_MOVIES_SUCCESS,
       payload: {

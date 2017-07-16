@@ -15,7 +15,7 @@ export const genresSelector = createSelector(
   (moods) => {
     const genres = [];
     moods.forEach((moodId) => {
-      genres.push(MOODS[moodId].genres.join(','));
+      genres.push(MOODS[moodId].genres.join('|'));
     });
     return genres;
   }

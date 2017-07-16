@@ -53,12 +53,6 @@ const loadPlugins = () => {
   } else {
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }
-  // plugins.push(
-  //   new ExtractTextPlugin({
-  //     filename: 'pina.css',
-  //     allChunks: true
-  //   })
-  // );
   plugins.push(
     new ExtractTextPlugin('[name].bundle.css')
   );

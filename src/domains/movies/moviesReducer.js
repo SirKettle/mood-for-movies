@@ -6,6 +6,9 @@ const moviesReducers = {
   [actionTypes.LOAD_MOVIES_PENDING]: (state, action) => {
     return state.setIn([action.payload.moodsKey, 'loadingState'], loadingStates.LOADING);
   },
+  [actionTypes.LOAD_MOVIES_ERROR]: (state, action) => {
+    return state.setIn([action.payload.moodsKey, 'loadingState'], loadingStates.ERROR);
+  },
   [actionTypes.LOAD_MOVIES_SUCCESS]: (state, action) => {
     return state.setIn([action.payload.moodsKey, 'data'], Immutable.fromJS(action.payload.data))
       .setIn([action.payload.moodsKey, 'loadingState'], loadingStates.COMPLETE);

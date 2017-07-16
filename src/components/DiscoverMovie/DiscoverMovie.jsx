@@ -94,7 +94,8 @@ DiscoverMovie.propTypes = {
   movies: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   genres: PropTypes.array.isRequired,
-  moodsSelected: PropTypes.array.isRequired
+  /* eslint react/forbid-prop-types: 0 */
+  moodsSelected: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DiscoverMovie);
+export const Connected = connect(mapStateToProps, mapDispatchToProps)(DiscoverMovie);

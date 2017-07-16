@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './Loading.css';
 import loadingStates from '../../constants/loadingStates';
@@ -6,54 +6,79 @@ import loadingStates from '../../constants/loadingStates';
 import projectorImage from '../../assets/movie_reel.png';
 import reelImage from '../../assets/reel.png';
 
-const Loading = ({ loadingStatus, children }) => {
-  if (loadingStatus === loadingStates.COMPLETE) {
-    return children;
+export default class Loading extends Component {
+  
+  state = {
+    delayRender: true
   }
 
-  if (loadingStatus === loadingStates.ERROR) {
+  componentWillReceiveProps(nextProps) {
+    const { loadingStatus, loadingDelay } = this.props;
+
+    if (nextProps.loadingStatus === loadingStates.LOADING &&
+      loadingStatus !== loadingStates.LOADING) {
+      this.setState({ delayRender: true });
+    }
+
+    if (loadingStatus !== loadingStates.COMPLETE &&
+      nextProps.loadingStatus === loadingStates.COMPLETE) {
+      window.setTimeout(() => {
+        this.setState({ delayRender: false });
+      }, loadingDelay);
+    }
+  }
+
+  render() {
+    const { className, loadingStatus, children } = this.props;
+
+    if (loadingStatus === loadingStates.ERROR) {
+      return (
+        <div className={classnames(className, styles.loadingError)}>
+          Error loading
+        </div>
+      );
+    }
+
+    if (loadingStatus === loadingStates.COMPLETE && !this.state.delayRender) {
+      return children;
+    }
+
     return (
-      <div className={classnames(className, styles.loadingError})>
-        Error loading
+      <div className={classnames(className, styles.loading)}>
+        <img
+          className={classnames(styles.reel, styles.reel1)}
+          src={reelImage}
+          alt="reel"
+          width="70"
+          height="70"
+        />
+        <img
+          className={classnames(styles.reel, styles.reel2)}
+          src={reelImage}
+          alt="reel"
+          width="70"
+          height="70"
+        />
+        <img
+          className={classnames(styles.projector)}
+          src={projectorImage}
+          alt="projector"
+          width="596"
+          height="563"
+        />
       </div>
     );
   }
-
-  return (
-    <div className={classnames(className, styles.loading})>
-      <img
-        className={classnames(styles.reel, styles.reel1)}
-        src={reelImage}
-        alt="reel"
-        width="70"
-        height="70"
-      />
-      <img
-        className={classnames(styles.reel, styles.reel2)}
-        src={reelImage}
-        alt="reel"
-        width="70"
-        height="70"
-      />
-      <img
-        className={classnames(styles.projector)}
-        src={projectorImage}
-        alt="projector"
-        width="596"
-        height="563"
-      />
-    </div>
-  );
-};
+}
 
 Loading.propTypes = {
   className: PropTypes.string,
   loadingStatus: PropTypes.string.isRequired,
-  children: React.propTypes.node.isRequired
+  children: React.PropTypes.node.isRequired,
+  loadingDelay: React.PropTypes.number
 };
 
 Loading.defaultProps = {
-  className: 'loading-component'
+  className: 'loading-component',
+  loadingDelay: 1500
 };
-
-export default Loading;

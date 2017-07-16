@@ -1,7 +1,7 @@
 
 .moodOptions {
   display: flex;
-  flex-direction;
+  flex-direction: column;
 }
 
 .moodToggle {
