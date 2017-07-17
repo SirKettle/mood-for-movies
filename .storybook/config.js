@@ -6,7 +6,7 @@ import { setOptions } from '@storybook/addon-options';
 // import '../src/storybook.css';
 
 // Lets load all files matching **.story.js
-const req = require.context('../src', true, /.story.js$/);
+const req = require.context('../src', true, /.story.(js|jsx)$/);
 
 function loadStories() {
   req.keys().forEach( filename => {

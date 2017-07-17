@@ -9,7 +9,7 @@ import About from './About';
 import Movie from './Movie';
 import NotFound from './NotFound';
 
-import resetStyles from '../css/reset.css';
+import '../css/reset.css';
 import styles from './App.css';
 import typography from '../css/typography.css';
 
@@ -18,11 +18,6 @@ const components = {
   // movie: MovieSuggestion,
   about: About,
   movie: Movie
-};
-
-const mergedStyles = {
-  ...resetStyles,
-  ...styles
 };
 
 const mapStateToProps = () => routeNodeSelector('');
@@ -41,7 +36,7 @@ export class Main extends Component {
     const { route } = this.props;
     const segment = route ? route.name.split('.')[0] : undefined;
     return (
-      <div className={classnames(typography.elliot, mergedStyles.App)}>
+      <div className={classnames(typography.elliot, styles.App)}>
         { React.createElement(components[segment] || NotFound) }
       </div>
     );

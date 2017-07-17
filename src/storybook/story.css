@@ -1,0 +1,39 @@
+
+:global(html) {
+  display: flex;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex: 1 1 auto;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 100;
+  line-height: 1.5;
+  color: #333;
+}
+
+:global(#root) {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.story {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  background: #bf3b31;
+}
