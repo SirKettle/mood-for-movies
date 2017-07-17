@@ -11,7 +11,8 @@
 }
 
 .button {
-  background: #ccc;
+  position: relative;
+  background: #333;
   color: white;
   display: block;
   flex: 0 0 100px;
@@ -21,7 +22,7 @@
 	&:focus, &:hover, &:active {
     border: none;
     outline: none;
-    background: #ddd;
+    background: #222;
 	}
 }
 
@@ -29,4 +30,5 @@
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
+  overflow-y: auto;
 }

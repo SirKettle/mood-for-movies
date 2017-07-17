@@ -7,7 +7,7 @@
 }
 
 .button {
-  background: #ccc;
+  background: #333;
   color: white;
   display: block;
   flex: 0 0 100px;
@@ -17,7 +17,7 @@
 	&:focus, &:hover, &:active {
     border: none;
     outline: none;
-    background: #ddd;
+    background: #222;
 	}
 }
 

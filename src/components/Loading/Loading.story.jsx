@@ -1,9 +1,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, select } from '@storybook/addon-knobs';
+import { withKnobs, select, text } from '@storybook/addon-knobs';
 import loadingStates from '../../constants/loadingStates';
 import Loading from './Loading';
 import Story from '../../storybook/story';
+import styles from '../../storybook/story.css';
 
 storiesOf('Loading', module)
   .addDecorator(withKnobs)
@@ -14,8 +15,9 @@ storiesOf('Loading', module)
     >
       <Loading
         loadingStatus={select('loadingStatus', Object.values(loadingStates), loadingStates.LOADING)}
+        loadingText={text('loadingText', 'Finding movies')}
       >
-        <div styles={{ padding: '100px' }}>
+        <div className={styles.padded}>
           Something being loaded
         </div>
       </Loading>

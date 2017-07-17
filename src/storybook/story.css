@@ -29,6 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   flex: 0 0 auto;
+  padding: 2rem;
 }
 
 .contents {
@@ -36,4 +37,8 @@ body {
   flex-direction: column;
   flex: 1 0 auto;
   background: #bf3b31;
+}
+
+.padded {
+  padding: 2rem;
 }

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './Loading.css';
 import loadingStates from '../../constants/loadingStates';
-// import typography from '../../css/typography.css';
+import typography from '../../css/typography.css';
 import projectorImage from '../../assets/movie_reel.png';
 import reelImage from '../../assets/reel.png';
 
@@ -29,12 +29,12 @@ export default class Loading extends Component {
   }
 
   render() {
-    const { className, loadingStatus, children } = this.props;
+    const { className, loadingStatus, loadingText, loadingErrorText, children } = this.props;
 
     if (loadingStatus === loadingStates.ERROR) {
       return (
         <div className={classnames(className, styles.loadingError)}>
-          Error loading
+          {loadingErrorText}
         </div>
       );
     }
@@ -45,27 +45,34 @@ export default class Loading extends Component {
 
     return (
       <div className={classnames(className, styles.loading)}>
-        <img
-          className={classnames(styles.reel, styles.reel1)}
-          src={reelImage}
-          alt="reel"
-          width="70"
-          height="70"
-        />
-        <img
-          className={classnames(styles.reel, styles.reel2)}
-          src={reelImage}
-          alt="reel"
-          width="70"
-          height="70"
-        />
-        <img
-          className={classnames(styles.projector)}
-          src={projectorImage}
-          alt="projector"
-          width="596"
-          height="563"
-        />
+        <div className={styles.imageContainer}>
+          <img
+            className={classnames(styles.reel, styles.reel1)}
+            src={reelImage}
+            alt="reel"
+            width="70"
+            height="70"
+          />
+          <img
+            className={classnames(styles.reel, styles.reel2)}
+            src={reelImage}
+            alt="reel"
+            width="70"
+            height="70"
+          />
+          <img
+            className={classnames(styles.projector)}
+            src={projectorImage}
+            alt="projector"
+            width="596"
+            height="563"
+          />
+          {
+            loadingText && (
+              <p className={classnames(typography.tom, styles.loadingText)}>{loadingText}</p>
+            )
+          }
+        </div>
       </div>
     );
   }
@@ -73,6 +80,8 @@ export default class Loading extends Component {
 
 Loading.propTypes = {
   className: PropTypes.string,
+  loadingText: PropTypes.string,
+  loadingErrorText: PropTypes.string,
   loadingStatus: PropTypes.string.isRequired,
   children: React.PropTypes.node.isRequired,
   loadingDelay: React.PropTypes.number
@@ -80,5 +89,7 @@ Loading.propTypes = {
 
 Loading.defaultProps = {
   className: 'loading-component',
-  loadingDelay: 1500
+  loadingDelay: 600,
+  loadingText: null,
+  loadingErrorText: 'Error loading'
 };

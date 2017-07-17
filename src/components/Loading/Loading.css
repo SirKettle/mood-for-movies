@@ -7,9 +7,24 @@
 }
 
 .loading {
+  display: flex;
+  flex-direction: column;
   flex: 1 0 auto;
   position: relative;
   overflow: hidden;
+  align-items: flex-end;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 593px;
+  width: 596px;
+  position: absolute;
+  left: 50px;
+  @media (min-width: 596px) {
+    position: relative;
+  }
 }
 
 .reel {
@@ -22,14 +37,19 @@
 }
 
 .reel1 {
-  left: 49px;
+  left: -1px;
 }
 
 .reel2 {
-  left: 123px;
+  left: 73px;
 }
 
 .projector {
   position: absolute;
-  margin-left: 50px;
+}
+
+.loadingText {
+  position: absolute;
+  left: 165px;
+  top: 267px;
 }

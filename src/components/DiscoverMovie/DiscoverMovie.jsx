@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { loadMovies } from '../../domains/movies/moviesActions';
 import { setMood } from '../../domains/mood/moodActions';
-import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 import MoodOptions from '../MoodOptions/MoodOptions';
 import MOODS from '../../constants/moods';
@@ -13,7 +12,6 @@ import typography from '../../css/typography.css';
 
 const mapStateToProps = (state) => {
   return {
-    movies: moviesSelectors.moviesSelector(state),
     genres: moodSelectors.genresSelector(state),
     moodsSelected: moodSelectors.moodsSelector(state),
     moodsKey: moodSelectors.moodsKeySelector(state)
@@ -28,7 +26,6 @@ const mapDispatchToProps = dispatch => ({
 export class DiscoverMovie extends Component {
 
   static defaultProps = {
-    movies: null,
     configuration: null
   }
 
@@ -57,18 +54,11 @@ export class DiscoverMovie extends Component {
   }
 
   renderButton = () => {
-    const { movies } = this.props;
-    let buttonText = 'Suggest a movie';
-    
-    if (movies && !movies.get('total_results')) {
-      buttonText = 'Try again - no results';
-    }
-
     return (
       <button
         className={classnames(typography.ted, styles.button)}
         onClick={this.submitRequest}
-      >{buttonText}</button>
+      >Suggest a movie</button>
     );
   }
 
@@ -85,8 +75,6 @@ export class DiscoverMovie extends Component {
 DiscoverMovie.propTypes = {
   requestMovies: PropTypes.func.isRequired,
   requestSetMood: PropTypes.func.isRequired,
-  /* eslint react/forbid-prop-types: 0 */
-  movies: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   genres: PropTypes.array.isRequired,
   /* eslint react/forbid-prop-types: 0 */

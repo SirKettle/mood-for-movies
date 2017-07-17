@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import '../css/reset.css';
+import typography from '../css/typography.css';
 import styles from './story.css';
 
 const Story = ({
@@ -12,8 +13,8 @@ const Story = ({
   return (
     <div className={classnames(styles.story, className)}>
       <div className={styles.info}>
-        {title && <h1 className={styles.title}>{title}</h1>}
-        {summary && <p className={styles.summary}>{summary}</p>}
+        {title && <h1 className={typography.phil}>{title}</h1>}
+        {summary && <p className={typography.harrison}>{summary}</p>}
       </div>
       <div className={styles.contents}>
         {children}

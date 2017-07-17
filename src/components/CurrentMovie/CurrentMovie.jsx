@@ -6,6 +6,7 @@ import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 import Loading from '../Loading/Loading';
 import Movie from '../Movie/Movie';
+import loadingStates from '../../constants/loadingStates';
 
 import styles from './CurrentMovie.css';
 import typography from '../../css/typography.css';
@@ -31,8 +32,26 @@ export class CurrentMovie extends Component {
     configuration: null
   }
 
+  getIsLoading = () => {
+    const { loadingStatus } = this.props;
+    return loadingStatus === loadingStates.LOADING;
+  }
+
+  getButtonText = () => {
+    if (this.getIsLoading()) {
+      return 'Loading...';
+    }
+    if (!this.props.currentMovie) {
+      return 'Try something else';
+    }
+    return 'Suggest another';
+  }
+
   submitRequest = () => {
-    // history.back();
+    if (!this.props.currentMovie) {
+      history.back();
+      return;
+    }
     this.props.requestNext({
       moodsKey: this.props.moodsKey
     });
@@ -61,18 +80,12 @@ export class CurrentMovie extends Component {
   }
 
   renderButton = () => {
-    const { currentMovie } = this.props;
-    let buttonText = 'Suggest a movie';
-    
-    if (!currentMovie) {
-      buttonText = 'Try again - no results';
-    }
-
     return (
       <button
+        disabled={this.getIsLoading()}
         className={classnames(typography.ted, styles.button)}
         onClick={this.submitRequest}
-      >{buttonText}</button>
+      >{this.getButtonText()}</button>
     );
   }
 
