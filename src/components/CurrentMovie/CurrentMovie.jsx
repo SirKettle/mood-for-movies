@@ -16,7 +16,6 @@ const mapStateToProps = (state) => {
     configuration: moviesSelectors.configurationSelector(state),
     currentMovie: moviesSelectors.currentMovieSelector(state),
     loadingStatus: moviesSelectors.currentMoviesLoadingStatusSelector(state),
-    genres: moodSelectors.genresSelector(state),
     moodsKey: moodSelectors.moodsKeySelector(state)
   };
 };

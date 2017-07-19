@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import MOODS from '../../constants/moods';
+import Ramda from 'ramda';
 
 export const modelSelector = (state) => {
   return state.mood;
@@ -15,13 +16,16 @@ export const moodsKeySelector = createSelector(
   moods => moods.join('_')
 );
 
+const cartesianProduct = Ramda.reduce((acc, next) => {
+  return acc.length
+    ? Ramda.map(Ramda.unnest, Ramda.xprod(acc, next))
+    : next;
+}, []);
+
 export const genresSelector = createSelector(
   moodsSelector,
   (moods) => {
-    const genres = [];
-    moods.forEach((moodId) => {
-      genres.push(MOODS[moodId].genres.join('|'));
-    });
-    return genres;
+    const genreGroups = moods.map(moodId => MOODS[moodId].genres);
+    return cartesianProduct(genreGroups);
   }
 );

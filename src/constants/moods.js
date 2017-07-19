@@ -6,6 +6,11 @@ export default {
     longLabel: 'Make me laugh!',
     genres: [GENRES.Comedy]
   },
+  MUSICAL: {
+    shortLabel: 'Tra la la!',
+    longLabel: 'I want to sing',
+    genres: [GENRES.Music]
+  },
   CRY: {
     shortLabel: 'Cry',
     longLabel: 'I want to have a good cry',
@@ -38,8 +43,8 @@ export default {
   },
   BLOOD: {
     shortLabel: 'Blood',
-    longLabel: 'I want to see gore and all that fake blood',
-    genres: [GENRES.Horror, GENRES.War]
+    longLabel: 'I want to see some fisty cuffs',
+    genres: [GENRES.Western, GENRES.War]
   },
   LEARN: {
     shortLabel: 'Learn',
