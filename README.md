@@ -31,5 +31,7 @@ yarn run lint
 yarn run test
 ```
 
+May need to install [watchman](https://facebook.github.io/watchman/docs/install.html) if get errors with FSEvents on OS X.
+
 ## License
 [MIT license](http://opensource.org/licenses/mit-license.php)

@@ -1,6 +1,6 @@
+import Ramda from 'ramda';
 import { createSelector } from 'reselect';
 import MOODS from '../../constants/moods';
-import Ramda from 'ramda';
 
 export const modelSelector = (state) => {
   return state.mood;
