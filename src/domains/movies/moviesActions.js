@@ -19,6 +19,18 @@ const ENDPOINTS = {
   DISCOVER_MOVIES: '/discover/movie' // /discover/movie?with_genres=35&&api_key=9b39e698383c30052915f7786495b569
 };
 
+export const baseQueryParams = {
+  page: 1,
+  include_video: false,
+  include_adult: false,
+  sort_by: 'vote_average.desc', // TODO: sort by Vote average desc and use votecount gte 100
+  language: 'en-US',
+  with_original_language: 'en',
+  'vote_count.gte': 200,
+  api_key: API_KEY,
+  'primary_release_date.gte': 2014
+};
+
 export const loadConfiguration = (dispatch) => {
   dispatch({
     type: actionTypes.LOAD_CONFIGURATION_PENDING
@@ -52,48 +64,51 @@ export const requestNextMovie = (dispatch, args) => {
 };
 
 export const loadMovies = (dispatch, args) => {
-  dispatch({
-    type: actionTypes.LOAD_MOVIES_PENDING,
-    payload: {
-      moodsKey: args.moodsKey
-    }
-  });
-  
+  // Redirect user to movie page while it loads
   window.location.href = '/#/movie';
-
-  const queryParams = {
-    ...args.queryParams,
-    page: 1,
-    include_video: false,
-    include_adult: false,
-    sort_by: 'vote_average.desc', // TODO: sort by Vote average desc and use votecount gte 100
-    language: 'en-US',
-    with_original_language: 'en',
-    'vote_count.gte': 200,
-    api_key: API_KEY,
-    'primary_release_date.gte': '2014'
-  };
-  const url = buildUrlWithQueryParams(`${BASE_URL}${ENDPOINTS.DISCOVER_MOVIES}`, queryParams);
-
-  return fetch(url, {
-    method: 'GET'
-  }).then(response => response.json()
-  , (error) => {
-    // console.log(error);
+  
+  args.genreGroups.forEach((genres) => {
+    const genresKey = genres.join('_');
+    // set loading status to pending
     dispatch({
-      type: actionTypes.LOAD_MOVIES_ERROR,
-      error
-    });
-  }).then((payload) => {
-    if (!payload) {
-      return;
-    }
-    dispatch({
-      type: actionTypes.LOAD_MOVIES_SUCCESS,
+      type: actionTypes.LOAD_MOVIES_PENDING,
       payload: {
-        data: payload,
-        moodsKey: args.moodsKey
+        moodsKey: args.moodsKey,
+        genresKey
       }
+    });
+
+    const queryParams = {
+      ...baseQueryParams,
+      with_genres: genres.join(',')
+    };
+    const url = buildUrlWithQueryParams(`${BASE_URL}${ENDPOINTS.DISCOVER_MOVIES}`, queryParams);
+
+    return fetch(url, {
+      method: 'GET'
+    }).then(response => response.json()
+    , (error) => {
+      // console.log(error);
+      dispatch({
+        type: actionTypes.LOAD_MOVIES_ERROR,
+        payload: {
+          moodsKey: args.moodsKey,
+          genresKey,
+          error
+        }
+      });
+    }).then((payload) => {
+      if (!payload) {
+        return;
+      }
+      dispatch({
+        type: actionTypes.LOAD_MOVIES_SUCCESS,
+        payload: {
+          data: payload,
+          moodsKey: args.moodsKey,
+          genresKey
+        }
+      });
     });
   });
 };

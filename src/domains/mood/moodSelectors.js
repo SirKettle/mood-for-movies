@@ -16,13 +16,13 @@ export const moodsKeySelector = createSelector(
   moods => moods.join('_')
 );
 
-const cartesianProduct = Ramda.reduce((acc, next) => {
+export const cartesianProduct = Ramda.reduce((acc, next) => {
   return acc.length
     ? Ramda.map(Ramda.unnest, Ramda.xprod(acc, next))
     : next;
 }, []);
 
-export const genresSelector = createSelector(
+export const genreGroupsSelector = createSelector(
   moodsSelector,
   (moods) => {
     const genreGroups = moods.map(moodId => MOODS[moodId].genres);

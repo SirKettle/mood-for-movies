@@ -4,25 +4,19 @@ import loadingStates from '../../constants/loadingStates';
 
 const moviesReducers = {
   [actionTypes.LOAD_MOVIES_PENDING]: (state, action) => {
-    return state.setIn([action.payload.moodsKey, 'loadingState'], loadingStates.LOADING)
-      .setIn([action.payload.moodsKey, 'currentIndex'], 0);
+    return state.setIn(['server', action.payload.genresKey, 'loadingState'], loadingStates.LOADING)
+      .setIn(['ui', action.payload.moodsKey, 'currentIndex'], 0);
   },
   [actionTypes.LOAD_MOVIES_ERROR]: (state, action) => {
-    return state.setIn([action.payload.moodsKey, 'loadingState'], loadingStates.ERROR);
+    return state.setIn(['server', action.payload.genresKey, 'loadingState'], loadingStates.ERROR);
   },
   [actionTypes.LOAD_MOVIES_SUCCESS]: (state, action) => {
-    return state.setIn([action.payload.moodsKey, 'data'], Immutable.fromJS(action.payload.data))
-      .setIn([action.payload.moodsKey, 'loadingState'], loadingStates.COMPLETE);
+    return state.setIn(['server', action.payload.genresKey, 'data'], Immutable.fromJS(action.payload.data))
+      .setIn(['server', action.payload.genresKey, 'loadingState'], loadingStates.COMPLETE);
   },
   [actionTypes.REQUEST_NEXT_MOVIES]: (state, action) => {
-    const currentIndex = state.getIn([action.payload.moodsKey, 'currentIndex']);
-    let nextIndex = currentIndex + 1;
-
-    if (nextIndex >= state.getIn([action.payload.moodsKey, 'data', 'results']).size) {
-      nextIndex = 0;
-    }
-
-    return state.setIn([action.payload.moodsKey, 'currentIndex'], nextIndex);
+    const currentIndex = state.getIn(['ui', action.payload.moodsKey, 'currentIndex']);
+    return state.setIn(['ui', action.payload.moodsKey, 'currentIndex'], currentIndex + 1);
   }
 };
 
@@ -36,7 +30,10 @@ const configurationReducers = {
 };
 
 const initialStates = {
-  movies: Immutable.Map({}),
+  movies: Immutable.Map({
+    ui: Immutable.Map({}),
+    server: Immutable.Map({})
+  }),
   configuration: Immutable.Map({
     data: null,
     loadingState: loadingStates.NOT_STARTED

@@ -12,7 +12,7 @@ import typography from '../../css/typography.css';
 
 const mapStateToProps = (state) => {
   return {
-    genres: moodSelectors.genresSelector(state),
+    genreGroups: moodSelectors.genreGroupsSelector(state),
     moodsSelected: moodSelectors.moodsSelector(state),
     moodsKey: moodSelectors.moodsKeySelector(state)
   };
@@ -34,11 +34,10 @@ export class DiscoverMovie extends Component {
   }
 
   submitRequest = () => {
+    const { moodsKey, genreGroups } = this.props;
     this.props.requestMovies({
-      moodsKey: this.props.moodsKey,
-      queryParams: {
-        with_genres: this.props.genres.join(',')
-      }
+      moodsKey,
+      genreGroups
     });
   }
 
@@ -76,7 +75,7 @@ DiscoverMovie.propTypes = {
   requestMovies: PropTypes.func.isRequired,
   requestSetMood: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */
-  genres: PropTypes.array.isRequired,
+  genreGroups: PropTypes.array.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   moodsSelected: PropTypes.object.isRequired,
   moodsKey: PropTypes.string.isRequired
