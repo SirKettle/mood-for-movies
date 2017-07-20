@@ -1,3 +1,5 @@
+import Ramda from 'ramda';
+import Immutable from 'immutable';
 import { createSelector } from 'reselect';
 import { moodsKeySelector, genreGroupsSelector } from '../mood/moodSelectors';
 import loadingStates from '../../constants/loadingStates';
@@ -22,7 +24,7 @@ export const configurationSelector = createSelector(
 
 export const configurationLoadingSelector = createSelector(
   configurationModelSelector,
-  model => model.get('loading')
+  model => model.get('loadingStatus')
 );
 
 export const currentMoviesSelector = createSelector(
@@ -35,13 +37,26 @@ export const currentMoviesSelector = createSelector(
       return null;
     }
 
-    // const movieSets =
-    // Need to get all the movies for each genresKey
-    // Need to combine the data, results - and sort by relevance
-    // Need to combine the total_results - and sort by relevance
-    // Need to combine the loading statuses
+    const movieGroups = genreGroups.map((genres) => {
+      const genresKey = genres.sort().join('_');
+      return movies.getIn([genresKey, 'data', 'results']);
+    });
 
-    return movies.get(moodsKey);
+    const concatList = Ramda.reduce((acc, next) => {
+      return acc.concat(next);
+    }, Immutable.List());
+
+    const allResults = concatList(movieGroups);
+
+    const isLoaded = genreGroups.every((genres) => {
+      const genresKey = genres.sort().join('_');
+      return movies.getIn([genresKey, 'loadingStatus']) === loadingStates.COMPLETE;
+    });
+
+    return Immutable.Map({
+      results: allResults,
+      loadingStatus: isLoaded ? loadingStates.COMPLETE : loadingStates.LOADING
+    });
   }
 );
 
@@ -51,8 +66,7 @@ export const currentMoviesLoadingStatusSelector = createSelector(
     if (!currentMovies) {
       return loadingStates.LOADING;
     }
-
-    return currentMovies.get('loadingState');
+    return currentMovies.get('loadingStatus');
   }
 );
 
@@ -65,7 +79,7 @@ export const currentMovieSelector = createSelector(
       return null;
     }
 
-    const movies = currentMovies.getIn(['data', 'results']);
+    const movies = currentMovies.get('results');
     if (!movies || !movies.size) {
       return null;
     }

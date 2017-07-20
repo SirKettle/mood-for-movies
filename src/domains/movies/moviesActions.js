@@ -28,7 +28,7 @@ export const baseQueryParams = {
   with_original_language: 'en',
   'vote_count.gte': 200,
   api_key: API_KEY,
-  'primary_release_date.gte': 2014
+  'primary_release_date.gte': 1945 // 2014
 };
 
 export const loadConfiguration = (dispatch) => {
@@ -68,7 +68,7 @@ export const loadMovies = (dispatch, args) => {
   window.location.href = '/#/movie';
   
   args.genreGroups.forEach((genres) => {
-    const genresKey = genres.join('_');
+    const genresKey = genres.sort().join('_');
     // set loading status to pending
     dispatch({
       type: actionTypes.LOAD_MOVIES_PENDING,
@@ -80,7 +80,7 @@ export const loadMovies = (dispatch, args) => {
 
     const queryParams = {
       ...baseQueryParams,
-      with_genres: genres.join(',')
+      with_genres: genres.sort().join(',')
     };
     const url = buildUrlWithQueryParams(`${BASE_URL}${ENDPOINTS.DISCOVER_MOVIES}`, queryParams);
 
