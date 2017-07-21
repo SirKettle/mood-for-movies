@@ -18,7 +18,8 @@
   flex: 0 0 100px;
   outline: none;
   border: none;
-  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
   
 	&:focus, &:hover, &:active {
     border: none;

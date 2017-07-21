@@ -38,6 +38,7 @@
   left: -20px;
   right: -20px;
   z-index: 0;
+  background-color: black;
   background-repeat: no-repeat;
   background-size: cover;
   filter: blur(15px);
