@@ -3,7 +3,18 @@ import classnames from 'classnames';
 import styles from './Movie.css';
 import typography from '../../css/typography.css';
 
-const Movie = ({ className, title, overview, posterImgSrc, imgSrc }) => {
+const Movie = ({
+  className,
+  title,
+  overview,
+  posterImgSrc,
+  imgSrc,
+  voteCount,
+  voteAverage,
+  popularity,
+  genreIds,
+  releaseDate
+}) => {
   return (
     <div className={classnames(className, styles.movie)}>
       <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc})` }} />
@@ -28,7 +39,12 @@ Movie.propTypes = {
   title: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   posterImgSrc: PropTypes.string,
-  imgSrc: PropTypes.string
+  imgSrc: PropTypes.string,
+  voteCount: PropTypes.number.isRequired,
+  voteAverage: PropTypes.number.isRequired,
+  popularity: PropTypes.number.isRequired,
+  genreIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  releaseDate: PropTypes.string.isRequired
 };
 
 Movie.defaultProps = {
