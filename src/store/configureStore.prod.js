@@ -1,8 +1,21 @@
 import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+// import { composeWithDevTools } from 'redux-devtools-extension';
+import { router5Middleware } from 'redux-router5';
 import rootReducer from '../reducers';
 
-const configureStore = preloadedState =>
-  createStore(rootReducer, preloadedState, applyMiddleware(thunk));
+export default function configureStore(router, initialState = {}) {
+  // Create store
+  // const store = createStore(rootReducer, initialState, composeWithDevTools(
+  //   applyMiddleware(
+  //     router5Middleware(router)
+  //   )
+  // ));
+  const store = createStore(rootReducer, initialState,
+    applyMiddleware(
+      router5Middleware(router)
+    )
+  );
 
-export default configureStore;
+  window.store = store;
+  return store;
+}

@@ -63,16 +63,19 @@ export class CurrentMovie extends Component {
       return (<p>No movies</p>);
     }
 
+    // TODO: look at getting better image sources / sizes
+    // Also, return null if not found in movie - they don't
+    // always have poster image and / or backdrop image
     const posterImgSrc =
     `${configuration.getIn(['images', 'base_url'])}w780${currentMovie.get('poster_path')}`;
-    const backdropImgSrc =
+    const imgSrc =
     `${configuration.getIn(['images', 'base_url'])}w780${currentMovie.get('backdrop_path')}`;
     const movieProps = {
       className: styles.movie,
       title: currentMovie.get('title'),
       overview: currentMovie.get('overview'),
       posterImgSrc,
-      backdropImgSrc
+      imgSrc
     };
 
     return (<Movie {...movieProps} />);
