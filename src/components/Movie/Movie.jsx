@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './Movie.css';
+import Stars from '../Stars/Stars';
 import typography from '../../css/typography.css';
 import defaultImage from '../../assets/boys.jpg';
 
@@ -23,9 +24,11 @@ const Movie = ({
       <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc || defaultImage})` }} />
       <div className={styles.contents}>
         <h3 className={classnames(typography.phil)}>{ title }</h3>
-        <p className={classnames(typography.bottomMargin, typography.elliot)}>
-          { releaseDate.slice(0, 4) } - { voteAverage * 10 }%
-        </p>
+        <div className={classnames(typography.bottomMargin, typography.elliot, styles.meta)}>
+          <div>{ releaseDate.slice(0, 4) }</div>
+          <Stars className={styles.stars} percentage={voteAverage * 10} />
+          <div>{ voteAverage * 10 }%</div>
+        </div>
         {
           imgSrc ?
           (<img
