@@ -63,52 +63,56 @@ export const requestNextMovie = (dispatch, args) => {
   });
 };
 
+const fetchMovies = (dispatch, moodsKey, genres) => {
+  const genresKey = genres.sort().join('_');
+  // set loading status to pending
+  dispatch({
+    type: actionTypes.LOAD_MOVIES_PENDING,
+    payload: {
+      moodsKey,
+      genresKey
+    }
+  });
+
+  const queryParams = {
+    ...baseQueryParams,
+    with_genres: genres.sort().join(',')
+  };
+  const url = buildUrlWithQueryParams(`${BASE_URL}${ENDPOINTS.DISCOVER_MOVIES}`, queryParams);
+
+  return fetch(url, {
+    method: 'GET'
+  }).then(response => response.json()
+  , (error) => {
+    // console.log(error);
+    dispatch({
+      type: actionTypes.LOAD_MOVIES_ERROR,
+      payload: {
+        moodsKey,
+        genresKey,
+        error
+      }
+    });
+  }).then((payload) => {
+    if (!payload) {
+      return;
+    }
+    dispatch({
+      type: actionTypes.LOAD_MOVIES_SUCCESS,
+      payload: {
+        data: payload,
+        moodsKey,
+        genresKey
+      }
+    });
+  });
+};
+
 export const loadMovies = (dispatch, args) => {
   // Redirect user to movie page while it loads
   window.location.href = '/#/movie';
   
   args.genreGroups.forEach((genres) => {
-    const genresKey = genres.sort().join('_');
-    // set loading status to pending
-    dispatch({
-      type: actionTypes.LOAD_MOVIES_PENDING,
-      payload: {
-        moodsKey: args.moodsKey,
-        genresKey
-      }
-    });
-
-    const queryParams = {
-      ...baseQueryParams,
-      with_genres: genres.sort().join(',')
-    };
-    const url = buildUrlWithQueryParams(`${BASE_URL}${ENDPOINTS.DISCOVER_MOVIES}`, queryParams);
-
-    return fetch(url, {
-      method: 'GET'
-    }).then(response => response.json()
-    , (error) => {
-      // console.log(error);
-      dispatch({
-        type: actionTypes.LOAD_MOVIES_ERROR,
-        payload: {
-          moodsKey: args.moodsKey,
-          genresKey,
-          error
-        }
-      });
-    }).then((payload) => {
-      if (!payload) {
-        return;
-      }
-      dispatch({
-        type: actionTypes.LOAD_MOVIES_SUCCESS,
-        payload: {
-          data: payload,
-          moodsKey: args.moodsKey,
-          genresKey
-        }
-      });
-    });
+    fetchMovies(dispatch, args.moodsKey, genres);
   });
 };

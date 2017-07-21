@@ -102,6 +102,10 @@ const config = {
         use: 'url-loader?mimetype=image/png'
       },
       {
+        test: /\.jpg$/,
+        use: 'url-loader?mimetype=image/jpg'
+      },
+      {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           use: [

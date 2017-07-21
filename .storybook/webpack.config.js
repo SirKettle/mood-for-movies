@@ -31,6 +31,10 @@ module.exports = (config, env) => {
             use: 'url-loader?mimetype=image/png'
           },
           {
+            test: /\.jpg$/,
+            use: 'url-loader?mimetype=image/jpg'
+          },
+          {
             test: /\.css$/,
             use: [
               {

@@ -8,7 +8,7 @@ import GENRES from '../../constants/movieGenres';
 
 const getGenresIds = () => {
   const genreIds = [];
-  Object.keys(GENRES).forEach((key, index) => {
+  Object.keys(GENRES).forEach((key) => {
     const genreId = GENRES[key];
     if (boolean(key, false)) {
       genreIds.push(genreId);
@@ -40,6 +40,7 @@ storiesOf('Movie', module)
     <Story
       title="Movie"
       summary="Used while loading something"
+      displayInfo={boolean('displayInfo', false)}
     >
       <Movie {...getProps()} />
     </Story>

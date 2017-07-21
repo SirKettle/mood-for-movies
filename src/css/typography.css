@@ -1,24 +1,26 @@
 
 .phil {
   font-size: 30px;
+  line-height: 1.3;
+}
+
+.tom {
+  font-size: 22px;
+}
+
+.harrison {
+  font-size: 18px;
+}
+
+.elliot {
+  font-size: 14px;
 }
 
 .ted {
   font-size: 25px;
   text-transform: uppercase;
   letter-spacing: 3px;
-}
-
-.tom {
-  font-size: 20px;
-}
-
-.harrison {
-  font-size: 16px;
-}
-
-.elliot {
-  font-size: 13px;
+  line-height: 1.3;
 }
 
 .bottomMargin {

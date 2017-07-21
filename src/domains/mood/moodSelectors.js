@@ -26,6 +26,11 @@ export const genreGroupsSelector = createSelector(
   moodsSelector,
   (moods) => {
     const genreGroups = moods.map(moodId => MOODS[moodId].genres);
+
+    if (genreGroups.size === 1) {
+      return genreGroups.toJS()[0].map(genre => [genre]);
+    }
+
     return cartesianProduct(genreGroups);
   }
 );

@@ -46,6 +46,17 @@ export class CurrentMovie extends Component {
     return 'Suggest another';
   }
 
+  getImgSrc = (srcKey) => {
+    const { configuration, currentMovie } = this.props;
+    const src = currentMovie.get(srcKey);
+    
+    if (src) {
+      return `${configuration.getIn(['images', 'base_url'])}w780${src}`;
+    }
+
+    return null;
+  }
+
   submitRequest = () => {
     if (!this.props.currentMovie) {
       history.back();
@@ -57,29 +68,22 @@ export class CurrentMovie extends Component {
   }
 
   renderMovie = () => {
-    const { configuration, currentMovie } = this.props;
+    const { currentMovie } = this.props;
 
     if (!currentMovie) {
       return (<p>No movies</p>);
     }
 
-    // TODO: look at getting better image sources / sizes
-    // Also, return null if not found in movie - they don't
-    // always have poster image and / or backdrop image
-    const posterImgSrc =
-    `${configuration.getIn(['images', 'base_url'])}w780${currentMovie.get('poster_path')}`;
-    const imgSrc =
-    `${configuration.getIn(['images', 'base_url'])}w780${currentMovie.get('backdrop_path')}`;
     const movieProps = {
       className: styles.movie,
       title: currentMovie.get('title'),
       overview: currentMovie.get('overview'),
-      posterImgSrc,
-      imgSrc,
+      posterImgSrc: this.getImgSrc('poster_path'),
+      imgSrc: this.getImgSrc('backdrop_path'),
       voteCount: currentMovie.get('vote_count'),
       voteAverage: currentMovie.get('vote_average'),
       popularity: currentMovie.get('popularity'),
-      genreIds: currentMovie.get('genre_ids'),
+      genreIds: currentMovie.get('genre_ids').toArray(),
       releaseDate: currentMovie.get('release_date')
     };
 

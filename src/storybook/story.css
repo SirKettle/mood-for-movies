@@ -30,6 +30,9 @@ body {
   flex-direction: column;
   flex: 0 0 auto;
   padding: 2rem;
+  position: relative;
+  z-index: 1;
+  background: white;
 }
 
 .contents {
@@ -37,6 +40,7 @@ body {
   flex-direction: column;
   flex: 1 0 auto;
   background: #bf3b31;
+  color: #333;
 }
 
 .padded {

@@ -54,7 +54,17 @@ export const currentMoviesSelector = createSelector(
     });
 
     return Immutable.Map({
-      results: allResults,
+      results: allResults.sort((a, b) => {
+        if (!a || !b) {
+          return 0;
+        }
+        
+        if (a.get('vote_average') < b.get('vote_average')) {
+          return 1;
+        }
+
+        return -1;
+      }),
       loadingStatus: isLoaded ? loadingStates.COMPLETE : loadingStates.LOADING
     });
   }

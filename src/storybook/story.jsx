@@ -8,14 +8,22 @@ const Story = ({
   title,
   summary,
   children,
-  className
+  className,
+  displayInfo
 }) => {
   return (
     <div className={classnames(styles.story, className)}>
-      <div className={styles.info}>
-        {title && <h1 className={typography.phil}>{title}</h1>}
-        {summary && <p className={typography.harrison}>{summary}</p>}
-      </div>
+      {
+        displayInfo &&
+        (<div className={styles.info}>
+          {title && (
+            <h1
+              className={classnames(typography.bottomMargin, typography.phil)}
+            >{title}</h1>)
+          }
+          {summary && <p className={typography.harrison}>{summary}</p>}
+        </div>)
+      }
       <div className={styles.contents}>
         {children}
       </div>
@@ -27,13 +35,15 @@ Story.propTypes = {
   className: React.PropTypes.string,
   title: React.PropTypes.string,
   summary: React.PropTypes.string,
-  children: React.PropTypes.node.isRequired
+  children: React.PropTypes.node.isRequired,
+  displayInfo: React.PropTypes.bool
 };
 
 Story.defaultProps = {
   className: 'some-story',
   title: null,
-  summary: null
+  summary: null,
+  displayInfo: true
 };
 
 export default Story;
