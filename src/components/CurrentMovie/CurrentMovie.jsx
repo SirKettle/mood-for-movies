@@ -75,7 +75,12 @@ export class CurrentMovie extends Component {
       title: currentMovie.get('title'),
       overview: currentMovie.get('overview'),
       posterImgSrc,
-      imgSrc
+      imgSrc,
+      voteCount: currentMovie.get('vote_count'),
+      voteAverage: currentMovie.get('vote_average'),
+      popularity: currentMovie.get('popularity'),
+      genreIds: currentMovie.get('genre_ids'),
+      releaseDate: currentMovie.get('release_date')
     };
 
     return (<Movie {...movieProps} />);
