@@ -105,9 +105,11 @@ export class CurrentMovie extends Component {
     return (
       <div className={classnames(styles.currentMovie)}>
         <Loading className={styles.loading} loadingStatus={loadingStatus}>
-          { this.renderMovie() }
+          <div className={styles.movieWrapper}>
+            { this.renderMovie() }
+            { this.renderButton() }
+          </div>
         </Loading>
-        { this.renderButton() }
       </div>
     );
   }

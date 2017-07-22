@@ -12,7 +12,7 @@
 
 .button {
   position: relative;
-  background: #333;
+  background: #111;
   color: white;
   display: block;
   flex: 0 0 100px;
@@ -24,8 +24,14 @@
 	&:focus, &:hover, &:active {
     border: none;
     outline: none;
-    background: #222;
+    background: #000;
 	}
+}
+
+.movieWrapper {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
 }
 
 .movie {

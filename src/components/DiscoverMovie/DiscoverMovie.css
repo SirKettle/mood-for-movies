@@ -8,7 +8,7 @@
 
 .button {
   background: #333;
-  color: white;
+  color: #e2d9a2; /* cream */
   display: block;
   flex: 0 0 100px;
   outline: none;

@@ -12,7 +12,7 @@ export default {
     genres: [GENRES.Music]
   },
   CRY: {
-    shortLabel: 'Cry',
+    shortLabel: 'Tears',
     longLabel: 'I want to have a good cry',
     genres: [GENRES.Romance, GENRES.Drama]
   },

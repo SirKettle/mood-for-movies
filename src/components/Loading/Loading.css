@@ -18,12 +18,16 @@
 .imageContainer {
   display: flex;
   flex-direction: column;
-  flex: 0 0 593px;
+  flex: 0 0 563px;
   width: 596px;
   position: absolute;
   left: 50px;
+  top: 50%;
+  margin-top: -300px;
+
   @media (min-width: 596px) {
     position: relative;
+    margin-top: 20px;
   }
 }
 
