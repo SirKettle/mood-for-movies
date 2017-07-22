@@ -27,6 +27,24 @@ export const configurationLoadingSelector = createSelector(
   model => model.get('loadingStatus')
 );
 
+export const removeDuplicateIds = Ramda.uniqBy(movie => movie && movie.get('id'));
+
+export const sortByVoteAverage = Ramda.sort((a, b) => {
+  if (!a || !b) {
+    return 0;
+  }
+  
+  if (a.get('vote_average') < b.get('vote_average')) {
+    return 1;
+  }
+
+  return -1;
+});
+
+export const sortUnique = list => Immutable.List(
+  sortByVoteAverage(removeDuplicateIds(list.toArray()))
+);
+
 export const currentMoviesSelector = createSelector(
   moviesSelector,
   moodsKeySelector,
@@ -54,17 +72,7 @@ export const currentMoviesSelector = createSelector(
     });
 
     return Immutable.Map({
-      results: allResults.sort((a, b) => {
-        if (!a || !b) {
-          return 0;
-        }
-        
-        if (a.get('vote_average') < b.get('vote_average')) {
-          return 1;
-        }
-
-        return -1;
-      }),
+      results: sortUnique(allResults),
       loadingStatus: isLoaded ? loadingStates.COMPLETE : loadingStates.LOADING
     });
   }
