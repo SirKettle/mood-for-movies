@@ -4,6 +4,14 @@
   height: 100%;
 }
 
+:global(html), body {
+  box-sizing: border-box;
+  
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   display: flex;
   flex: 1 1 auto;
@@ -38,8 +46,8 @@ body {
 .contents {
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
-  background: #bf3b31;
+  flex: 1 1 auto;
+  background: #deb853; /* mustard */
   color: #333;
 }
 

@@ -4,6 +4,15 @@
   height: 100%;
 }
 
+@media screen {
+	:global(html), body {
+		box-sizing: border-box;
+	}
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+}
+
 body {
   display: flex;
   flex: 1 1 auto;

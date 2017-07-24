@@ -13,7 +13,7 @@
 }
 
 .elliot {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .ted {
@@ -21,6 +21,11 @@
   text-transform: uppercase;
   letter-spacing: 3px;
   line-height: 1.3;
+}
+
+.crazy {
+  font-size: 70px;
+  font-weight: 400;
 }
 
 .bottomMargin {
