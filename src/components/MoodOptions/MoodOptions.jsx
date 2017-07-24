@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './MoodOptions.css';
-// import typography from '../../css/typography.css';
+import typography from '../../css/typography.css';
 
 const MoodOptions = ({ className, moods, moodsSelected, onSelected }) => {
   const getIsChecked = (key) => {
@@ -23,8 +23,9 @@ const MoodOptions = ({ className, moods, moodsSelected, onSelected }) => {
                 onChange={(e) => { onSelected(e, key); }}
                 checked={getIsChecked(key)}
               />
-              <label className={styles.label} htmlFor={name}>
-                <span>{ mood.longLabel }</span>
+              <label className={classnames(styles.label)} htmlFor={name}>
+                <h3 className={typography.tom}>{ mood.shortLabel }</h3>
+                <p className={typography.elliot}>{ mood.longLabel }</p>
               </label>
             </div>
           );
