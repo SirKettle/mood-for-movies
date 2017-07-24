@@ -10,16 +10,22 @@
   flex-direction: column;
 }
 
+.actions {
+  display: flex;
+  flex: 0 0 100px;
+  flex-direction: row;
+}
+
 .button {
   position: relative;
   background: #111;
   color: white;
   display: block;
-  flex: 0 0 100px;
   outline: none;
   border: none;
   appearance: none;
   margin: 0;
+  flex: 1 1 auto;
   
 	&:focus, &:hover, &:active {
     border: none;

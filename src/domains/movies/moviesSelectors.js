@@ -88,7 +88,7 @@ export const currentMoviesLoadingStatusSelector = createSelector(
   }
 );
 
-export const currentMovieSelector = createSelector(
+export const currentMoviePageInfoSelector = createSelector(
   uiSelector,
   currentMoviesSelector,
   moodsKeySelector,
@@ -102,9 +102,31 @@ export const currentMovieSelector = createSelector(
       return null;
     }
 
-    const currentIndex = ui.getIn([moodsKey, 'currentIndex']);
-    const movie = movies.get(currentIndex % movies.size);
+    const currentCounter = ui.getIn([moodsKey, 'currentIndex']);
+    const currentIndex = currentCounter % movies.size;
+    return {
+      index: currentIndex,
+      display: currentIndex + 1,
+      total: movies.size
+    };
+  }
+);
 
-    return movie;
+export const currentMovieSelector = createSelector(
+  uiSelector,
+  currentMoviesSelector,
+  moodsKeySelector,
+  currentMoviePageInfoSelector,
+  (ui, currentMovies, moodsKey, currentMoviePageInfo) => {
+    if (!currentMovies || !moodsKey || !ui || !currentMoviePageInfo) {
+      return null;
+    }
+
+    const movies = currentMovies.get('results');
+    if (!movies || !movies.size) {
+      return null;
+    }
+
+    return movies.get(currentMoviePageInfo.index);
   }
 );

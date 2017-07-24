@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
   return {
     configuration: moviesSelectors.configurationSelector(state),
     currentMovie: moviesSelectors.currentMovieSelector(state),
+    currentMoviePageInfo: moviesSelectors.currentMoviePageInfoSelector(state),
     loadingStatus: moviesSelectors.currentMoviesLoadingStatusSelector(state),
     moodsKey: moodSelectors.moodsKeySelector(state)
   };
@@ -28,22 +29,13 @@ export class CurrentMovie extends Component {
 
   static defaultProps = {
     currentMovie: null,
+    currentMoviePageInfo: null,
     configuration: null
   }
 
   getIsLoading = () => {
     const { loadingStatus } = this.props;
     return loadingStatus === loadingStates.LOADING;
-  }
-
-  getButtonText = () => {
-    if (this.getIsLoading()) {
-      return 'Loading...';
-    }
-    if (!this.props.currentMovie) {
-      return 'Try something else';
-    }
-    return 'Suggest another';
   }
 
   getImgSrc = (srcKey) => {
@@ -57,18 +49,14 @@ export class CurrentMovie extends Component {
     return null;
   }
 
-  submitRequest = () => {
-    if (!this.props.currentMovie) {
-      history.back();
-      return;
-    }
+  handleRequestNext = () => {
     this.props.requestNext({
       moodsKey: this.props.moodsKey
     });
   }
 
   renderMovie = () => {
-    const { currentMovie } = this.props;
+    const { currentMovie, currentMoviePageInfo } = this.props;
 
     if (!currentMovie) {
       return (<p>No movies</p>);
@@ -84,19 +72,33 @@ export class CurrentMovie extends Component {
       voteAverage: currentMovie.get('vote_average'),
       popularity: currentMovie.get('popularity'),
       genreIds: currentMovie.get('genre_ids').toArray(),
-      releaseDate: currentMovie.get('release_date')
+      releaseDate: currentMovie.get('release_date'),
+      currentMoviePageInfo
     };
 
     return (<Movie {...movieProps} />);
   }
 
-  renderButton = () => {
+  renderNextButton = () => {
     return (
       <button
-        disabled={this.getIsLoading()}
         className={classnames(typography.ted, styles.button)}
-        onClick={this.submitRequest}
-      >{this.getButtonText()}</button>
+        onClick={this.handleRequestNext}
+      >Next movie</button>
+    );
+  }
+
+  renderActions = () => {
+    const { currentMoviePageInfo } = this.props;
+    const showPagination = currentMoviePageInfo && currentMoviePageInfo.total > 1;
+    return (
+      <div className={styles.actions}>
+        <button
+          onClick={() => { history.back(); }}
+          className={classnames(typography.ted, styles.button)}
+        >New search</button>
+        { showPagination ? this.renderNextButton() : null }
+      </div>
     );
   }
 
@@ -107,7 +109,7 @@ export class CurrentMovie extends Component {
         <Loading className={styles.loading} loadingStatus={loadingStatus}>
           <div className={styles.movieWrapper}>
             { this.renderMovie() }
-            { this.renderButton() }
+            { this.renderActions() }
           </div>
         </Loading>
       </div>
@@ -119,6 +121,8 @@ CurrentMovie.propTypes = {
   requestNext: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   currentMovie: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
+  currentMoviePageInfo: PropTypes.object,
   loadingStatus: PropTypes.string.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   configuration: PropTypes.object,

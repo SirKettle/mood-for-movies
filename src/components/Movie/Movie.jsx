@@ -7,6 +7,7 @@ import defaultImage from '../../assets/boys.jpg';
 
 const Movie = ({
   className,
+  currentMoviePageInfo,
   title,
   overview,
   posterImgSrc,
@@ -17,18 +18,24 @@ const Movie = ({
   genreIds,
   releaseDate
 }) => {
-  console.log(voteCount, voteAverage, popularity, genreIds, releaseDate);
+  console.log(currentMoviePageInfo, voteCount, voteAverage, popularity, genreIds, releaseDate);
   
   return (
     <div className={classnames(className, styles.movie)}>
       <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc || defaultImage})` }} />
       <div className={styles.contents}>
-        <h3 className={classnames(typography.phil)}>{ title }</h3>
-        <div className={classnames(typography.bottomMargin, typography.elliot, styles.meta)}>
+        <div className={classnames(typography.elliot, styles.meta)}>
           <div>{ releaseDate.slice(0, 4) }</div>
           <Stars className={styles.stars} percentage={voteAverage * 10} />
           <div>{ voteAverage * 10 }%</div>
+          { currentMoviePageInfo ?
+            (<span className={styles.pageInfo}>
+              {`${currentMoviePageInfo.display} of ${currentMoviePageInfo.total}`}
+            </span>) :
+            null
+          }
         </div>
+        <h3 className={classnames(typography.bottomMargin, typography.phil)}>{ title }</h3>
         {
           imgSrc ?
           (<img
@@ -45,6 +52,8 @@ const Movie = ({
 
 Movie.propTypes = {
   className: PropTypes.string,
+  /* eslint react/forbid-prop-types: 0 */
+  currentMoviePageInfo: PropTypes.object,
   title: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   posterImgSrc: PropTypes.string,
@@ -58,6 +67,7 @@ Movie.propTypes = {
 
 Movie.defaultProps = {
   className: 'some-movie',
+  currentMoviePageInfo: null,
   posterImgSrc: null,
   imgSrc: null
 };
