@@ -12,6 +12,11 @@ Utilizing 3rd party APIs:
 * [TMDb](https://www.themoviedb.org)
 * [Netflix Roulette API](https://netflixroulette.net/api/)
 
+Temp example:
+```
+GET https://netflixroulette.net/api/api.php?title=alladin
+```
+
 ## How to
 
 **Install dependencies**
