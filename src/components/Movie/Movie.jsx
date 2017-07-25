@@ -17,6 +17,7 @@ const Movie = ({
   popularity,
   genreIds,
   releaseDate,
+  netflix,
   el
 }) => {
   console.log(voteCount, popularity, genreIds);
@@ -29,6 +30,7 @@ const Movie = ({
           <div>{ releaseDate.slice(0, 4) }</div>
           <Stars className={styles.stars} percentage={voteAverage * 10} />
           <div>{ voteAverage * 10 }%</div>
+          { netflix ? (<div>Netflix</div>) : null }
           { currentMoviePageInfo ?
             (<span className={styles.pageInfo}>
               {`${currentMoviePageInfo.display} of ${currentMoviePageInfo.total}`}
@@ -55,6 +57,8 @@ Movie.propTypes = {
   className: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
   currentMoviePageInfo: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
+  netflix: PropTypes.object,
   title: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   posterImgSrc: PropTypes.string,
@@ -70,6 +74,7 @@ Movie.propTypes = {
 Movie.defaultProps = {
   className: 'some-movie',
   currentMoviePageInfo: null,
+  netflix: null,
   posterImgSrc: null,
   imgSrc: null,
   el: () => {}

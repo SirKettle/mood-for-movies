@@ -11,24 +11,14 @@ export const actionTypes = {
   REQUEST_NEXT_MOVIE: 'REQUEST_NEXT_MOVIE'
 };
 
-const BASE_URL = 'https://api.themoviedb.org/3';
-const API_KEY = '9b39e698383c30052915f7786495b569';
-
-const ENDPOINTS = {
-  CONFIGURATION: '/configuration', // /configuration?api_key=<<api_key>>
-  DISCOVER_MOVIES: '/discover/movie' // /discover/movie?with_genres=35&&api_key=9b39e698383c30052915f7786495b569
+const TMDb = {
+  BASE_URL: 'https://api.themoviedb.org/3',
+  API_KEY: '9b39e698383c30052915f7786495b569'
 };
 
-export const baseQueryParams = {
-  page: 1,
-  include_video: false,
-  include_adult: false,
-  sort_by: 'vote_average.desc', // TODO: sort by Vote average desc and use votecount gte 100
-  language: 'en-US',
-  with_original_language: 'en',
-  'vote_count.gte': 200,
-  api_key: API_KEY,
-  'primary_release_date.gte': 1945 // 2014
+const ENDPOINTS = {
+  CONFIGURATION: `${TMDb.BASE_URL}/configuration`, // /configuration?api_key=<<api_key>>
+  DISCOVER_MOVIES: `${TMDb.BASE_URL}/discover/movie` // /discover/movie?with_genres=35&&api_key=9b39e698383c30052915f7786495b569
 };
 
 export const loadConfiguration = (dispatch) => {
@@ -36,7 +26,7 @@ export const loadConfiguration = (dispatch) => {
     type: actionTypes.LOAD_CONFIGURATION_PENDING
   });
   
-  const url = buildUrlWithQueryParams(`${BASE_URL}${ENDPOINTS.CONFIGURATION}`, { api_key: API_KEY });
+  const url = buildUrlWithQueryParams(ENDPOINTS.CONFIGURATION, { api_key: TMDb.API_KEY });
   return fetch(url, {
     method: 'GET'
   }).then(response => response.json()
@@ -64,6 +54,18 @@ export const requestNextMovie = (dispatch, args) => {
   });
 };
 
+export const baseDiscoverQueryParams = {
+  page: 1,
+  include_video: false,
+  include_adult: false,
+  sort_by: 'vote_average.desc', // TODO: sort by Vote average desc and use votecount gte 100
+  language: 'en-US',
+  with_original_language: 'en',
+  'vote_count.gte': 200,
+  api_key: TMDb.API_KEY,
+  'primary_release_date.gte': 1945 // 2014
+};
+
 const fetchMovies = (dispatch, moodsKey, genres) => {
   const genresKey = genres.sort().join('_');
   // set loading status to pending
@@ -76,10 +78,10 @@ const fetchMovies = (dispatch, moodsKey, genres) => {
   });
 
   const queryParams = {
-    ...baseQueryParams,
+    ...baseDiscoverQueryParams,
     with_genres: genres.sort().join(',')
   };
-  const url = buildUrlWithQueryParams(`${BASE_URL}${ENDPOINTS.DISCOVER_MOVIES}`, queryParams);
+  const url = buildUrlWithQueryParams(ENDPOINTS.DISCOVER_MOVIES, queryParams);
 
   return fetch(url, {
     method: 'GET'

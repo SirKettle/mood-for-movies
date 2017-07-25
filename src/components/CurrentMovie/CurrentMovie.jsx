@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { requestNextMovie } from '../../domains/movies/moviesActions';
+import { requestNetflixAvailability } from '../../domains/availability/availabilityActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
+import * as availabilitySelectors from '../../domains/availability/availabilitySelectors';
 import Loading from '../Loading/Loading';
 import Movie from '../Movie/Movie';
 import loadingStates from '../../constants/loadingStates';
@@ -16,6 +18,7 @@ const mapStateToProps = (state) => {
   return {
     configuration: moviesSelectors.configurationSelector(state),
     currentMovie: moviesSelectors.currentMovieSelector(state),
+    currentMovieNetflix: availabilitySelectors.currentMovieNetflixSelector(state),
     nextMovie: moviesSelectors.nextMovieSelector(state),
     currentMoviePageInfo: moviesSelectors.currentMoviePageInfoSelector(state),
     loadingStatus: moviesSelectors.currentMoviesLoadingStatusSelector(state),
@@ -24,7 +27,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  requestNext: (args) => { requestNextMovie(dispatch, args); }
+  requestNext: (args) => { requestNextMovie(dispatch, args); },
+  isOnNetflix: (movie) => { requestNetflixAvailability(dispatch, movie); }
 });
 
 export class CurrentMovie extends Component {
@@ -33,24 +37,31 @@ export class CurrentMovie extends Component {
     currentMovie: null,
     nextMovie: null,
     currentMoviePageInfo: null,
+    currentMovieNetflix: null,
     configuration: null
   }
 
-  componentDidUpdate(nextProps) {
-    const { currentMovie, nextMovie } = this.props;
+  componentDidUpdate(prevProps) {
+    const { currentMovie, nextMovie, isOnNetflix } = this.props;
 
     if (
       currentMovie &&
       nextMovie &&
-      nextProps.currentMovie &&
-      currentMovie.get('id') !==
-      nextProps.currentMovie.get('id')
+      prevProps.currentMovie &&
+      currentMovie.get('id') !== prevProps.currentMovie.get('id')
     ) {
       console.log('preload nextMovie images', nextMovie.get('title'));
       preloadImages([
         this.getImgSrc(nextMovie, 'poster_path'),
         this.getImgSrc(nextMovie, 'backdrop_path')
       ]);
+    }
+
+    if (
+      ((!prevProps || !prevProps.currentMovie) && currentMovie) ||
+      currentMovie.get('id') !== prevProps.currentMovie.get('id')
+    ) {
+      isOnNetflix(currentMovie);
     }
   }
 
@@ -91,7 +102,7 @@ export class CurrentMovie extends Component {
   }
 
   renderMovie = () => {
-    const { currentMovie, currentMoviePageInfo } = this.props;
+    const { currentMovie, currentMoviePageInfo, currentMovieNetflix } = this.props;
 
     if (!currentMovie) {
       return (<p>No movies</p>);
@@ -108,6 +119,7 @@ export class CurrentMovie extends Component {
       popularity: currentMovie.get('popularity'),
       genreIds: currentMovie.get('genre_ids').toArray(),
       releaseDate: currentMovie.get('release_date'),
+      netflix: currentMovieNetflix,
       currentMoviePageInfo,
       el: this.setMovieEl
     };
@@ -141,7 +153,7 @@ export class CurrentMovie extends Component {
         <button
           onClick={() => { history.back(); }}
           className={classnames(typography.ted, styles.button)}
-        >New search</button>
+        >Options</button>
         { showPagination ? this.renderPreviousButton() : null }
         { showPagination ? this.renderNextButton() : null }
       </div>
@@ -164,9 +176,12 @@ export class CurrentMovie extends Component {
 }
 
 CurrentMovie.propTypes = {
+  isOnNetflix: PropTypes.func.isRequired,
   requestNext: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   currentMovie: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
+  currentMovieNetflix: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   nextMovie: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
