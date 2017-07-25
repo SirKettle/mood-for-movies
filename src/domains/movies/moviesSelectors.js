@@ -66,14 +66,27 @@ export const currentMoviesSelector = createSelector(
 
     const allResults = concatList(movieGroups);
 
-    const isLoaded = genreGroups.every((genres) => {
-      const genresKey = genres.sort().join('_');
-      return movies.getIn([genresKey, 'loadingStatus']) === loadingStates.COMPLETE;
-    });
+    const getLoadingStatus = () => {
+      const isLoaded = genreGroups.every((genres) => {
+        const genresKey = genres.sort().join('_');
+        return movies.getIn([genresKey, 'loadingStatus']) === loadingStates.COMPLETE;
+      });
+
+      if (isLoaded) {
+        return loadingStates.COMPLETE;
+      }
+
+      const isError = genreGroups.some((genres) => {
+        const genresKey = genres.sort().join('_');
+        return movies.getIn([genresKey, 'loadingStatus']) === loadingStates.ERROR;
+      });
+
+      return isError ? loadingStates.ERROR : loadingStates.LOADING;
+    };
 
     return Immutable.Map({
       results: sortUnique(allResults),
-      loadingStatus: isLoaded ? loadingStates.COMPLETE : loadingStates.LOADING
+      loadingStatus: getLoadingStatus()
     });
   }
 );
@@ -104,9 +117,10 @@ export const currentMoviePageInfoSelector = createSelector(
 
     const currentCounter = ui.getIn([moodsKey, 'currentIndex']);
     const currentIndex = currentCounter % movies.size;
+
     return {
       index: currentIndex,
-      display: currentIndex + 1,
+      display: currentIndex < 0 ? currentIndex + 1 + movies.size : currentIndex + 1,
       total: movies.size
     };
   }
@@ -128,5 +142,26 @@ export const currentMovieSelector = createSelector(
     }
 
     return movies.get(currentMoviePageInfo.index);
+  }
+);
+
+export const nextMovieSelector = createSelector(
+  uiSelector,
+  currentMoviesSelector,
+  moodsKeySelector,
+  currentMoviePageInfoSelector,
+  (ui, currentMovies, moodsKey, currentMoviePageInfo) => {
+    if (!currentMovies || !moodsKey || !ui || !currentMoviePageInfo) {
+      return null;
+    }
+
+    const movies = currentMovies.get('results');
+    if (!movies || !movies.size || movies.size < 2) {
+      return null;
+    }
+    const currentCounter = ui.getIn([moodsKey, 'currentIndex']);
+    const nextIndex = (currentCounter + 1) % movies.size;
+
+    return movies.get(nextIndex);
   }
 );

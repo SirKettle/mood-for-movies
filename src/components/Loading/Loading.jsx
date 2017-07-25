@@ -9,7 +9,7 @@ import reelImage from '../../assets/reel.png';
 export default class Loading extends Component {
   
   state = {
-    delayRender: false
+    delayRender: true
   }
 
   componentWillReceiveProps(nextProps) {

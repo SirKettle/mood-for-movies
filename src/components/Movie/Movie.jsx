@@ -16,12 +16,13 @@ const Movie = ({
   voteAverage,
   popularity,
   genreIds,
-  releaseDate
+  releaseDate,
+  el
 }) => {
-  console.log(currentMoviePageInfo, voteCount, voteAverage, popularity, genreIds, releaseDate);
+  console.log(voteCount, popularity, genreIds);
   
   return (
-    <div className={classnames(className, styles.movie)}>
+    <div ref={el} className={classnames(className, styles.movie)}>
       <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc || defaultImage})` }} />
       <div className={styles.contents}>
         <div className={classnames(typography.elliot, styles.meta)}>
@@ -62,14 +63,16 @@ Movie.propTypes = {
   voteAverage: PropTypes.number.isRequired,
   popularity: PropTypes.number.isRequired,
   genreIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-  releaseDate: PropTypes.string.isRequired
+  releaseDate: PropTypes.string.isRequired,
+  el: PropTypes.func
 };
 
 Movie.defaultProps = {
   className: 'some-movie',
   currentMoviePageInfo: null,
   posterImgSrc: null,
-  imgSrc: null
+  imgSrc: null,
+  el: () => {}
 };
 
 export default Movie;

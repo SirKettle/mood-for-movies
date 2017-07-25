@@ -14,9 +14,10 @@ const moviesReducers = {
     return state.setIn(['server', action.payload.genresKey, 'data'], Immutable.fromJS(action.payload.data))
       .setIn(['server', action.payload.genresKey, 'loadingStatus'], loadingStates.COMPLETE);
   },
-  [actionTypes.REQUEST_NEXT_MOVIES]: (state, action) => {
+  [actionTypes.REQUEST_NEXT_MOVIE]: (state, action) => {
     const currentIndex = state.getIn(['ui', action.payload.moodsKey, 'currentIndex']);
-    return state.setIn(['ui', action.payload.moodsKey, 'currentIndex'], currentIndex + 1);
+    const nextIndex = action.payload.previous ? currentIndex - 1 : currentIndex + 1;
+    return state.setIn(['ui', action.payload.moodsKey, 'currentIndex'], nextIndex);
   }
 };
 

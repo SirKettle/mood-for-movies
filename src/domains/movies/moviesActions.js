@@ -8,7 +8,7 @@ export const actionTypes = {
   LOAD_MOVIES_PENDING: 'LOAD_MOVIES_PENDING',
   LOAD_MOVIES_SUCCESS: 'LOAD_MOVIES_SUCCESS',
   LOAD_MOVIES_ERROR: 'LOAD_MOVIES_ERROR',
-  REQUEST_NEXT_MOVIES: 'REQUEST_NEXT_MOVIES'
+  REQUEST_NEXT_MOVIE: 'REQUEST_NEXT_MOVIE'
 };
 
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -56,9 +56,10 @@ export const loadConfiguration = (dispatch) => {
 
 export const requestNextMovie = (dispatch, args) => {
   dispatch({
-    type: actionTypes.REQUEST_NEXT_MOVIES,
+    type: actionTypes.REQUEST_NEXT_MOVIE,
     payload: {
-      moodsKey: args.moodsKey
+      moodsKey: args.moodsKey,
+      previous: args.previous || false
     }
   });
 };
