@@ -11,10 +11,12 @@ Based on this simple [Webpack2 React seed project](https://github.com/tpina/reac
 Utilizing 3rd party APIs:
 * [TMDb](https://www.themoviedb.org)
 * [Netflix Roulette API](https://netflixroulette.net/api/)
+* [iTunes Search API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching)
 
-Temp example:
+Temp examples:
 ```
 GET https://netflixroulette.net/api/api.php?title=alladin
+GET https://itunes.apple.com/search?term=inside+out&entity=movie
 ```
 
 ## How to
