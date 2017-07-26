@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { requestNextMovie } from '../../domains/movies/moviesActions';
-import { requestNetflixAvailability } from '../../domains/availability/availabilityActions';
+import { requestNetflixAvailability, requestItunesAvailability } from '../../domains/availability/availabilityActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 import * as availabilitySelectors from '../../domains/availability/availabilitySelectors';
@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
     configuration: moviesSelectors.configurationSelector(state),
     currentMovie: moviesSelectors.currentMovieSelector(state),
     currentMovieNetflix: availabilitySelectors.currentMovieNetflixSelector(state),
+    currentMovieItunes: availabilitySelectors.currentMovieItunesSelector(state),
     nextMovie: moviesSelectors.nextMovieSelector(state),
     currentMoviePageInfo: moviesSelectors.currentMoviePageInfoSelector(state),
     loadingStatus: moviesSelectors.currentMoviesLoadingStatusSelector(state),
@@ -28,7 +29,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   requestNext: (args) => { requestNextMovie(dispatch, args); },
-  isOnNetflix: (movie) => { requestNetflixAvailability(dispatch, movie); }
+  isOnNetflix: (movie) => { requestNetflixAvailability(dispatch, movie); },
+  isOnItunes: (movie) => { requestItunesAvailability(dispatch, movie); }
 });
 
 export class CurrentMovie extends Component {
@@ -38,30 +40,34 @@ export class CurrentMovie extends Component {
     nextMovie: null,
     currentMoviePageInfo: null,
     currentMovieNetflix: null,
+    currentMovieItunes: null,
     configuration: null
   }
 
   componentDidUpdate(prevProps) {
-    const { currentMovie, nextMovie, isOnNetflix } = this.props;
+    const { currentMovie, nextMovie, isOnNetflix, isOnItunes, loadingStatus } = this.props;
 
-    if (
-      currentMovie &&
-      nextMovie &&
-      prevProps.currentMovie &&
-      currentMovie.get('id') !== prevProps.currentMovie.get('id')
-    ) {
-      console.log('preload nextMovie images', nextMovie.get('title'));
-      preloadImages([
-        this.getImgSrc(nextMovie, 'poster_path'),
-        this.getImgSrc(nextMovie, 'backdrop_path')
-      ]);
-    }
+    if (loadingStatus === loadingStates.COMPLETE) {
+      if (
+        currentMovie &&
+        nextMovie &&
+        prevProps.currentMovie &&
+        currentMovie.get('id') !== prevProps.currentMovie.get('id')
+      ) {
+        console.log('preload nextMovie images', nextMovie.get('title'));
+        preloadImages([
+          this.getImgSrc(nextMovie, 'poster_path'),
+          this.getImgSrc(nextMovie, 'backdrop_path')
+        ]);
+      }
 
-    if (
-      ((!prevProps || !prevProps.currentMovie) && currentMovie) ||
-      currentMovie.get('id') !== prevProps.currentMovie.get('id')
-    ) {
-      isOnNetflix(currentMovie);
+      if (
+        ((!prevProps || !prevProps.currentMovie) && currentMovie) ||
+        currentMovie.get('id') !== prevProps.currentMovie.get('id')
+      ) {
+        isOnNetflix(currentMovie);
+        isOnItunes(currentMovie);
+      }
     }
   }
 
@@ -102,7 +108,8 @@ export class CurrentMovie extends Component {
   }
 
   renderMovie = () => {
-    const { currentMovie, currentMoviePageInfo, currentMovieNetflix } = this.props;
+    const { currentMovie, currentMoviePageInfo,
+      currentMovieNetflix, currentMovieItunes } = this.props;
 
     if (!currentMovie) {
       return (<p>No movies</p>);
@@ -120,6 +127,7 @@ export class CurrentMovie extends Component {
       genreIds: currentMovie.get('genre_ids').toArray(),
       releaseDate: currentMovie.get('release_date'),
       netflix: currentMovieNetflix,
+      iTunes: currentMovieItunes,
       currentMoviePageInfo,
       el: this.setMovieEl
     };
@@ -177,11 +185,14 @@ export class CurrentMovie extends Component {
 
 CurrentMovie.propTypes = {
   isOnNetflix: PropTypes.func.isRequired,
+  isOnItunes: PropTypes.func.isRequired,
   requestNext: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   currentMovie: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   currentMovieNetflix: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
+  currentMovieItunes: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   nextMovie: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
