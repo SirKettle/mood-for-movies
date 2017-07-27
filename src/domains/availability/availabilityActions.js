@@ -3,12 +3,14 @@ import { buildUrlWithQueryParams } from '../../utils/api';
 
 export const SERVICES = {
   NETFLIX: 'NETFLIX',
-  ITUNES: 'ITUNES'
+  ITUNES: 'ITUNES',
+  IP_INFO: 'IP_INFO'
 };
 
 const FETCH_STATES = ['PENDING', 'SUCCESS', 'ERROR'];
 
 export const actionTypes = {};
+// Extend actionTypes dynamically based on SERVICES and FETCH_STATES
 Object.keys(SERVICES).forEach((service) => {
   FETCH_STATES.forEach((fetchStatus) => {
     const actionType = `REQUEST_${service}_${fetchStatus}`;
@@ -17,8 +19,32 @@ Object.keys(SERVICES).forEach((service) => {
 });
 
 const ENDPOINTS = {
+  IP_INFO: 'https://ipinfo.io/json',
   NETFLIX_TITLE: 'https://netflixroulette.net/api/api.php', // https://netflixroulette.net/api/api.php?title=The%20Boondocks&year=2005
   ITUNES_SEARCH: 'https://itunes.apple.com/search' // https://itunes.apple.com/search?term=inside+out&entity=movie
+};
+
+export const requestIpInfo = (dispatch) => {
+  dispatch({
+    type: actionTypes.REQUEST_IP_INFO_PENDING
+  });
+  return fetch(ENDPOINTS.IP_INFO, {
+    method: 'GET'
+  })
+  .then(response => response.json()
+  .then((payload) => {
+    dispatch({
+      type: actionTypes.REQUEST_IP_INFO_SUCCESS,
+      payload
+    });
+  }), (error) => {
+    dispatch({
+      type: actionTypes.REQUEST_IP_INFO_ERROR,
+      payload: {
+        error
+      }
+    });
+  });
 };
 
 export const requestItunesAvailability = (dispatch, movie) => {
