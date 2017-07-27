@@ -18,6 +18,7 @@ const Movie = ({
   genreIds,
   releaseDate,
   netflix,
+  iTunes,
   el
 }) => {
   console.log(voteCount, popularity, genreIds);
@@ -26,6 +27,7 @@ const Movie = ({
     <div ref={el} className={classnames(className, styles.movie)}>
       <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc || defaultImage})` }} />
       <div className={styles.contents}>
+        
         <div className={classnames(typography.elliot, styles.meta)}>
           <div>{ releaseDate.slice(0, 4) }</div>
           <Stars className={styles.stars} percentage={voteAverage * 10} />
@@ -38,7 +40,8 @@ const Movie = ({
             null
           }
         </div>
-        <h3 className={classnames(typography.bottomMargin, typography.phil)}>{ title }</h3>
+
+        <h2 className={classnames(typography.bottomMargin, typography.phil)}>{ title }</h2>
         {
           imgSrc ?
           (<img
@@ -48,6 +51,32 @@ const Movie = ({
           null
         }
         <p className={classnames(typography.bottomMargin, typography.harrison)}>{ overview }</p>
+
+        <hr />
+
+        <h3 className={classnames(typography.bottomMargin, typography.tom)}>Watch it here</h3>
+        {
+          netflix ?
+          (<div className={classnames(typography.bottomMargin, typography.harrison)}>
+            <a
+              href={`https://www.netflix.com/watch/${netflix.get('show_id')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >Netflix</a>
+          </div>) :
+          null
+        }
+        {
+          iTunes ?
+          (<div className={classnames(typography.bottomMargin, typography.harrison)}>
+            <a
+              href={iTunes.get('trackViewUrl')}
+              target="_blank"
+              rel="noopener noreferrer"
+            >iTunes</a>
+          </div>) :
+          null
+        }
       </div>
     </div>
   );
@@ -59,6 +88,8 @@ Movie.propTypes = {
   currentMoviePageInfo: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   netflix: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
+  iTunes: PropTypes.object,
   title: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   posterImgSrc: PropTypes.string,
@@ -75,6 +106,7 @@ Movie.defaultProps = {
   className: 'some-movie',
   currentMoviePageInfo: null,
   netflix: null,
+  iTunes: null,
   posterImgSrc: null,
   imgSrc: null,
   el: () => {}
