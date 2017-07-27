@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { routeNodeSelector } from 'redux-router5';
 import { loadConfiguration } from '../domains/movies/moviesActions';
+import { requestIpInfo } from '../domains/config/configActions';
 
 import Home from './Home';
 import About from './About';
@@ -23,13 +24,15 @@ const components = {
 const mapStateToProps = () => routeNodeSelector('');
 
 const mapDispatchToProps = dispatch => ({
-  requestConfiguration: () => { loadConfiguration(dispatch); }
+  requestConfiguration: () => { loadConfiguration(dispatch); },
+  requestIpInfoConfig: () => { requestIpInfo(dispatch); }
 });
 
 export class Main extends Component {
 
   componentWillMount() {
     this.props.requestConfiguration();
+    this.props.requestIpInfoConfig();
   }
 
   render() {
@@ -46,7 +49,8 @@ export class Main extends Component {
 Main.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   route: PropTypes.object.isRequired,
-  requestConfiguration: PropTypes.func.isRequired
+  requestConfiguration: PropTypes.func.isRequired,
+  requestIpInfoConfig: PropTypes.func.isRequired
 };
 
 export const Connected = connect(mapStateToProps, mapDispatchToProps)(Main);

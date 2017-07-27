@@ -1,10 +1,10 @@
 import 'whatwg-fetch';
 import { buildUrlWithQueryParams } from '../../utils/api';
+import * as configSelectors from '../config/configSelectors';
 
 export const SERVICES = {
   NETFLIX: 'NETFLIX',
-  ITUNES: 'ITUNES',
-  IP_INFO: 'IP_INFO'
+  ITUNES: 'ITUNES'
 };
 
 const FETCH_STATES = ['PENDING', 'SUCCESS', 'ERROR'];
@@ -19,35 +19,13 @@ Object.keys(SERVICES).forEach((service) => {
 });
 
 const ENDPOINTS = {
-  IP_INFO: 'https://ipinfo.io/json',
   NETFLIX_TITLE: 'https://netflixroulette.net/api/api.php', // https://netflixroulette.net/api/api.php?title=The%20Boondocks&year=2005
   ITUNES_SEARCH: 'https://itunes.apple.com/search' // https://itunes.apple.com/search?term=inside+out&entity=movie
 };
 
-export const requestIpInfo = (dispatch) => {
-  dispatch({
-    type: actionTypes.REQUEST_IP_INFO_PENDING
-  });
-  return fetch(ENDPOINTS.IP_INFO, {
-    method: 'GET'
-  })
-  .then(response => response.json()
-  .then((payload) => {
-    dispatch({
-      type: actionTypes.REQUEST_IP_INFO_SUCCESS,
-      payload
-    });
-  }), (error) => {
-    dispatch({
-      type: actionTypes.REQUEST_IP_INFO_ERROR,
-      payload: {
-        error
-      }
-    });
-  });
-};
 
-export const requestItunesAvailability = (dispatch, movie) => {
+export const requestItunesAvailability = movie => (dispatch, getState) => {
+  const currentCountry = configSelectors.ipCountrySelector(getState());
   dispatch({
     type: actionTypes.REQUEST_ITUNES_PENDING,
     payload: {
@@ -58,7 +36,7 @@ export const requestItunesAvailability = (dispatch, movie) => {
   const url = buildUrlWithQueryParams(ENDPOINTS.ITUNES_SEARCH, {
     term: movie.get('title'),
     entity: 'movie',
-    country: 'gb'
+    country: currentCountry
   });
   return fetch(url, {
     method: 'GET'
@@ -93,7 +71,14 @@ export const requestItunesAvailability = (dispatch, movie) => {
   });
 };
 
-export const requestNetflixAvailability = (dispatch, movie) => {
+export const requestNetflixAvailability = movie => (dispatch, getState) => {
+  const currentCountry = configSelectors.ipCountrySelector(getState());
+  const supportedCountries = configSelectors.netflixSupportSelector(getState());
+
+  if (!currentCountry || supportedCountries.indexOf(currentCountry) === -1) {
+    return false;
+  }
+
   dispatch({
     type: actionTypes.REQUEST_NETFLIX_PENDING,
     payload: {

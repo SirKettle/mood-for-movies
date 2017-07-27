@@ -1,6 +1,7 @@
 // enable actions and reduceres to access the redux store
-const rootStateInjector = (store) => (next) => (action) => {
+const rootStateInjector = store => next => (action) => {
   if (!action.methods) {
+    /* eslint no-param-reassign: 0 */
     action.methods = {};
   }
   action.methods.getState = store.getState;

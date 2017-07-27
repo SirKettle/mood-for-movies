@@ -29,8 +29,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   requestNext: (args) => { requestNextMovie(dispatch, args); },
-  isOnNetflix: (movie) => { requestNetflixAvailability(dispatch, movie); },
-  isOnItunes: (movie) => { requestItunesAvailability(dispatch, movie); }
+  isOnNetflix: (movie) => { dispatch(requestNetflixAvailability(movie)); },
+  isOnItunes: (movie) => { dispatch(requestItunesAvailability(movie)); }
 });
 
 export class CurrentMovie extends Component {
@@ -45,30 +45,42 @@ export class CurrentMovie extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { currentMovie, nextMovie, isOnNetflix, isOnItunes, loadingStatus } = this.props;
+    const { currentMovie, nextMovie, isOnNetflix, isOnItunes } = this.props;
 
-    if (loadingStatus === loadingStates.COMPLETE) {
-      if (
-        currentMovie &&
-        nextMovie &&
-        prevProps.currentMovie &&
-        currentMovie.get('id') !== prevProps.currentMovie.get('id')
-      ) {
+    if (this.getIsNewMovie(prevProps)) {
+      // check for availability
+      isOnNetflix(currentMovie);
+      isOnItunes(currentMovie);
+
+      if (nextMovie) {
+        // preload images for next movie
         console.log('preload nextMovie images', nextMovie.get('title'));
         preloadImages([
           this.getImgSrc(nextMovie, 'poster_path'),
           this.getImgSrc(nextMovie, 'backdrop_path')
         ]);
       }
+    }
+  }
 
+  getIsNewMovie = (prevProps) => {
+    const { currentMovie, loadingStatus } = this.props;
+
+    if (loadingStatus === loadingStates.COMPLETE) {
+      // is first movie...
+      if (prevProps.loadingStatus === loadingStates.LOADING) {
+        return true;
+      }
+      // if is a change of movie
       if (
-        ((!prevProps || !prevProps.currentMovie) && currentMovie) ||
+        currentMovie &&
+        prevProps.currentMovie &&
         currentMovie.get('id') !== prevProps.currentMovie.get('id')
       ) {
-        isOnNetflix(currentMovie);
-        isOnItunes(currentMovie);
+        return true;
       }
     }
+    return false;
   }
 
   getIsLoading = () => {

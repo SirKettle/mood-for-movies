@@ -25,10 +25,6 @@ const mapDispatchToProps = dispatch => ({
 
 export class DiscoverMovie extends Component {
 
-  static defaultProps = {
-    configuration: null
-  }
-
   handleToggle = (e, moodKey) => {
     this.props.requestSetMood(moodKey, e.currentTarget.checked);
   }

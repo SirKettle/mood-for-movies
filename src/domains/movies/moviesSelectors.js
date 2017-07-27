@@ -5,7 +5,7 @@ import { moodsKeySelector, genreGroupsSelector } from '../mood/moodSelectors';
 import loadingStates from '../../constants/loadingStates';
 
 export const moviesModelSelector = state => state.movies;
-export const configurationModelSelector = state => state.configuration;
+export const configurationModelSelector = state => state.movieConfig;
 
 export const moviesSelector = createSelector(
   moviesModelSelector,

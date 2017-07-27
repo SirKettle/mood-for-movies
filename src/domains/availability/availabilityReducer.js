@@ -15,6 +15,8 @@ const setSuccess = (state, service, movieId, data) => {
     .setIn([movieId, service, 'data'], data);
 };
 
+// TODO - dynamically generate this - see configReducer
+
 const availabilityReducers = {
   [actionTypes.REQUEST_NETFLIX_PENDING]: (state, action) => {
     return setPending(state, SERVICES.NETFLIX, action.payload.movieId);

@@ -32,7 +32,6 @@ const Movie = ({
           <div>{ releaseDate.slice(0, 4) }</div>
           <Stars className={styles.stars} percentage={voteAverage * 10} />
           <div>{ voteAverage * 10 }%</div>
-          { netflix ? (<div>Netflix</div>) : null }
           { currentMoviePageInfo ?
             (<span className={styles.pageInfo}>
               {`${currentMoviePageInfo.display} of ${currentMoviePageInfo.total}`}
