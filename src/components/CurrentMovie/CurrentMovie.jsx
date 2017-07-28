@@ -8,6 +8,7 @@ import * as moodSelectors from '../../domains/mood/moodSelectors';
 import * as availabilitySelectors from '../../domains/availability/availabilitySelectors';
 import Loading from '../Loading/Loading';
 import Movie from '../Movie/Movie';
+import NoResults from '../NoResults/NoResults';
 import loadingStates from '../../constants/loadingStates';
 import preloadImages from '../../utils/preloadImages';
 
@@ -44,6 +45,13 @@ export class CurrentMovie extends Component {
     configuration: null
   }
 
+  componentWillMount() {
+    const { moodsKey } = this.props;
+    if (!moodsKey) {
+      window.location.href = '/';
+    }
+  }
+
   componentDidUpdate(prevProps) {
     const { currentMovie, nextMovie, isOnNetflix, isOnItunes } = this.props;
 
@@ -66,7 +74,7 @@ export class CurrentMovie extends Component {
   getIsNewMovie = (prevProps) => {
     const { currentMovie, loadingStatus } = this.props;
 
-    if (loadingStatus === loadingStates.COMPLETE) {
+    if (currentMovie && loadingStatus === loadingStates.COMPLETE) {
       // is first movie...
       if (prevProps.loadingStatus === loadingStates.LOADING) {
         return true;
@@ -124,7 +132,11 @@ export class CurrentMovie extends Component {
       currentMovieNetflix, currentMovieItunes } = this.props;
 
     if (!currentMovie) {
-      return (<p>No movies</p>);
+      return (
+        <NoResults
+          className={styles.noResults}
+        />
+      );
     }
 
     const movieProps = {

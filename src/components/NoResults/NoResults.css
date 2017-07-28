@@ -1,0 +1,6 @@
+.noResults {
+  flex: 1 0 auto;
+  padding: 1.25rem 2rem 2rem;
+  color: #fff;
+  background: #e06a4e; /* red */
+}
