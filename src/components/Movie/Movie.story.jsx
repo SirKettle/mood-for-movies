@@ -1,10 +1,11 @@
 import React from 'react';
+import Immutable from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean, number, text } from '@storybook/addon-knobs';
 import Movie from './Movie';
 import Story from '../../storybook/story';
 import GENRES from '../../constants/movieGenres';
-// import styles from '../../storybook/story.css';
+import boysCloseUp from '../../assets/boysCloseUp.jpg';
 
 const getGenresIds = () => {
   const genreIds = [];
@@ -20,8 +21,13 @@ const getGenresIds = () => {
 const getProps = () => ({
   title: text('title', 'The Movie Title II'),
   overview: text('overview', 'This is the movie summary. A little bit of info about the plot and the characters may be found here.'),
-  posterImgSrc: text('posterImgSrc', '') || null,
-  imgSrc: text('backdropImgSrc', '') || null,
+  releaseDate: text('releaseDate', '1989-07-07'),
+  netflix: boolean('Netflix', true) ?
+    Immutable.Map({ show_id: 123456789 }) :
+    null,
+  iTunes: boolean('iTunes', true) ?
+    Immutable.Map({ trackViewUrl: '#' }) :
+    null,
   voteCount: number('voteCount', 345),
   voteAverage: number('voteAverage', 6, {
     range: true,
@@ -30,8 +36,9 @@ const getProps = () => ({
     step: 0.1
   }),
   popularity: number('popularity', 1.3453),
-  genreIds: getGenresIds(),
-  releaseDate: text('releaseDate', '1989-07-07')
+  posterImgSrc: text('posterImgSrc', '') || null,
+  imgSrc: text('backdropImgSrc', boysCloseUp) || null,
+  genreIds: getGenresIds()
 });
 
 storiesOf('Movie', module)

@@ -27,6 +27,14 @@ body {
   flex: 1 1 auto;
 }
 
+hr {
+  background: rgba(255,255,255,0.2);
+  height: 1px;
+  margin: 2rem 0;
+  border: none;
+}
+
+
 .story {
   display: flex;
   flex-direction: column;

@@ -4,6 +4,20 @@ import styles from './Movie.css';
 import Stars from '../Stars/Stars';
 import typography from '../../css/typography.css';
 import defaultImage from '../../assets/boys.jpg';
+import getItOnItunes from '../../assets/images/Get_it_on_iTunes.svg';
+import GENRES from '../../constants/movieGenres';
+
+const renderGenres = (genreIds) => {
+  return (
+    <p className={classnames(typography.bottomMargin, typography.elliot)}>
+      {
+        Object.keys(GENRES)
+        .filter(key => genreIds.indexOf(GENRES[key]) !== -1)
+        .join(', ')
+      }
+    </p>
+  );
+};
 
 const Movie = ({
   className,
@@ -21,7 +35,7 @@ const Movie = ({
   iTunes,
   el
 }) => {
-  console.log(voteCount, popularity, genreIds);
+  console.log(voteCount, popularity);
   
   return (
     <div ref={el} className={classnames(className, styles.movie)}>
@@ -49,11 +63,22 @@ const Movie = ({
           />) :
           null
         }
+        { renderGenres(genreIds) }
         <p className={classnames(typography.bottomMargin, typography.harrison)}>{ overview }</p>
-
         <hr />
-
-        <h3 className={classnames(typography.bottomMargin, typography.tom)}>Watch it here</h3>
+        {
+          iTunes ?
+          (<div className={classnames(typography.bottomMargin)}>
+            <a
+              href={iTunes.get('trackViewUrl')}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={getItOnItunes} alt="Get it on iTunes" />
+            </a>
+          </div>) :
+          null
+        }
         {
           netflix ?
           (<div className={classnames(typography.bottomMargin, typography.harrison)}>
@@ -62,17 +87,6 @@ const Movie = ({
               target="_blank"
               rel="noopener noreferrer"
             >Netflix</a>
-          </div>) :
-          null
-        }
-        {
-          iTunes ?
-          (<div className={classnames(typography.bottomMargin, typography.harrison)}>
-            <a
-              href={iTunes.get('trackViewUrl')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >iTunes</a>
           </div>) :
           null
         }

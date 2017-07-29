@@ -59,6 +59,11 @@ export class CurrentMovie extends Component {
       // check for availability
       isOnNetflix(currentMovie);
       isOnItunes(currentMovie);
+      // scroll to top
+      if (this.movie) {
+        console.log('scroll to top');
+        this.movie.scrollTop = 0;
+      }
 
       if (nextMovie) {
         // preload images for next movie
@@ -112,7 +117,6 @@ export class CurrentMovie extends Component {
   }
 
   handlePaginationRequest = (previous) => {
-    this.movie.scrollTop = 0;
     this.props.requestNext({
       moodsKey: this.props.moodsKey,
       previous
