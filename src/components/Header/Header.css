@@ -8,7 +8,7 @@
   flex-direction: row;
   justify-content: space-between;
   color: white;
-  flex: 0 0;
+  flex: 0 0 auto;
   z-index: 9;
 }
 
@@ -34,4 +34,17 @@
 .item {
   padding: 0.5rem 1rem;
   color: inherit;
+
+  background: none;
+  display: block;
+
+  outline: none;
+  border: none;
+  appearance: none;
+  margin: 0;
+  
+	&:focus, &:hover, &:active {
+    border: none;
+    outline: none;
+	}
 }

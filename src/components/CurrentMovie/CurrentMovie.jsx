@@ -223,12 +223,12 @@ export class CurrentMovie extends Component {
     );
     return (
       <div className={classnames(styles.currentMovie)}>
-        <Header
-          className={headerClassNames}
-          menuItems={this.getHeaderMenuItems()}
-        />
         <Loading className={styles.loading} loadingStatus={loadingStatus}>
           <div className={styles.movieWrapper}>
+            <Header
+              className={headerClassNames}
+              menuItems={this.getHeaderMenuItems()}
+            />
             { this.renderMovie() }
           </div>
         </Loading>
