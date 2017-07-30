@@ -4,6 +4,13 @@
   flex: 1 1 auto;
 }
 
+.header {
+}
+
+.loadedHeader {
+  background: rgba(0,0,0,0.3);
+}
+
 .currentMovie {
   display: flex;
   flex: 1 1 auto;

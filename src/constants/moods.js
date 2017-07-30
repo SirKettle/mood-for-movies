@@ -55,5 +55,10 @@ export default {
     shortLabel: 'Family',
     longLabel: 'With the kids',
     genres: [GENRES.Family]
+  },
+  ANIMATION: {
+    shortLabel: 'Animation',
+    longLabel: 'I want to see illustrations come to life',
+    genres: [GENRES.Animation]
   }
 };

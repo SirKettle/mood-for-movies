@@ -6,11 +6,16 @@
   flex-direction: column;
 }
 
+.header {
+  background: #333;
+  color: #e2d9a2; /* cream */
+}
+
 .button {
   background: #333;
   color: #e2d9a2; /* cream */
   display: block;
-  flex: 0 0 100px;
+  flex: 0 0 90px;
   outline: none;
   border: none;
   appearance: none;

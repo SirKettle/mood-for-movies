@@ -9,6 +9,7 @@ import * as availabilitySelectors from '../../domains/availability/availabilityS
 import Loading from '../Loading/Loading';
 import Movie from '../Movie/Movie';
 import NoResults from '../NoResults/NoResults';
+import Header from '../Header/Header';
 import loadingStates from '../../constants/loadingStates';
 import preloadImages from '../../utils/preloadImages';
 
@@ -74,6 +75,21 @@ export class CurrentMovie extends Component {
         ]);
       }
     }
+  }
+
+  getHeaderMenuItems = () => {
+    const { currentMoviePageInfo } = this.props;
+    const showPagination = currentMoviePageInfo && currentMoviePageInfo.total > 1;
+    if (this.getIsLoading() || !showPagination) {
+      return null;
+    }
+    return [{
+      label: '<',
+      onClick: this.handleRequestPrevious
+    }, {
+      label: '>',
+      onClick: this.handleRequestNext
+    }];
   }
 
   getIsNewMovie = (prevProps) => {
@@ -197,13 +213,23 @@ export class CurrentMovie extends Component {
   }
 
   render() {
-    const { loadingStatus } = this.props;
+    const { loadingStatus, currentMovie } = this.props;
+    const getIsLoaded = currentMovie &&
+      loadingStatus === loadingStates.COMPLETE;
+    const headerClassNames = classnames(
+      styles.header, {
+        [styles.loadedHeader]: getIsLoaded
+      }
+    );
     return (
       <div className={classnames(styles.currentMovie)}>
+        <Header
+          className={headerClassNames}
+          menuItems={this.getHeaderMenuItems()}
+        />
         <Loading className={styles.loading} loadingStatus={loadingStatus}>
           <div className={styles.movieWrapper}>
             { this.renderMovie() }
-            { this.renderActions() }
           </div>
         </Loading>
       </div>

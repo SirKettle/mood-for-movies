@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { loadMovies } from '../../domains/movies/moviesActions';
 import { setMood } from '../../domains/mood/moodActions';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
+import Header from '../Header/Header';
 import MoodOptions from '../MoodOptions/MoodOptions';
 import MOODS from '../../constants/moods';
 
@@ -24,6 +25,17 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export class DiscoverMovie extends Component {
+
+  getHeaderMenuItems = () => {
+    return null;
+    // return [{
+    //   label: 'About',
+    //   onClick: () => { window.location.href = '/#/about'; }
+    // }, {
+    //   label: 'Contact',
+    //   onClick: () => { window.location.href = '/#/contact'; }
+    // }];
+  }
 
   handleToggle = (e, moodKey) => {
     this.props.requestSetMood(moodKey, e.currentTarget.checked);
@@ -60,6 +72,10 @@ export class DiscoverMovie extends Component {
   render() {
     return (
       <div className={classnames(styles.discoverMovie)}>
+        <Header
+          className={styles.header}
+          menuItems={this.getHeaderMenuItems()}
+        />
         { this.renderMoods() }
         { this.renderButton() }
       </div>
