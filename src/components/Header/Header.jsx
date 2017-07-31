@@ -17,7 +17,7 @@ const renderMenuItems = (items) => {
         items.map(item => (
           <button
             key={getKey()}
-            className={classnames(typography.tom, styles.item, item.className)}
+            className={classnames(typography.phil, styles.item, item.className)}
             data-role={item.dataRole}
             onClick={item.onClick}
           >{item.label}</button>
@@ -29,6 +29,7 @@ const renderMenuItems = (items) => {
 
 const Header = ({
   className,
+  children,
   menuItems
 }) => {
   return (
@@ -43,6 +44,7 @@ const Header = ({
           alt="Emotion Pictures"
         />
       </a>
+      { children }
       { renderMenuItems(menuItems) }
     </div>
   );
@@ -50,11 +52,13 @@ const Header = ({
 
 Header.propTypes = {
   className: PropTypes.string,
+  children: PropTypes.node,
   menuItems: PropTypes.arrayOf(PropTypes.object)
 };
 
 Header.defaultProps = {
   className: 'header',
+  children: null,
   menuItems: null
 };
 

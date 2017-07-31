@@ -10,6 +10,7 @@ import Loading from '../Loading/Loading';
 import Movie from '../Movie/Movie';
 import NoResults from '../NoResults/NoResults';
 import Header from '../Header/Header';
+import GetOnItunes from '../GetOnItunes/GetOnItunes';
 import loadingStates from '../../constants/loadingStates';
 import preloadImages from '../../utils/preloadImages';
 
@@ -180,6 +181,19 @@ export class CurrentMovie extends Component {
     return (<Movie {...movieProps} />);
   }
 
+  renderItunesButton = () => {
+    const { currentMovieItunes } = this.props;
+    if (!currentMovieItunes) {
+      return null;
+    }
+    return (
+      <GetOnItunes
+        className={styles.getOnItunes}
+        iTunesTrack={currentMovieItunes}
+      />
+    );
+  }
+
   renderNextButton = () => {
     return (
       <button
@@ -229,7 +243,7 @@ export class CurrentMovie extends Component {
             <Header
               className={headerClassNames}
               menuItems={this.getHeaderMenuItems()}
-            />
+            >{ this.renderItunesButton() }</Header>
             { this.renderMovie() }
           </div>
         </Loading>

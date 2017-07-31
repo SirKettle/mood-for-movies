@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './Movie.css';
 import Stars from '../Stars/Stars';
+import GetOnItunes from '../GetOnItunes/GetOnItunes';
 import typography from '../../css/typography.css';
 import defaultImage from '../../assets/boys.jpg';
-import getItOnItunes from '../../assets/images/Get_it_on_iTunes.svg';
 import GENRES from '../../constants/movieGenres';
 
 const renderGenres = (genreIds) => {
@@ -69,15 +69,10 @@ const Movie = ({
           <hr />
           {
             iTunes ?
-            (<div className={classnames(typography.bottomMargin)}>
-              <a
-                href={iTunes.get('trackViewUrl')}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src={getItOnItunes} alt="Get it on iTunes" />
-              </a>
-            </div>) :
+            (<GetOnItunes
+              className={typography.bottomMargin}
+              iTunesTrack={iTunes}
+            />) :
             null
           }
           {
