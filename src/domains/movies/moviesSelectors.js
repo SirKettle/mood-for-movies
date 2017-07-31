@@ -95,7 +95,7 @@ export const currentMoviesLoadingStatusSelector = createSelector(
   currentMoviesSelector,
   (currentMovies) => {
     if (!currentMovies) {
-      return loadingStates.LOADING;
+      return loadingStates.ERROR;
     }
     return currentMovies.get('loadingStatus');
   }
