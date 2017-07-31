@@ -10,7 +10,7 @@
 }
 
 .contents {
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   padding: 0.5rem 2rem 1rem;
   color: #fff;
   position: relative;
