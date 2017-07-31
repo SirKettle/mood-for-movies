@@ -8,13 +8,14 @@
 }
 
 .loadedHeader {
-  background: rgba(0,0,0,0.3);
-  background: #333;
+  background: rgba(0,0,0,0.15);
+  background: transparent;
+  /* background: #333; */
 }
 
 .currentMovie {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   flex-direction: column;
 }
 
@@ -44,18 +45,18 @@
 
 .movieWrapper {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   flex-direction: column;
 }
 
 .movie {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   flex-direction: column;
 }
 
 .noResults {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   flex-direction: column;
 }

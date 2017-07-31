@@ -40,56 +40,58 @@ const Movie = ({
   return (
     <div ref={el} className={classnames(className, styles.movie)}>
       <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc || defaultImage})` }} />
-      <div className={styles.contents}>
-        
-        <div className={classnames(typography.elliot, styles.meta)}>
-          <div>{ releaseDate.slice(0, 4) }</div>
-          <Stars className={styles.stars} percentage={voteAverage * 10} />
-          <div>{ voteAverage * 10 }%</div>
-          { currentMoviePageInfo ?
-            (<span className={styles.pageInfo}>
-              {`${currentMoviePageInfo.display} of ${currentMoviePageInfo.total}`}
-            </span>) :
+      <div className={styles.scrollWrapper}>
+        <div className={styles.contents}>
+          
+          <div className={classnames(typography.elliot, styles.meta)}>
+            <div>{ releaseDate.slice(0, 4) }</div>
+            <Stars className={styles.stars} percentage={voteAverage * 10} />
+            <div>{ voteAverage * 10 }%</div>
+            { currentMoviePageInfo ?
+              (<span className={styles.pageInfo}>
+                {`${currentMoviePageInfo.display} of ${currentMoviePageInfo.total}`}
+              </span>) :
+              null
+            }
+          </div>
+
+          <h2 className={classnames(typography.bottomMargin, typography.phil)}>{ title }</h2>
+          {
+            imgSrc ?
+            (<img
+              className={classnames(typography.bottomMargin, styles.image)}
+              alt={title} src={imgSrc}
+            />) :
+            null
+          }
+          { renderGenres(genreIds) }
+          <p className={classnames(typography.bottomMargin, typography.harrison)}>{ overview }</p>
+          <hr />
+          {
+            iTunes ?
+            (<div className={classnames(typography.bottomMargin)}>
+              <a
+                href={iTunes.get('trackViewUrl')}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={getItOnItunes} alt="Get it on iTunes" />
+              </a>
+            </div>) :
+            null
+          }
+          {
+            netflix ?
+            (<div className={classnames(typography.bottomMargin, typography.harrison)}>
+              <a
+                href={`https://www.netflix.com/watch/${netflix.get('show_id')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >Netflix</a>
+            </div>) :
             null
           }
         </div>
-
-        <h2 className={classnames(typography.bottomMargin, typography.phil)}>{ title }</h2>
-        {
-          imgSrc ?
-          (<img
-            className={classnames(typography.bottomMargin, styles.image)}
-            alt={title} src={imgSrc}
-          />) :
-          null
-        }
-        { renderGenres(genreIds) }
-        <p className={classnames(typography.bottomMargin, typography.harrison)}>{ overview }</p>
-        <hr />
-        {
-          iTunes ?
-          (<div className={classnames(typography.bottomMargin)}>
-            <a
-              href={iTunes.get('trackViewUrl')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={getItOnItunes} alt="Get it on iTunes" />
-            </a>
-          </div>) :
-          null
-        }
-        {
-          netflix ?
-          (<div className={classnames(typography.bottomMargin, typography.harrison)}>
-            <a
-              href={`https://www.netflix.com/watch/${netflix.get('show_id')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >Netflix</a>
-          </div>) :
-          null
-        }
       </div>
     </div>
   );

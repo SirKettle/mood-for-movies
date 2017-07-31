@@ -8,57 +8,57 @@ export default {
   },
   MUSICAL: {
     shortLabel: 'Tra la la!',
-    longLabel: 'I want to sing',
+    longLabel: 'Sing and dance',
     genres: [GENRES.Music]
   },
   CRY: {
     shortLabel: 'Tears',
-    longLabel: 'I want to have a good cry',
+    longLabel: 'Make me cry',
     genres: [GENRES.Romance, GENRES.Drama]
   },
   ADVENTURE: {
     shortLabel: 'Adventure',
-    longLabel: 'Take me on a wild adventure!',
+    longLabel: 'Take me on an adventure!',
     genres: [GENRES.Adventure]
   },
   THRILL: {
     shortLabel: 'Thrill',
-    longLabel: 'I want thrills, they\'re electrifying',
+    longLabel: 'On the edge of my seat',
     genres: [GENRES.Action, GENRES.Crime, GENRES.Thriller]
   },
   CUDDLE: {
     shortLabel: 'Cuddle',
-    longLabel: 'I fancy a snuggle on the sofa',
+    longLabel: 'I fancy a snuggle',
     genres: [GENRES.Romance]
   },
   FANTASY: {
     shortLabel: 'Fantasy',
-    longLabel: 'I want to escape this world',
+    longLabel: 'Escape this world',
     genres: [GENRES.Fantasy, GENRES.ScienceFiction]
   },
   SCARE: {
     shortLabel: 'Scare',
-    longLabel: 'Make me jump and shit my pants',
+    longLabel: 'Brown pants time',
     genres: [GENRES.Horror, GENRES.Mystery]
   },
   BLOOD: {
     shortLabel: 'Blood',
-    longLabel: 'I want to see some fisty cuffs',
+    longLabel: 'I want to see some fighting',
     genres: [GENRES.Western, GENRES.War]
   },
   LEARN: {
     shortLabel: 'Learn',
-    longLabel: 'Educate me please',
+    longLabel: 'Educate me',
     genres: [GENRES.Documentary, GENRES.History]
   },
   FAMILY: {
     shortLabel: 'Family',
-    longLabel: 'With the kids',
+    longLabel: 'Kid friendly',
     genres: [GENRES.Family]
   },
   ANIMATION: {
     shortLabel: 'Animation',
-    longLabel: 'I want to see illustrations come to life',
+    longLabel: 'Some moving illustrations',
     genres: [GENRES.Animation]
   }
 };

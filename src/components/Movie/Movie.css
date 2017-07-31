@@ -2,11 +2,17 @@
 .movie {
   position: relative;
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   flex-direction: column;
-  overflow-x: hidden;
+}
+
+.scrollWrapper {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  /* overflow-x: hidden;
   overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch; */
 }
 
 .contents {
@@ -14,7 +20,6 @@
   padding: 0.5rem 2rem 1rem;
   color: #fff;
   position: relative;
-  background: rgba(0,0,0,0.3);
   z-index: 1;
 }
 
@@ -38,15 +43,22 @@
 
 .backdrop {
   position: fixed;
-  top: -20px;
-  bottom: -20px;
-  left: -20px;
-  right: -20px;
+  top: -150px;
+  bottom: -50px;
+  left: -50px;
+  right: -50px;
   z-index: 0;
   background-color: black;
   background-repeat: no-repeat;
   background-size: cover;
   filter: blur(15px);
+  &:after {
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; right: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 0;
+  }
 }
 
 .image {

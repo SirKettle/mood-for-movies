@@ -1,7 +1,8 @@
 
 :global(html) {
   display: flex;
-  height: 100%;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 @media screen {
@@ -15,12 +16,13 @@
 
 body {
   display: flex;
-  flex: 1 1 auto;
+  flex-direction: column;
+  flex: 1 0 auto;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 16px;
   font-weight: 100;
   line-height: 1.5;
-  background: #deb853; /* mustard */
+  background: #111;
   color: #333;
 }
 /* 
@@ -36,13 +38,14 @@ body {
 
 :global(#app) {
   display: flex;
-  flex: 1 1 auto;
+  flex-direction: column;
+  flex: 1 0 auto;
 }
 
 .App {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
 }
 
 hr {

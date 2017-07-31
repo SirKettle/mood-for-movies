@@ -2,8 +2,9 @@
 
 .discoverMovie {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   flex-direction: column;
+  background: #deb853; /* mustard */
 }
 
 .header {
@@ -29,5 +30,5 @@
 }
 
 .moods {
-  flex: 1 1 auto;
+  flex: 1 0 auto;
 }
