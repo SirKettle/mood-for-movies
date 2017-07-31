@@ -63,7 +63,8 @@ export class CurrentMovie extends Component {
       // scroll to top
       if (this.movie) {
         console.log('scroll to top');
-        this.movie.scrollTop = 0;
+        // this.movie.scrollTop = 0;
+        window.scrollTo(0, 0);
       }
 
       if (nextMovie) {
