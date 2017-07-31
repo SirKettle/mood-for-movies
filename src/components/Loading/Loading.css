@@ -6,13 +6,19 @@
   }
 }
 
-.loading {
+.loading,
+.loadingError {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
   position: relative;
   overflow: hidden;
   align-items: flex-end;
+  background: #deb853; /* mustard */
+}
+
+.loadingError {
+  background: #e06a4e; /* red */
 }
 
 .imageContainer {
