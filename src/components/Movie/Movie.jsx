@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './Movie.css';
 import Stars from '../Stars/Stars';
-import GetOnItunes from '../GetOnItunes/GetOnItunes';
+// import GetOnItunes from '../GetOnItunes/GetOnItunes';
 import typography from '../../css/typography.css';
 import defaultImage from '../../assets/boys.jpg';
 import GENRES from '../../constants/movieGenres';
@@ -35,7 +35,15 @@ const Movie = ({
   iTunes,
   el
 }) => {
-  console.log(voteCount, popularity);
+  console.log(!!iTunes, voteCount, popularity);
+  // {
+  //   iTunes ?
+  //   (<GetOnItunes
+  //     className={typography.bottomMargin}
+  //     iTunesTrack={iTunes}
+  //   />) :
+  //   null
+  // }
   
   return (
     <div ref={el} className={classnames(className, styles.movie)}>
@@ -67,14 +75,6 @@ const Movie = ({
           { renderGenres(genreIds) }
           <p className={classnames(typography.bottomMargin, typography.harrison)}>{ overview }</p>
           <hr />
-          {
-            iTunes ?
-            (<GetOnItunes
-              className={typography.bottomMargin}
-              iTunesTrack={iTunes}
-            />) :
-            null
-          }
           {
             netflix ?
             (<div className={classnames(typography.bottomMargin, typography.harrison)}>
