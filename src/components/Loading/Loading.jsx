@@ -28,13 +28,46 @@ export default class Loading extends Component {
     }
   }
 
+  renderProjector = (loadingText) => {
+    return (
+      <div className={styles.imageContainer}>
+        <img
+          className={classnames(styles.reel, styles.reel1)}
+          src={reelImage}
+          alt="reel"
+          width="70"
+          height="70"
+        />
+        <img
+          className={classnames(styles.reel, styles.reel2)}
+          src={reelImage}
+          alt="reel"
+          width="70"
+          height="70"
+        />
+        <img
+          className={classnames(styles.projector)}
+          src={projectorImage}
+          alt="projector"
+          width="596"
+          height="563"
+        />
+        {
+          loadingText && (
+            <p className={classnames(typography.tom, styles.loadingText)}>{loadingText}</p>
+          )
+        }
+      </div>
+    );
+  }
+
   render() {
     const { className, loadingStatus, loadingText, loadingErrorText, children } = this.props;
 
     if (loadingStatus === loadingStates.ERROR) {
       return (
         <div className={classnames(className, styles.loadingError)}>
-          {loadingErrorText}
+          { this.renderProjector(loadingErrorText) }
         </div>
       );
     }
@@ -45,34 +78,7 @@ export default class Loading extends Component {
 
     return (
       <div className={classnames(className, styles.loading)}>
-        <div className={styles.imageContainer}>
-          <img
-            className={classnames(styles.reel, styles.reel1)}
-            src={reelImage}
-            alt="reel"
-            width="70"
-            height="70"
-          />
-          <img
-            className={classnames(styles.reel, styles.reel2)}
-            src={reelImage}
-            alt="reel"
-            width="70"
-            height="70"
-          />
-          <img
-            className={classnames(styles.projector)}
-            src={projectorImage}
-            alt="projector"
-            width="596"
-            height="563"
-          />
-          {
-            loadingText && (
-              <p className={classnames(typography.tom, styles.loadingText)}>{loadingText}</p>
-            )
-          }
-        </div>
+        { this.renderProjector(loadingText) }
       </div>
     );
   }

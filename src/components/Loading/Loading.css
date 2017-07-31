@@ -34,10 +34,6 @@
 .reel {
   position: absolute;
   top: 182px;
-  animation-name: spin;
-  animation-duration: 3000ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
 }
 
 .reel1 {
@@ -56,4 +52,18 @@
   position: absolute;
   left: 165px;
   top: 267px;
+}
+
+.loading .reel {
+  animation-name: spin;
+  animation-duration: 3000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.loadingError .reel {
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: 3;
+  animation-timing-function: ease-out-bounce;
 }
