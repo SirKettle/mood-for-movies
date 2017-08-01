@@ -1,19 +1,14 @@
 
-.phil {
-  font-size: 30px;
-  line-height: 1.3;
-}
-
-.tom {
-  font-size: 22px;
+.elliot {
+  font-size: 12px;
 }
 
 .harrison {
   font-size: 18px;
 }
 
-.elliot {
-  font-size: 12px;
+.tom {
+  font-size: 22px;
 }
 
 .ted {
@@ -23,9 +18,21 @@
   line-height: 1.3;
 }
 
+.phil {
+  font-size: 30px;
+  line-height: 1.3;
+}
+
 .crazy {
   font-size: 70px;
   font-weight: 400;
+}
+
+.margins {
+  &:not(:first-child) {
+    margin-top: 2rem;
+  }
+  margin-bottom: 1rem;
 }
 
 .bottomMargin {

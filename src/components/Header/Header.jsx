@@ -17,7 +17,7 @@ const renderMenuItems = (items) => {
         items.map(item => (
           <button
             key={getKey()}
-            className={classnames(typography.phil, styles.item, item.className)}
+            className={classnames(typography.tom, styles.item, item.className)}
             data-role={item.dataRole}
             onClick={item.onClick}
           >{item.label}</button>

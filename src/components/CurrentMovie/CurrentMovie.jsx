@@ -87,10 +87,12 @@ export class CurrentMovie extends Component {
     }
     return [{
       label: '<',
-      onClick: this.handleRequestPrevious
+      onClick: this.handleRequestPrevious,
+      className: typography.phil
     }, {
       label: '>',
-      onClick: this.handleRequestNext
+      onClick: this.handleRequestNext,
+      className: typography.phil
     }];
   }
 

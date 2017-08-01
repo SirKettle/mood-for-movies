@@ -1,8 +1,26 @@
 
+
+.page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  background: #e2d9a2; /* cream */
+  background: #deb853; /* mustard */
+}
+
+.header {
+  background: #333;
+}
+
 .logo {
-  max-width: 100%;
+  max-width: 80%;
+  margin: 2rem auto;
+  align-self: center;
 }
 
 .contents {
   padding: 1.25rem 2rem 2rem;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
 }

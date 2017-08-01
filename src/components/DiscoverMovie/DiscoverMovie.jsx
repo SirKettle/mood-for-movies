@@ -27,14 +27,14 @@ const mapDispatchToProps = dispatch => ({
 export class DiscoverMovie extends Component {
 
   getHeaderMenuItems = () => {
-    return null;
-    // return [{
-    //   label: 'About',
-    //   onClick: () => { window.location.href = '/#/about'; }
+    // return null;
+    return [{
+      label: 'About',
+      onClick: () => { window.location.href = '/#/about'; }
     // }, {
     //   label: 'Contact',
     //   onClick: () => { window.location.href = '/#/contact'; }
-    // }];
+    }];
   }
 
   handleToggle = (e, moodKey) => {
