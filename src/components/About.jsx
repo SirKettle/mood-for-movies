@@ -5,7 +5,7 @@ import { routeNodeSelector } from 'redux-router5';
 import Header from './Header/Header';
 import styles from './About.css';
 import typography from '../css/typography.css';
-import logo from '../assets/images/choosymovie/choosy-movie-510-500.png';
+import logo from '../assets/images/choosymovie/choosy-movie-logo-grey.png';
 import tmdb from '../assets/images/tmdb/powered-by-rectangle-blue.svg';
 
 function About() {
