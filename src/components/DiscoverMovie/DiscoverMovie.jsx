@@ -27,13 +27,9 @@ const mapDispatchToProps = dispatch => ({
 export class DiscoverMovie extends Component {
 
   getHeaderMenuItems = () => {
-    // return null;
     return [{
       label: 'About',
       onClick: () => { window.location.href = '/#/about'; }
-    // }, {
-    //   label: 'Contact',
-    //   onClick: () => { window.location.href = '/#/contact'; }
     }];
   }
 
@@ -61,10 +57,12 @@ export class DiscoverMovie extends Component {
   }
 
   renderButton = () => {
+    const { moodsKey } = this.props;
     return (
       <button
         className={classnames(typography.ted, styles.button)}
         onClick={this.submitRequest}
+        disabled={!moodsKey}
       >Suggest a movie</button>
     );
   }
@@ -76,6 +74,11 @@ export class DiscoverMovie extends Component {
           className={styles.header}
           menuItems={this.getHeaderMenuItems()}
         />
+        <div className={classnames(styles.intro)}>
+          <h2 className={classnames(typography.phil)}>
+            What are you in the mood for today?
+          </h2>
+        </div>
         { this.renderMoods() }
         { this.renderButton() }
       </div>

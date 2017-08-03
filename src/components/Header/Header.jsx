@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './Header.css';
-import logo from '../../assets/images/emotionpictures/emotion-pictures-white-500.png';
+import logo from '../../assets/images/choosymovie/choosy-movie-102-100-white.png';
 import typography from '../../css/typography.css';
 
 const getKey = () => `k_${Math.random()}`;
@@ -41,7 +41,7 @@ const Header = ({
         <img
           className={classnames(styles.logo)}
           src={logo}
-          alt="Emotion Pictures"
+          alt="Choosy Movie"
         />
       </a>
       { children }

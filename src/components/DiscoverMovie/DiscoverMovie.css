@@ -12,6 +12,10 @@
   color: #e2d9a2; /* cream */
 }
 
+.intro {
+  padding: 1rem 1.5rem;
+}
+
 .button {
   background: #333;
   color: #e2d9a2; /* cream */
@@ -25,8 +29,11 @@
 	&:focus, &:hover, &:active {
     border: none;
     outline: none;
-    background: #222;
 	}
+
+  &:disabled {
+    color: #666;
+  }
 }
 
 .moods {

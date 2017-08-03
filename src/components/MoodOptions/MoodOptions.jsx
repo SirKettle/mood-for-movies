@@ -24,8 +24,7 @@ const MoodOptions = ({ className, moods, moodsSelected, onSelected }) => {
                 checked={getIsChecked(key)}
               />
               <label className={classnames(styles.label)} htmlFor={name}>
-                <h3 className={typography.tom}>{ mood.shortLabel }</h3>
-                <p className={typography.elliot}>{ mood.longLabel }</p>
+                <h3 className={typography.harrison}>{ mood.moodFor }</h3>
               </label>
             </div>
           );
