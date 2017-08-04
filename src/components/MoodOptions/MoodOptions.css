@@ -50,6 +50,7 @@
     background: white;
     border: solid 5px white;
     text-align: center;
+    border-radius: 3px;
   }
   
   /* &:hover {
