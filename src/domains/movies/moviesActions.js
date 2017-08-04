@@ -36,7 +36,6 @@ export const loadConfiguration = (dispatch) => {
       error
     });
   }).then((payload) => {
-    console.log(payload);
     dispatch({
       type: actionTypes.LOAD_CONFIGURATION_SUCCESS,
       payload

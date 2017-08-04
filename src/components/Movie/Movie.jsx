@@ -35,10 +35,10 @@ const Movie = ({
   genreIds,
   releaseDate,
   netflix,
-  iTunes,
+  // iTunes,
   el
 }) => {
-  console.log(!!iTunes, voteCount, popularity);
+  // console.log(!!iTunes);
   // {
   //   iTunes ?
   //   (<GetOnItunes
@@ -115,7 +115,7 @@ Movie.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   netflix: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
-  iTunes: PropTypes.object,
+  // iTunes: PropTypes.object,
   title: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   posterImgSrc: PropTypes.string,
@@ -132,7 +132,7 @@ Movie.defaultProps = {
   className: 'some-movie',
   currentMoviePageInfo: null,
   netflix: null,
-  iTunes: null,
+  // iTunes: null,
   posterImgSrc: null,
   imgSrc: null,
   el: () => {}

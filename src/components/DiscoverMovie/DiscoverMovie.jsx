@@ -3,10 +3,12 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { loadMovies } from '../../domains/movies/moviesActions';
 import { setMood } from '../../domains/mood/moodActions';
+import { trackClick } from '../../domains/ui/uiActions';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 import Header from '../Header/Header';
 import MoodOptions from '../MoodOptions/MoodOptions';
 import MOODS from '../../constants/moods';
+import Button from '../Button/BaseButton';
 
 import styles from './DiscoverMovie.css';
 import typography from '../../css/typography.css';
@@ -21,7 +23,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   requestMovies: (args) => { loadMovies(dispatch, args); },
-  requestSetMood: (moodId, toggleOn = true) => { setMood(dispatch, moodId, toggleOn); }
+  requestSetMood: (moodId, toggleOn = true) => { setMood(dispatch, moodId, toggleOn); },
+  track: (key, data) => { trackClick(dispatch, key, data); }
 });
 
 export class DiscoverMovie extends Component {
@@ -38,7 +41,10 @@ export class DiscoverMovie extends Component {
   }
 
   submitRequest = () => {
-    const { moodsKey, genreGroups } = this.props;
+    const { moodsKey, genreGroups, track } = this.props;
+
+    track('suggest-button', moodsKey);
+
     this.props.requestMovies({
       moodsKey,
       genreGroups
@@ -59,11 +65,12 @@ export class DiscoverMovie extends Component {
   renderButton = () => {
     const { moodsKey } = this.props;
     return (
-      <button
+      <Button
+        dataRole="suggest-button"
         className={classnames(typography.ted, styles.button)}
         onClick={this.submitRequest}
         disabled={!moodsKey}
-      >Suggest a movie</button>
+      >Suggest a movie</Button>
     );
   }
 
@@ -87,6 +94,7 @@ export class DiscoverMovie extends Component {
 }
 
 DiscoverMovie.propTypes = {
+  track: PropTypes.func.isRequired,
   requestMovies: PropTypes.func.isRequired,
   requestSetMood: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */

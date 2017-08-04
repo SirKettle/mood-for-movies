@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import styles from './Header.css';
 import logo from '../../assets/images/choosymovie/choosy-movie-102-100-white.png';
 import typography from '../../css/typography.css';
+import Button from '../Button/BaseButton';
 
 const getKey = () => `k_${Math.random()}`;
 
@@ -15,12 +16,12 @@ const renderMenuItems = (items) => {
     <div className={styles.menu}>
       {
         items.map(item => (
-          <button
+          <Button
             key={getKey()}
             className={classnames(typography.tom, styles.item, item.className)}
-            data-role={item.dataRole}
+            dataRole={item.dataRole || `header-item-${item.label.replace(/ /g, '')}`}
             onClick={item.onClick}
-          >{item.label}</button>
+          >{item.label}</Button>
         ))
       }
     </div>

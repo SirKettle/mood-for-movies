@@ -63,14 +63,12 @@ export class CurrentMovie extends Component {
       isOnItunes(currentMovie);
       // scroll to top
       if (this.movie) {
-        console.log('scroll to top');
-        // this.movie.scrollTop = 0;
         window.scrollTo(0, 0);
       }
 
       if (nextMovie) {
         // preload images for next movie
-        console.log('preload nextMovie images', nextMovie.get('title'));
+        // console.log('preload nextMovie images', nextMovie.get('title'));
         preloadImages([
           this.getImgSrc(nextMovie, 'poster_path'),
           this.getImgSrc(nextMovie, 'backdrop_path')
@@ -153,7 +151,7 @@ export class CurrentMovie extends Component {
 
   renderMovie = () => {
     const { currentMovie, currentMoviePageInfo,
-      currentMovieNetflix, currentMovieItunes } = this.props;
+      currentMovieNetflix } = this.props;
 
     if (!currentMovie) {
       return (
@@ -175,7 +173,7 @@ export class CurrentMovie extends Component {
       genreIds: currentMovie.get('genre_ids').toArray(),
       releaseDate: currentMovie.get('release_date'),
       netflix: currentMovieNetflix,
-      iTunes: currentMovieItunes,
+      // iTunes: currentMovieItunes,
       currentMoviePageInfo,
       el: this.setMovieEl
     };
@@ -193,39 +191,6 @@ export class CurrentMovie extends Component {
         className={styles.getOnItunes}
         iTunesTrack={currentMovieItunes}
       />
-    );
-  }
-
-  renderNextButton = () => {
-    return (
-      <button
-        className={classnames(typography.ted, styles.button)}
-        onClick={this.handleRequestNext}
-      >&gt;</button>
-    );
-  }
-
-  renderPreviousButton = () => {
-    return (
-      <button
-        className={classnames(typography.ted, styles.button)}
-        onClick={this.handleRequestPrevious}
-      >&lt;</button>
-    );
-  }
-
-  renderActions = () => {
-    const { currentMoviePageInfo } = this.props;
-    const showPagination = currentMoviePageInfo && currentMoviePageInfo.total > 1;
-    return (
-      <div className={styles.actions}>
-        <button
-          onClick={() => { history.back(); }}
-          className={classnames(typography.ted, styles.button)}
-        >Options</button>
-        { showPagination ? this.renderPreviousButton() : null }
-        { showPagination ? this.renderNextButton() : null }
-      </div>
     );
   }
 

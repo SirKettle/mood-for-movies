@@ -4,10 +4,10 @@ const BaseButton = ({
   className,
   dataRole,
   onClick,
-  children
+  children,
+  disabled
 }) => {
   const handleClick = () => {
-    console.log('TODO: track a click here', dataRole);
     return onClick(arguments);
   };
 
@@ -16,21 +16,23 @@ const BaseButton = ({
       className={className}
       data-role={dataRole}
       onClick={handleClick}
+      disabled={disabled}
     >{children}</button>
   );
 };
 
 BaseButton.propTypes = {
   className: PropTypes.string,
-  dataRole: PropTypes.string,
+  disabled: PropTypes.bool,
+  dataRole: PropTypes.string.isRequired,
   onClick: PropTypes.func,
-  children: PropTypes.children.isRequired
+  children: PropTypes.node.isRequired
 };
 
 BaseButton.defaultProps = {
   className: 'some-movie',
-  dataRole: 'button',
-  onClick: () => {}
+  onClick: () => {},
+  disabled: false
 };
 
 export default BaseButton;
