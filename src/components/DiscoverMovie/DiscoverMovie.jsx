@@ -75,7 +75,7 @@ export class DiscoverMovie extends Component {
           menuItems={this.getHeaderMenuItems()}
         />
         <div className={classnames(styles.intro)}>
-          <h2 className={classnames(typography.phil)}>
+          <h2 className={classnames(typography.will)}>
             What are you in the mood for today?
           </h2>
         </div>
