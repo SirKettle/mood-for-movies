@@ -65,7 +65,7 @@ const Movie = ({
             }
           </div>
 
-          <h2 className={classnames(typography.bottomMargin, typography.phil)}>{ title }</h2>
+          <h2 className={classnames(typography.bottomMargin, typography.will)}>{ title }</h2>
           {
             imgSrc ?
             (<img
