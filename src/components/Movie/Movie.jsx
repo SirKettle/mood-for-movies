@@ -6,17 +6,20 @@ import Stars from '../Stars/Stars';
 import typography from '../../css/typography.css';
 import defaultImage from '../../assets/boys.jpg';
 import GENRES from '../../constants/movieGenres';
+import MOODS from '../../constants/moods';
 
 const renderGenres = (genreIds) => {
-  return (
-    <p className={classnames(typography.bottomMargin, typography.elliot)}>
-      {
-        Object.keys(GENRES)
-        .filter(key => genreIds.indexOf(GENRES[key]) !== -1)
-        .join(', ')
-      }
-    </p>
-  );
+  return Object.keys(GENRES)
+    .filter(key => genreIds.indexOf(GENRES[key]) !== -1)
+    .join(', ');
+};
+
+const renderMovieMoods = (genreIds) => {
+  return Object.values(MOODS)
+    .filter(mood => genreIds.some(id => mood.genres.indexOf(id) !== -1))
+    .map(mood => mood.moodFor)
+    .sort()
+    .join(', ');
 };
 
 const Movie = ({
@@ -54,7 +57,6 @@ const Movie = ({
           <div className={classnames(typography.elliot, styles.meta)}>
             <div>{ releaseDate.slice(0, 4) }</div>
             <Stars className={styles.stars} percentage={voteAverage * 10} />
-            <div>{ voteAverage * 10 }%</div>
             { currentMoviePageInfo ?
               (<span className={styles.pageInfo}>
                 {`${currentMoviePageInfo.display} of ${currentMoviePageInfo.total}`}
@@ -63,7 +65,7 @@ const Movie = ({
             }
           </div>
 
-          <h2 className={classnames(typography.bottomMargin, typography.phil)}>{ title }</h2>
+          <h2 className={classnames(typography.bottomMargin, typography.will)}>{ title }</h2>
           {
             imgSrc ?
             (<img
@@ -72,9 +74,10 @@ const Movie = ({
             />) :
             null
           }
-          { renderGenres(genreIds) }
+          <p className={classnames(typography.bottomMargin, typography.elliot)}>
+            { renderMovieMoods(genreIds) }
+          </p>
           <p className={classnames(typography.bottomMargin, typography.harrison)}>{ overview }</p>
-          <hr />
           {
             netflix ?
             (<div className={classnames(typography.bottomMargin, typography.harrison)}>
@@ -82,10 +85,23 @@ const Movie = ({
                 href={`https://www.netflix.com/watch/${netflix.get('show_id')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-              >Netflix</a>
+              >Watch on Netflix</a>
             </div>) :
             null
           }
+          <hr />
+          <p className={classnames(typography.bottomMargin, typography.elliot)}>
+            { renderGenres(genreIds) }
+          </p>
+          <p className={classnames(typography.bottomMargin, typography.elliot)}>
+            Number of votes: { voteCount }
+          </p>
+          <p className={classnames(typography.bottomMargin, typography.elliot)}>
+            Vote average: { voteAverage } / 10
+          </p>
+          <p className={classnames(typography.bottomMargin, typography.elliot)}>
+            TMDb Popularity score: { popularity }
+          </p>
         </div>
       </div>
     </div>
