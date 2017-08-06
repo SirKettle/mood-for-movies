@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { requestNextMovie } from '../../domains/movies/moviesActions';
 import { requestNetflixAvailability, requestItunesAvailability } from '../../domains/availability/availabilityActions';
+import { trackClick } from '../../domains/ui/uiActions';
 import * as moviesSelectors from '../../domains/movies/moviesSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 import * as availabilitySelectors from '../../domains/availability/availabilitySelectors';
@@ -10,7 +11,7 @@ import Loading from '../Loading/Loading';
 import Movie from '../Movie/Movie';
 import NoResults from '../NoResults/NoResults';
 import Header from '../Header/Header';
-import GetOnItunes from '../GetOnItunes/GetOnItunes';
+import { Connected as GetOnItunes } from '../GetOnItunes/GetOnItunes';
 import loadingStates from '../../constants/loadingStates';
 import preloadImages from '../../utils/preloadImages';
 
@@ -33,7 +34,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   requestNext: (args) => { requestNextMovie(dispatch, args); },
   isOnNetflix: (movie) => { dispatch(requestNetflixAvailability(movie)); },
-  isOnItunes: (movie) => { dispatch(requestItunesAvailability(movie)); }
+  isOnItunes: (movie) => { dispatch(requestItunesAvailability(movie)); },
+  track: (key, data) => { trackClick(dispatch, key, data); }
 });
 
 export class CurrentMovie extends Component {
@@ -135,6 +137,8 @@ export class CurrentMovie extends Component {
   }
 
   handlePaginationRequest = (previous) => {
+    const { track } = this.props;
+    track('movies-pagination-button', previous ? 'previous' : 'next');
     this.props.requestNext({
       moodsKey: this.props.moodsKey,
       previous
@@ -220,6 +224,7 @@ export class CurrentMovie extends Component {
 }
 
 CurrentMovie.propTypes = {
+  track: PropTypes.func.isRequired,
   isOnNetflix: PropTypes.func.isRequired,
   isOnItunes: PropTypes.func.isRequired,
   requestNext: PropTypes.func.isRequired,
