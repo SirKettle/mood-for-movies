@@ -6,6 +6,29 @@
   }
 }
 
+@keyframes projector {
+  0% { opacity: 0.5; }
+  10% { opacity: 1; }
+  20% { opacity: 0.8; }
+  30% { opacity: 1; }
+  40% { opacity: 0.95; }
+  50% { opacity: 0.75; }
+  60% { opacity: 1; }
+  70% { opacity: 0.8; }
+  80% { opacity: 0.9; }
+  90% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes projectorError {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  40% { opacity: 0.95; }
+  50% { opacity: 0.75; }
+  80% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
 .loading,
 .loadingError {
   display: flex;
@@ -54,10 +77,23 @@
   position: absolute;
 }
 
+.light {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.camera {
+  position: absolute;
+  top: 255px;
+  left: 14px;
+}
+
 .loadingText {
   position: absolute;
   left: 165px;
   top: 267px;
+  color: white;
 }
 
 .loading .reel {
@@ -69,6 +105,21 @@
 
 .loadingError .reel {
   animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: 3;
+  animation-timing-function: ease-out-bounce;
+}
+
+.loading .light {
+  animation-name: projector;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out-bounce;
+}
+
+.loadingError .light {
+  opacity: 0.3;
+  animation-name: projectorError;
   animation-duration: 1000ms;
   animation-iteration-count: 3;
   animation-timing-function: ease-out-bounce;

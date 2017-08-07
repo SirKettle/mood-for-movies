@@ -3,8 +3,9 @@ import classnames from 'classnames';
 import styles from './Loading.css';
 import loadingStates from '../../constants/loadingStates';
 import typography from '../../css/typography.css';
-import projectorImage from '../../assets/movie_reel.png';
-import reelImage from '../../assets/reel.png';
+import reelImage from '../../assets/images/loading/reel.png';
+import lightImage from '../../assets/images/loading/light.png';
+import cameraImage from '../../assets/images/loading/camera.png';
 
 export default class Loading extends Component {
   
@@ -46,15 +47,22 @@ export default class Loading extends Component {
           height="70"
         />
         <img
-          className={classnames(styles.projector)}
-          src={projectorImage}
-          alt="projector"
-          width="596"
+          className={classnames(styles.light)}
+          src={lightImage}
+          alt="projector light"
+          width="479"
           height="563"
+        />
+        <img
+          className={classnames(styles.camera)}
+          src={cameraImage}
+          alt="projector camera"
+          width="125"
+          height="192"
         />
         {
           loadingText && (
-            <p className={classnames(typography.tom, styles.loadingText)}>{loadingText}</p>
+            <p className={classnames(typography.will, styles.loadingText)}>{loadingText}</p>
           )
         }
       </div>
@@ -97,5 +105,5 @@ Loading.defaultProps = {
   className: 'loading-component',
   loadingDelay: 600,
   loadingText: null,
-  loadingErrorText: 'Error loading'
+  loadingErrorText: 'Error'
 };
