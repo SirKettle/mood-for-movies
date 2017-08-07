@@ -19,10 +19,14 @@
 }
 
 .will {
-  font-size: 25px;
+  font-size: 20px;
   line-height: 1.3;
   font-family: 'Bowlby One', cursive;
   letter-spacing: 1px;
+
+  @media (min-width: 321px) {
+    font-size: 25px;
+  }
 }
 
 .phil {

@@ -13,14 +13,18 @@
 }
 
 .intro {
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 1.5rem;
+
+  @media (min-width: 321px) {
+    padding: 1rem 1.5rem;
+  }
 }
 
 .button {
   background: #333;
   color: #e2d9a2; /* cream */
   display: block;
-  flex: 0 0 90px;
+  flex: 0 0 60px;
   outline: none;
   border: none;
   appearance: none;
@@ -33,6 +37,10 @@
 
   &:disabled {
     color: #666;
+  }
+
+  @media (min-width: 321px) {
+    flex: 0 0 90px;
   }
 }
 
