@@ -15,7 +15,7 @@ function About() {
       <div className={styles.contents}>
         <h3 className={classnames(typography.margins, typography.will)}>Choosy Movie?</h3>
         <p className={classnames(typography.bottomMargin, typography.harrison)}>
-          At your service! Helps you pick a movie to watch based
+          At your service! Helps you choose a movie to watch based
           on what you‘re in the mood for right now...
         </p>
         <img
