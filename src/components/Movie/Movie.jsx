@@ -5,6 +5,7 @@ import Stars from '../Stars/Stars';
 import GetOnItunes from '../GetOnItunes/GetOnItunes';
 import NetflixButton from '../NetflixButton/NetflixButton';
 import FacebookLike from '../Social/FacebookLike';
+import TweetButton from '../Social/TweetButton';
 import typography from '../../css/typography.css';
 import defaultImage from '../../assets/boys.jpg';
 import GENRES from '../../constants/movieGenres';
@@ -76,16 +77,14 @@ const Movie = ({
             { overview }
           </p>
           <div className={classnames(typography.bottomMargin, styles.socialButtons)}>
-            <FacebookLike
-              title={title}
-            />
+            <FacebookLike title={title} />
+            <TweetButton title={title} />
           </div>
           <div className={styles.availableOn}>
             {
               iTunes ?
               (<GetOnItunes
                 track={track}
-                className={typography.bottomMargin}
                 iTunesTrack={iTunes}
               />) :
               null
@@ -94,7 +93,6 @@ const Movie = ({
               netflix ?
               (<NetflixButton
                 track={track}
-                className={typography.bottomMargin}
                 netflixMovie={netflix}
               />) :
               null

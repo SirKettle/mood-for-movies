@@ -6,7 +6,7 @@ export default class FacebookLike extends Component {
 
   componentDidMount() {
     if (window.FB) {
-      window.FB.XFBML.parse();
+      window.FB.XFBML.parse(this.comp);
     }
   }
 
@@ -27,6 +27,7 @@ export default class FacebookLike extends Component {
           data-size="large"
           data-show-faces="true"
           data-share="true"
+          data-colorscheme="dark"
         />
       </div>
     );
