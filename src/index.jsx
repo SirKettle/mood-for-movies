@@ -8,7 +8,9 @@ import configureStore from './store/configureStore';
 
 import routes from './routes';
 
-const router = createRouter(routes);
+const router = createRouter(routes, {
+  strictQueryParams: false
+});
 const store = configureStore(router);
 const wrappedApp = (
   <Provider store={store} >
