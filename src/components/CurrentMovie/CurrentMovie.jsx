@@ -11,7 +11,6 @@ import Loading from '../Loading/Loading';
 import Movie from '../Movie/Movie';
 import NoResults from '../NoResults/NoResults';
 import Header from '../Header/Header';
-import { Connected as GetOnItunes } from '../GetOnItunes/GetOnItunes';
 import loadingStates from '../../constants/loadingStates';
 import preloadImages from '../../utils/preloadImages';
 
@@ -155,7 +154,7 @@ export class CurrentMovie extends Component {
 
   renderMovie = () => {
     const { currentMovie, currentMoviePageInfo,
-      currentMovieNetflix } = this.props;
+      currentMovieItunes, currentMovieNetflix, track } = this.props;
 
     if (!currentMovie) {
       return (
@@ -166,6 +165,7 @@ export class CurrentMovie extends Component {
     }
 
     const movieProps = {
+      track,
       className: styles.movie,
       title: currentMovie.get('title'),
       overview: currentMovie.get('overview'),
@@ -177,25 +177,12 @@ export class CurrentMovie extends Component {
       genreIds: currentMovie.get('genre_ids').toArray(),
       releaseDate: currentMovie.get('release_date'),
       netflix: currentMovieNetflix,
-      // iTunes: currentMovieItunes,
+      iTunes: currentMovieItunes,
       currentMoviePageInfo,
       el: this.setMovieEl
     };
 
     return (<Movie {...movieProps} />);
-  }
-
-  renderItunesButton = () => {
-    const { currentMovieItunes } = this.props;
-    if (!currentMovieItunes) {
-      return null;
-    }
-    return (
-      <GetOnItunes
-        className={styles.getOnItunes}
-        iTunesTrack={currentMovieItunes}
-      />
-    );
   }
 
   render() {
@@ -214,7 +201,7 @@ export class CurrentMovie extends Component {
             <Header
               className={headerClassNames}
               menuItems={this.getHeaderMenuItems()}
-            >{ this.renderItunesButton() }</Header>
+            />
             { this.renderMovie() }
           </div>
         </Loading>

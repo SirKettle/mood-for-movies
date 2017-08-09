@@ -37,8 +37,30 @@
   }
 }
 
-.pageInfo {
+.availableOn {
+  & > * {
+    margin-right: 1rem;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
 
+.socialButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
+  & > * {
+    flex: 0 0 auto;
+    margin-right: 1rem;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.pageInfo {
 }
 
 .backdrop {

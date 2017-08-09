@@ -29,6 +29,12 @@ const getProps = () => ({
     display: 1,
     total: 16
   },
+  currentMovieNetflix: boolean('Netflix', true) ?
+    Immutable.Map({ show_id: 123456789 }) :
+    null,
+  currentMovieItunes: boolean('iTunes', true) ?
+    Immutable.Map({ trackViewUrl: '#' }) :
+    null,
   currentMovie: Immutable.fromJS({
     title: text('title', 'The Current Movie'),
     overview: text('overview', 'This is the the current movie\'s summary. A little bit of info about the plot and the characters may be found here.'),
