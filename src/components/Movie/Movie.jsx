@@ -4,6 +4,7 @@ import styles from './Movie.css';
 import Stars from '../Stars/Stars';
 import GetOnItunes from '../GetOnItunes/GetOnItunes';
 import NetflixButton from '../NetflixButton/NetflixButton';
+import FacebookLike from '../Social/FacebookLike';
 import typography from '../../css/typography.css';
 import defaultImage from '../../assets/boys.jpg';
 import GENRES from '../../constants/movieGenres';
@@ -71,7 +72,14 @@ const Movie = ({
           <p className={classnames(typography.bottomMargin, typography.elliot)}>
             { renderMovieMoods(genreIds) }
           </p>
-          <p className={classnames(typography.bottomMargin, typography.harrison)}>{ overview }</p>
+          <p className={classnames(typography.bottomMargin, typography.harrison)}>
+            { overview }
+          </p>
+          <div className={classnames(typography.bottomMargin, styles.socialButtons)}>
+            <FacebookLike
+              title={title}
+            />
+          </div>
           <div className={styles.availableOn}>
             {
               iTunes ?
