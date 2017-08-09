@@ -105,8 +105,8 @@
 
 .loadingError .reel {
   animation-name: spin;
-  animation-duration: 1000ms;
-  animation-iteration-count: 3;
+  animation-duration: 1500ms;
+  animation-iteration-count: infinite;
   animation-timing-function: ease-out-bounce;
 }
 
@@ -121,6 +121,6 @@
   opacity: 0.3;
   animation-name: projectorError;
   animation-duration: 1000ms;
-  animation-iteration-count: 3;
+  animation-iteration-count: infinite;
   animation-timing-function: ease-out-bounce;
 }
