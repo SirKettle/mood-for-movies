@@ -37,6 +37,15 @@
   }
 }
 
+.availableOn {
+  & > * {
+    margin-right: 1rem;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
 .pageInfo {
 
 }

@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './Movie.css';
 import Stars from '../Stars/Stars';
-// import GetOnItunes from '../GetOnItunes/GetOnItunes';
+import GetOnItunes from '../GetOnItunes/GetOnItunes';
+import NetflixButton from '../NetflixButton/NetflixButton';
 import typography from '../../css/typography.css';
 import defaultImage from '../../assets/boys.jpg';
 import GENRES from '../../constants/movieGenres';
@@ -25,6 +26,7 @@ const renderMovieMoods = (genreIds) => {
 const Movie = ({
   className,
   currentMoviePageInfo,
+  track,
   title,
   overview,
   posterImgSrc,
@@ -35,18 +37,10 @@ const Movie = ({
   genreIds,
   releaseDate,
   netflix,
-  // iTunes,
+  iTunes,
   el
 }) => {
   // console.log(!!iTunes);
-  // {
-  //   iTunes ?
-  //   (<GetOnItunes
-  //     className={typography.bottomMargin}
-  //     iTunesTrack={iTunes}
-  //   />) :
-  //   null
-  // }
   
   return (
     <div ref={el} className={classnames(className, styles.movie)}>
@@ -78,17 +72,26 @@ const Movie = ({
             { renderMovieMoods(genreIds) }
           </p>
           <p className={classnames(typography.bottomMargin, typography.harrison)}>{ overview }</p>
-          {
-            netflix ?
-            (<div className={classnames(typography.bottomMargin, typography.harrison)}>
-              <a
-                href={`https://www.netflix.com/watch/${netflix.get('show_id')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >Watch on Netflix</a>
-            </div>) :
-            null
-          }
+          <div className={styles.availableOn}>
+            {
+              iTunes ?
+              (<GetOnItunes
+                track={track}
+                className={typography.bottomMargin}
+                iTunesTrack={iTunes}
+              />) :
+              null
+            }
+            {
+              netflix ?
+              (<NetflixButton
+                track={track}
+                className={typography.bottomMargin}
+                netflixMovie={netflix}
+              />) :
+              null
+            }
+          </div>
           <hr />
           <p className={classnames(typography.bottomMargin, typography.elliot)}>
             { renderGenres(genreIds) }
@@ -115,7 +118,7 @@ Movie.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   netflix: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
-  // iTunes: PropTypes.object,
+  iTunes: PropTypes.object,
   title: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   posterImgSrc: PropTypes.string,
@@ -125,17 +128,19 @@ Movie.propTypes = {
   popularity: PropTypes.number.isRequired,
   genreIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   releaseDate: PropTypes.string.isRequired,
-  el: PropTypes.func
+  el: PropTypes.func,
+  track: PropTypes.func
 };
 
 Movie.defaultProps = {
   className: 'some-movie',
   currentMoviePageInfo: null,
   netflix: null,
-  // iTunes: null,
+  iTunes: null,
   posterImgSrc: null,
   imgSrc: null,
-  el: () => {}
+  el: () => {},
+  track: () => { console.warn('track param not set', arguments); }
 };
 
 export default Movie;
