@@ -54,7 +54,7 @@ const loadPlugins = () => {
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }
   plugins.push(
-    new ExtractTextPlugin('[name].bundle.css')
+    new ExtractTextPlugin('[name].bundle-[chunkhash].css')
   );
 
   return plugins;
