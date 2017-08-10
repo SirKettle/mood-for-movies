@@ -1,5 +1,4 @@
 
-
 .discoverMovie {
   display: flex;
   flex: 1 0 auto;
@@ -24,6 +23,14 @@
   }
 }
 
+@keyframes buttonGlow {
+  0% { color: #e2d9a2; /* cream */ }
+  40% { color: #e2d9a2; /* cream */ }
+  50% { color: #eae5c4; /* bit lighter */ }
+  70% { color: #e2d9a2; /* cream */ }
+  100% { color: #e2d9a2; /* cream */ }
+}
+
 .button {
   background: #333;
   color: #e2d9a2; /* cream */
@@ -33,7 +40,14 @@
   border: none;
   appearance: none;
   margin: 0;
-  
+
+  &.active {
+    animation-name: buttonGlow;
+    animation-duration: 5000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out-bounce;  
+  }
+
 	&:focus, &:hover, &:active {
     border: none;
     outline: none;

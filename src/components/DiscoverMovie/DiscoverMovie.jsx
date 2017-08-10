@@ -67,7 +67,9 @@ export class DiscoverMovie extends Component {
     return (
       <Button
         dataRole="suggest-button"
-        className={classnames(typography.ted, styles.button)}
+        className={classnames(typography.ted, styles.button, {
+          [styles.active]: !!moodsKey
+        })}
         onClick={this.submitRequest}
         disabled={!moodsKey}
       >Suggest a movie</Button>
