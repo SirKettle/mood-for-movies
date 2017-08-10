@@ -12,15 +12,27 @@
   background: #333;
 }
 
-.logo {
-  max-width: 80%;
-  margin: 2rem auto;
-  align-self: center;
-}
-
 .contents {
   padding: 1.25rem 1.5rem 2rem;
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
+
+  @media (min-width: 600px) {
+    padding: 2rem 2.5rem;
+  }
+}
+
+.logo {
+  max-width: 80%;
+  margin: 2rem auto;
+  align-self: center;
+
+  @media (min-width: 600px) {
+    max-width: 50%;
+  }
+}
+
+.imageSummary {
+  text-align: center;
 }

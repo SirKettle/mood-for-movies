@@ -16,7 +16,7 @@ function About() {
         <h3 className={classnames(typography.margins, typography.will)}>Choosy Movie?</h3>
         <p className={classnames(typography.bottomMargin, typography.harrison)}>
           At your service! Helps you choose a movie to watch based
-          on what you‘re in the mood for right now...
+          on what you‘re in the mood for...
         </p>
         <img
           className={classnames(styles.logo)}
@@ -48,14 +48,15 @@ function About() {
           src={tmdb}
           alt="Powered by TMDb"
         />
-        <p className={classnames(typography.bottomMargin, typography.elliot)}>
+        <p className={classnames(typography.bottomMargin, typography.elliot, styles.imageSummary)}>
           This product uses the TMDb API but is not endorsed or certified by TMDb.
         </p>
+        <h3 className={classnames(typography.margins, typography.will)}>Forgotten anyone?</h3>
         <p className={classnames(typography.bottomMargin, typography.harrison)}>
           This app also uses Netflix Roulette API and iTunes Search API
           to access availability of the movie results on the two platforms.
         </p>
-        <h3 className={classnames(typography.margins, typography.will)}>Thanks</h3>
+        <h3 className={classnames(typography.margins, typography.will)}>Ahem...</h3>
         <p className={classnames(typography.bottomMargin, typography.harrison)}>
           Special thanks to my beautiful wife Vicky, and my two lovely boys Harrison and Elliot.
         </p>

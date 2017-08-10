@@ -7,10 +7,10 @@ export default {
     longLabel: 'Make me laugh!',
     genres: [GENRES.Comedy]
   },
-  MUSICAL: {
+  MUSIC: {
     shortLabel: 'Tra la la!',
-    moodFor: 'Singing',
-    longLabel: 'Sing and dance',
+    moodFor: 'Music',
+    longLabel: 'Singing and dancing',
     genres: [GENRES.Music]
   },
   CRY: {

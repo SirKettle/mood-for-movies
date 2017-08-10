@@ -25,6 +25,9 @@ const MoodOptions = ({ className, moods, moodsSelected, onSelected }) => {
               />
               <label className={classnames(styles.label)} htmlFor={name}>
                 <h3 className={typography.harrison}>{ mood.moodFor }</h3>
+                <p className={classnames(typography.elliot, styles.longLabel)}>
+                  { mood.longLabel }
+                </p>
               </label>
             </div>
           );

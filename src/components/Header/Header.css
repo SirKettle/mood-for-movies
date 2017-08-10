@@ -49,3 +49,17 @@
     outline: none;
 	}
 }
+
+@media (min-width: 600px) {
+  .logoLink {
+    padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+  }
+
+  .menu {
+    padding-right: 1rem;
+  }
+
+  .item {
+    padding: 1.5rem 1.5rem;
+  }
+}

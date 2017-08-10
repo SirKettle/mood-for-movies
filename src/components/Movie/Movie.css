@@ -10,6 +10,8 @@
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+  position: relative;
+  background: rgba(0,0,0,0.1);
   /* overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; */
@@ -21,6 +23,10 @@
   color: #fff;
   position: relative;
   z-index: 1;
+
+  @media (min-width: 600px) {
+    padding: 1.5rem 2.5rem;
+  }
 }
 
 .meta {
@@ -80,7 +86,7 @@
     position: absolute;
     top: 0; left: 0;
     bottom: 0; right: 0;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.25);
     z-index: 0;
   }
 }
