@@ -21,7 +21,7 @@ export default class FacebookLike extends Component {
       >
         <div
           className="fb-like"
-          data-href="http://choosymovie.tv"
+          data-href="http://choosymovie.tv/#/"
           data-layout="button_count"
           data-action="like"
           data-size="large"

@@ -38,6 +38,10 @@ export class Main extends Component {
   render() {
     const { route } = this.props;
     const segment = route ? route.name.split('.')[0] : undefined;
+    if (!components[segment]) {
+      window.location.href = '/#/';
+    }
+
     return (
       <div className={classnames(typography.elliot, styles.App)}>
         { React.createElement(components[segment] || NotFound) }
