@@ -112,7 +112,7 @@ const fetchMovies = (dispatch, moodsKey, genres) => {
 
 export const loadMovies = (dispatch, args) => {
   // Redirect user to movie page while it loads
-  window.location.href = '/#/movie';
+  window.location.href = `/#/movie/${args.moodsKey}`;
   
   args.genreGroups.forEach((genres) => {
     fetchMovies(dispatch, args.moodsKey, genres);
