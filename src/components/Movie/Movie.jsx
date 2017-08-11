@@ -84,16 +84,17 @@ const Movie = ({
             {
               iTunes ?
               (<GetOnItunes
-                track={track}
                 iTunesTrack={iTunes}
+                title={title}
+                track={track}
               />) :
               null
             }
             {
               netflix ?
               (<NetflixButton
-                track={track}
                 netflixMovie={netflix}
+                track={track}
               />) :
               null
             }

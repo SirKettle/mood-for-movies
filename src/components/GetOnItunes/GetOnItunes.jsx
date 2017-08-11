@@ -3,13 +3,23 @@ import classnames from 'classnames';
 import styles from './GetOnItunes.css';
 import getItOnItunes from '../../assets/images/Get_it_on_iTunes.svg';
 
+const AFFILIATE_TOKEN = '1001lybQ';
+const CAMPAIGN_TOKEN = 'choosymovietv';
+
+export const getSafeTitle = title => title.replace(/ /gi, '-').replace(/[^A-Za-z0-9_-]/gi, '');
+
+export const getAffiliateLink = (trackId, title) => `https://geo.itunes.apple.com/us/movie/${getSafeTitle(title)}/id${trackId}?at=${AFFILIATE_TOKEN}&ct=${CAMPAIGN_TOKEN}`;
+
 const GetOnItunes = ({
-  track,
   className,
-  iTunesTrack
+  iTunesTrack,
+  title,
+  track
 }) => {
+  const affiliateLink = getAffiliateLink(iTunesTrack.get('trackId'), title);
+  
   const handleClick = () => {
-    track('get-on-itunes-button', iTunesTrack.get('trackViewUrl'));
+    track('get-on-itunes-button', affiliateLink);
     return true;
   };
 
@@ -17,7 +27,7 @@ const GetOnItunes = ({
     <div className={classnames(styles.getItOnItunes, className)}>
       <a
         className={styles.link}
-        href={iTunesTrack.get('trackViewUrl')}
+        href={affiliateLink}
         target="_blank"
         rel="noopener noreferrer"
         onClick={handleClick}
@@ -33,16 +43,17 @@ const GetOnItunes = ({
 };
 
 GetOnItunes.propTypes = {
-  track: PropTypes.func,
   className: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
-  iTunesTrack: PropTypes.object
+  iTunesTrack: PropTypes.object,
+  title: PropTypes.string.isRequired,
+  track: PropTypes.func
 };
 
 GetOnItunes.defaultProps = {
-  track: () => {},
   className: 'itunes-button',
-  iTunesTrack: null
+  iTunesTrack: null,
+  track: () => {}
 };
 
 export default GetOnItunes;
