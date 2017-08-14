@@ -11,11 +11,6 @@ export const moodsSelector = createSelector(
   model => model.get('moods').sort()
 );
 
-export const moodsKeySelector = createSelector(
-  moodsSelector,
-  moods => moods.join('_')
-);
-
 export const cartesianProduct = Ramda.reduce((acc, next) => {
   return acc.length
     ? Ramda.map(Ramda.unnest, Ramda.xprod(acc, next))
@@ -33,4 +28,32 @@ export const genreGroupsSelector = createSelector(
 
     return cartesianProduct(genreGroups);
   }
+);
+
+export const routerSelector = state => state.router;
+
+export const activeRouteSelector = createSelector(
+  routerSelector,
+  router => router.route
+);
+
+export const currentMediaSelector = createSelector(
+  activeRouteSelector,
+  (activeRoute) => {
+    console.log('activeRoute', activeRoute);
+    return activeRoute.params.media || 'all';
+  }
+);
+
+export const currentMoodsSelector = createSelector(
+  activeRouteSelector,
+  activeRoute => (activeRoute.params.options || '')
+    .split('-')
+    .map(str => str.toUpperCase())
+);
+
+export const moodsKeySelector = createSelector(
+  currentMoodsSelector,
+  currentMediaSelector,
+  (moods, media) => `${media}-${moods.join('_')}`
 );
