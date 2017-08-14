@@ -18,7 +18,8 @@ const TMDb = {
 
 const ENDPOINTS = {
   CONFIGURATION: `${TMDb.BASE_URL}/configuration`, // /configuration?api_key=<<api_key>>
-  DISCOVER_MOVIES: `${TMDb.BASE_URL}/discover/movie` // /discover/movie?with_genres=35&&api_key=9b39e698383c30052915f7786495b569
+  DISCOVER_MOVIES: `${TMDb.BASE_URL}/discover/movie`, // /discover/movie?with_genres=35&&api_key=9b39e698383c30052915f7786495b569
+  DISCOVER_TV: `${TMDb.BASE_URL}/discover/tv` // /discover/tv?with_genres=35&&api_key=9b39e698383c30052915f7786495b569
 };
 
 export const loadConfiguration = (dispatch) => {
@@ -57,12 +58,67 @@ export const baseDiscoverQueryParams = {
   page: 1,
   include_video: false,
   include_adult: false,
-  sort_by: 'vote_average.desc', // TODO: sort by Vote average desc and use votecount gte 100
+  sort_by: 'vote_average.desc',
   language: 'en-US',
   with_original_language: 'en',
   'vote_count.gte': 200,
   api_key: TMDb.API_KEY,
   'primary_release_date.gte': 1945 // 2014
+};
+
+export const baseDiscoverTvQueryParams = {
+  page: 1,
+  sort_by: 'popularity.desc',
+  language: 'en-US',
+  with_original_language: 'en',
+  'vote_count.gte': 200,
+  api_key: TMDb.API_KEY,
+  'first_air_date.gte': 2007 // 2014
+};
+
+const fetchTvShows = (dispatch, moodsKey, genres) => {
+  const genresKey = genres.sort().join('_');
+  // set loading status to pending
+  dispatch({
+    type: actionTypes.LOAD_MOVIES_PENDING,
+    payload: {
+      moodsKey,
+      genresKey
+    }
+  });
+
+  const queryParams = {
+    ...baseDiscoverTvQueryParams,
+    with_genres: genres.sort().join(',')
+  };
+  const url = buildUrlWithQueryParams(ENDPOINTS.DISCOVER_TV, queryParams);
+
+  return fetch(url, {
+    method: 'GET'
+  }).then(response => response.json()
+  , (error) => {
+    // console.log(error);
+    dispatch({
+      type: actionTypes.LOAD_MOVIES_ERROR,
+      payload: {
+        moodsKey,
+        genresKey,
+        error
+      }
+    });
+  }).then((payload) => {
+    if (!payload) {
+      return;
+    }
+    dispatch({
+      type: actionTypes.LOAD_MOVIES_SUCCESS,
+      payload: {
+        data: payload,
+        moodsKey,
+        genresKey
+      }
+    });
+  });
 };
 
 const fetchMovies = (dispatch, moodsKey, genres) => {
@@ -113,8 +169,14 @@ const fetchMovies = (dispatch, moodsKey, genres) => {
 export const loadMovies = (dispatch, args) => {
   // Redirect user to movie page while it loads
   window.location.href = '/#/movie';
+
+  const tv = 1;
   
   args.genreGroups.forEach((genres) => {
-    fetchMovies(dispatch, args.moodsKey, genres);
+    if (tv) {
+      fetchTvShows(dispatch, args.moodsKey, genres);
+    } else {
+      fetchMovies(dispatch, args.moodsKey, genres);
+    }
   });
 };

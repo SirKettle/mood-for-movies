@@ -5,9 +5,10 @@ import { routeNodeSelector } from 'redux-router5';
 import { loadConfiguration } from '../domains/movies/moviesActions';
 import { requestIpInfo } from '../domains/config/configActions';
 
-import Home from './Home';
-import About from './About';
-import Movie from './Movie';
+import Home from './Routes/Home';
+import About from './Routes/About';
+import Movie from './Routes/Movie';
+import Results from './Routes/Results';
 import NotFound from './NotFound';
 
 import '../css/reset.css';
@@ -18,7 +19,8 @@ const components = {
   __root__: Home,
   // movie: MovieSuggestion,
   about: About,
-  movie: Movie
+  movie: Movie,
+  results: Results
 };
 
 const mapStateToProps = () => routeNodeSelector('');

@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { loadMovies } from '../../domains/movies/moviesActions';
+import { actions as routerActions } from 'redux-router5';
+// import { loadMovies } from '../../domains/movies/moviesActions';
 import { setMood } from '../../domains/mood/moodActions';
 import { trackClick } from '../../domains/ui/uiActions';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
@@ -15,16 +16,15 @@ import typography from '../../css/typography.css';
 
 const mapStateToProps = (state) => {
   return {
-    genreGroups: moodSelectors.genreGroupsSelector(state),
-    moodsSelected: moodSelectors.moodsSelector(state),
-    moodsKey: moodSelectors.moodsKeySelector(state)
+    moodsSelected: moodSelectors.moodsSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  requestMovies: (args) => { loadMovies(dispatch, args); },
+  // requestMovies: (args) => { loadMovies(dispatch, args); },
   requestSetMood: (moodId, toggleOn = true) => { setMood(dispatch, moodId, toggleOn); },
-  track: (key, data) => { trackClick(dispatch, key, data); }
+  track: (key, data) => { trackClick(dispatch, key, data); },
+  navigateTo: (name, params) => dispatch(routerActions.navigateTo(name, params))
 });
 
 export class DiscoverMovie extends Component {
@@ -41,14 +41,10 @@ export class DiscoverMovie extends Component {
   }
 
   submitRequest = () => {
-    const { moodsKey, genreGroups, track } = this.props;
-
-    track('suggest-button', moodsKey);
-
-    this.props.requestMovies({
-      moodsKey,
-      genreGroups
-    });
+    const { moodsSelected, navigateTo, track } = this.props;
+    const moodOptions = moodsSelected.join('_').toLowerCase();
+    track('suggest-button', moodOptions);
+    navigateTo('results', { media: 'movies', options: moodOptions });
   }
 
   renderMoods = () => {
@@ -63,15 +59,18 @@ export class DiscoverMovie extends Component {
   }
 
   renderButton = () => {
-    const { moodsKey } = this.props;
+    const { moodsSelected } = this.props;
+
+    const hasSelected = moodsSelected.size > 0;
+
     return (
       <Button
         dataRole="suggest-button"
         className={classnames(typography.ted, styles.button, {
-          [styles.active]: !!moodsKey
+          [styles.active]: hasSelected
         })}
         onClick={this.submitRequest}
-        disabled={!moodsKey}
+        disabled={!hasSelected}
       >Suggest a movie</Button>
     );
   }
@@ -97,13 +96,11 @@ export class DiscoverMovie extends Component {
 
 DiscoverMovie.propTypes = {
   track: PropTypes.func.isRequired,
-  requestMovies: PropTypes.func.isRequired,
+  navigateTo: PropTypes.func.isRequired,
+  // requestMovies: PropTypes.func.isRequired,
   requestSetMood: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */
-  genreGroups: PropTypes.array.isRequired,
-  /* eslint react/forbid-prop-types: 0 */
-  moodsSelected: PropTypes.object.isRequired,
-  moodsKey: PropTypes.string.isRequired
+  moodsSelected: PropTypes.object.isRequired
 };
 
 export const Connected = connect(mapStateToProps, mapDispatchToProps)(DiscoverMovie);
