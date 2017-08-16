@@ -1,14 +1,21 @@
+// export const requestItunesAvailability = movie => (dispatch, getState) => {
+//   const currentCountry = configSelectors.ipCountrySelector(getState());
+
+
+//   isOnItunes: (movie) => { dispatch(requestItunesAvailability(movie)); },
+
 import 'whatwg-fetch';
 import { buildUrlWithQueryParams } from '../../utils/api';
+import * as moodSelectors from '../../domains/mood/moodSelectors';
 
 export const actionTypes = {
   LOAD_CONFIGURATION_PENDING: 'LOAD_CONFIGURATION_PENDING',
   LOAD_CONFIGURATION_SUCCESS: 'LOAD_CONFIGURATION_SUCCESS',
   LOAD_CONFIGURATION_ERROR: 'LOAD_CONFIGURATION_ERROR',
-  LOAD_MOVIES_PENDING: 'LOAD_MOVIES_PENDING',
-  LOAD_MOVIES_SUCCESS: 'LOAD_MOVIES_SUCCESS',
-  LOAD_MOVIES_ERROR: 'LOAD_MOVIES_ERROR',
-  REQUEST_NEXT_MOVIE: 'REQUEST_NEXT_MOVIE'
+  LOAD_RESULTS_PENDING: 'LOAD_RESULTS_PENDING',
+  LOAD_RESULTS_SUCCESS: 'LOAD_RESULTS_SUCCESS',
+  LOAD_RESULTS_ERROR: 'LOAD_RESULTS_ERROR',
+  REQUEST_NEXT_RESULT: 'REQUEST_NEXT_RESULT'
 };
 
 const TMDb = {
@@ -44,11 +51,14 @@ export const loadConfiguration = (dispatch) => {
   });
 };
 
-export const requestNextMovie = (dispatch, args) => {
+export const requestNextResult = args => (dispatch, getState) => {
+  const moodsKey = moodSelectors.moodsKeySelector(getState());
+  const currentMedia = moodSelectors.currentMediaSelector(getState());
   dispatch({
-    type: actionTypes.REQUEST_NEXT_MOVIE,
+    type: actionTypes.REQUEST_NEXT_RESULT,
     payload: {
-      moodsKey: args.moodsKey,
+      moodsKey,
+      currentMedia,
       previous: args.previous || false
     }
   });
@@ -76,13 +86,14 @@ export const baseDiscoverTvQueryParams = {
   'first_air_date.gte': 2007 // 2014
 };
 
-const fetchTvShows = (dispatch, moodsKey, genres) => {
+const fetchTvShows = (dispatch, currentMedia, moodsKey, genres) => {
   const genresKey = genres.sort().join('_');
   // set loading status to pending
   dispatch({
-    type: actionTypes.LOAD_MOVIES_PENDING,
+    type: actionTypes.LOAD_RESULTS_PENDING,
     payload: {
       moodsKey,
+      currentMedia,
       genresKey
     }
   });
@@ -99,9 +110,10 @@ const fetchTvShows = (dispatch, moodsKey, genres) => {
   , (error) => {
     // console.log(error);
     dispatch({
-      type: actionTypes.LOAD_MOVIES_ERROR,
+      type: actionTypes.LOAD_RESULTS_ERROR,
       payload: {
         moodsKey,
+        currentMedia,
         genresKey,
         error
       }
@@ -111,23 +123,25 @@ const fetchTvShows = (dispatch, moodsKey, genres) => {
       return;
     }
     dispatch({
-      type: actionTypes.LOAD_MOVIES_SUCCESS,
+      type: actionTypes.LOAD_RESULTS_SUCCESS,
       payload: {
         data: payload,
         moodsKey,
+        currentMedia,
         genresKey
       }
     });
   });
 };
 
-const fetchMovies = (dispatch, moodsKey, genres) => {
+const fetchMovies = (dispatch, currentMedia, moodsKey, genres) => {
   const genresKey = genres.sort().join('_');
   // set loading status to pending
   dispatch({
-    type: actionTypes.LOAD_MOVIES_PENDING,
+    type: actionTypes.LOAD_RESULTS_PENDING,
     payload: {
       moodsKey,
+      currentMedia,
       genresKey
     }
   });
@@ -144,9 +158,10 @@ const fetchMovies = (dispatch, moodsKey, genres) => {
   , (error) => {
     // console.log(error);
     dispatch({
-      type: actionTypes.LOAD_MOVIES_ERROR,
+      type: actionTypes.LOAD_RESULTS_ERROR,
       payload: {
         moodsKey,
+        currentMedia,
         genresKey,
         error
       }
@@ -156,27 +171,30 @@ const fetchMovies = (dispatch, moodsKey, genres) => {
       return;
     }
     dispatch({
-      type: actionTypes.LOAD_MOVIES_SUCCESS,
+      type: actionTypes.LOAD_RESULTS_SUCCESS,
       payload: {
         data: payload,
         moodsKey,
+        currentMedia,
         genresKey
       }
     });
   });
 };
 
-export const loadMovies = (dispatch, args) => {
-  // Redirect user to movie page while it loads
-  window.location.href = '/#/movie';
+export const loadResults = () => (dispatch, getState) => {
+  const genreGroups = moodSelectors.genreGroupsSelector(getState());
+  const moodsKey = moodSelectors.moodsKeySelector(getState());
+  const currentMedia = moodSelectors.currentMediaSelector(getState());
+  const isTv = moodSelectors.isTvMediaSelector(getState());
 
-  const tv = 1;
+  console.log('genreGroups', genreGroups);
   
-  args.genreGroups.forEach((genres) => {
-    if (tv) {
-      fetchTvShows(dispatch, args.moodsKey, genres);
+  genreGroups.forEach((genres) => {
+    if (isTv) {
+      fetchTvShows(dispatch, currentMedia, moodsKey, genres);
     } else {
-      fetchMovies(dispatch, args.moodsKey, genres);
+      fetchMovies(dispatch, currentMedia, moodsKey, genres);
     }
   });
 };

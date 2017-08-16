@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 import { buildUrlWithQueryParams } from '../../utils/api';
 import * as configSelectors from '../config/configSelectors';
+import * as moodSelectors from '../mood/moodSelectors';
 
 export const SERVICES = {
   NETFLIX: 'NETFLIX',
@@ -23,9 +24,12 @@ const ENDPOINTS = {
   ITUNES_SEARCH: 'https://itunes.apple.com/search' // https://itunes.apple.com/search?term=inside+out&entity=movie
 };
 
-
 export const requestItunesAvailability = movie => (dispatch, getState) => {
   const currentCountry = configSelectors.ipCountrySelector(getState());
+  const isTv = moodSelectors.isTvMediaSelector(getState());
+  const currentMedia = moodSelectors.currentMediaSelector(getState());
+  const titleLabel = moodSelectors.getMediaTitleLabel(currentMedia);
+
   dispatch({
     type: actionTypes.REQUEST_ITUNES_PENDING,
     payload: {
@@ -34,8 +38,8 @@ export const requestItunesAvailability = movie => (dispatch, getState) => {
   });
   
   const url = buildUrlWithQueryParams(ENDPOINTS.ITUNES_SEARCH, {
-    term: movie.get('title'),
-    entity: 'movie',
+    term: movie.get(titleLabel),
+    entity: isTv ? 'tvSeason' : 'movie',
     country: currentCountry
   });
   return fetch(url, {
@@ -74,6 +78,9 @@ export const requestItunesAvailability = movie => (dispatch, getState) => {
 export const requestNetflixAvailability = movie => (dispatch, getState) => {
   const currentCountry = configSelectors.ipCountrySelector(getState());
   const supportedCountries = configSelectors.netflixSupportSelector(getState());
+  const currentMedia = moodSelectors.currentMediaSelector(getState());
+  const titleLabel = moodSelectors.getMediaTitleLabel(currentMedia);
+  const releaseDateLabel = moodSelectors.getMediaReleaseDateLabel(currentMedia);
 
   if (!currentCountry || supportedCountries.indexOf(currentCountry) === -1) {
     return false;
@@ -87,8 +94,8 @@ export const requestNetflixAvailability = movie => (dispatch, getState) => {
   });
   
   const url = buildUrlWithQueryParams(ENDPOINTS.NETFLIX_TITLE, {
-    title: movie.get('title'),
-    year: movie.get('release_date').slice(0, 4)
+    title: movie.get(titleLabel),
+    year: movie.get(releaseDateLabel).slice(0, 4)
   });
   return fetch(url, {
     method: 'GET'

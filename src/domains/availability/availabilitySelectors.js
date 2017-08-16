@@ -1,50 +1,59 @@
 import { createSelector } from 'reselect';
 import { SERVICES } from './availabilityActions';
-import { currentMovieSelector } from '../movies/moviesSelectors';
+import * as resultsSelectors from '../results/resultsSelectors';
+import * as moodSelectors from '../mood/moodSelectors';
 
 export const availabilitySelector = state => state.availability;
 
-export const currentMovieNetflixSelector = createSelector(
+export const currentResultNetflixSelector = createSelector(
   availabilitySelector,
-  currentMovieSelector,
-  (availability, currentMovie) => {
-    if (!availability || !currentMovie) {
+  resultsSelectors.currentResultSelector,
+  (availability, currentResult) => {
+    if (!availability || !currentResult) {
       return null;
     }
-    return availability.getIn([currentMovie.get('id'), SERVICES.NETFLIX, 'data']) || null;
+    return availability.getIn([currentResult.get('id'), SERVICES.NETFLIX, 'data']) || null;
   }
 );
 
-const getIsMatch = (result, currentMovie) => {
-  const trackName = result.get('trackName');
+const getIsMatch = (result, currentResult, currentMedia) => {
+  const trackName = result.get('trackName') || result.get('artistName');
   const releaseDate = result.get('releaseDate');
-  if (trackName && trackName.indexOf(currentMovie.get('title')) !== -1) {
+  const titleLabel = moodSelectors.getMediaTitleLabel(currentMedia);
+  const releaseDateLabel = moodSelectors.getMediaReleaseDateLabel(currentMedia);
+  const resultTitle = currentResult.get(titleLabel);
+  const resultReleaseDate = currentResult.get(releaseDateLabel);
+  if (trackName && trackName.indexOf(resultTitle) !== -1) {
     return Boolean(releaseDate &&
-      releaseDate.slice(0, 4) === currentMovie.get('release_date').slice(0, 4));
+      releaseDate.slice(0, 4) === resultReleaseDate.slice(0, 4));
   }
   return false;
 };
 
-export const currentMovieItunesSelector = createSelector(
+export const currentResultItunesSelector = createSelector(
   availabilitySelector,
-  currentMovieSelector,
-  (availability, currentMovie) => {
-    if (!availability || !currentMovie) {
+  resultsSelectors.currentResultSelector,
+  moodSelectors.currentMediaSelector,
+  (availability, currentResult, currentMedia) => {
+    if (!availability || !currentResult) {
       return null;
     }
-    const itunesData = availability.getIn([currentMovie.get('id'), SERVICES.ITUNES, 'data']);
+    const itunesData = availability.getIn([currentResult.get('id'), SERVICES.ITUNES, 'data']);
 
     if (!itunesData) {
       return null;
     }
 
-    const matches = itunesData.get('results').filter(result => getIsMatch(result, currentMovie));
+    const matches = itunesData.get('results').filter(result => getIsMatch(result, currentResult, currentMedia));
 
     if (matches.get(0)) {
       return matches.get(0);
     }
 
-    const getIsMaybeMatch = result => Boolean(result.get('trackName') === currentMovie.get('title'));
+    const titleLabel = moodSelectors.getMediaTitleLabel(currentMedia);
+    const getIsMaybeMatch = result => Boolean(
+      result.get('trackName') === currentResult.get(titleLabel)
+    );
     const maybes = itunesData.get('results').filter(getIsMaybeMatch);
 
     return maybes.get(0) || null;

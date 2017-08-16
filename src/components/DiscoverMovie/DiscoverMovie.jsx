@@ -42,7 +42,7 @@ export class DiscoverMovie extends Component {
 
   submitRequest = () => {
     const { moodsSelected, navigateTo, track } = this.props;
-    const moodOptions = moodsSelected.join('_').toLowerCase();
+    const moodOptions = moodsSelected.join('-').toLowerCase();
     track('suggest-button', moodOptions);
     navigateTo('results', { media: 'movies', options: moodOptions });
   }

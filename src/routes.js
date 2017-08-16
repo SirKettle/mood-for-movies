@@ -1,6 +1,6 @@
 export const ROUTES = {
   ROOT: { name: '__root__', path: '/' },
-  MOVIE: { name: 'movie', path: '/movie' },
+  // MOVIE: { name: 'movie', path: '/movie' },
   ABOUT: { name: 'about', path: '/about' },
   RESULTS: { name: 'results', path: '/results/:media/:options' }
 };

@@ -2,12 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { routeNodeSelector } from 'redux-router5';
-import { loadConfiguration } from '../domains/movies/moviesActions';
+import { loadConfiguration } from '../domains/results/resultsActions';
 import { requestIpInfo } from '../domains/config/configActions';
 
 import Home from './Routes/Home';
 import About from './Routes/About';
-import Movie from './Routes/Movie';
+// import Movie from './Routes/Movie';
 import Results from './Routes/Results';
 import NotFound from './NotFound';
 
@@ -19,7 +19,7 @@ const components = {
   __root__: Home,
   // movie: MovieSuggestion,
   about: About,
-  movie: Movie,
+  // movie: Movie,
   results: Results
 };
 

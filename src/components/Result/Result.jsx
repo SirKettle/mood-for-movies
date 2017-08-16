@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
-import styles from './Movie.css';
+import styles from './Result.css';
 import Stars from '../Stars/Stars';
 import GetOnItunes from '../GetOnItunes/GetOnItunes';
 import NetflixButton from '../NetflixButton/NetflixButton';
@@ -17,7 +17,7 @@ const renderGenres = (genreIds) => {
     .join(', ');
 };
 
-const renderMovieMoods = (genreIds) => {
+const renderResultMoods = (genreIds) => {
   return Object.values(MOODS)
     .filter(mood => genreIds.some(id => mood.genres.indexOf(id) !== -1))
     .map(mood => mood.moodFor)
@@ -25,9 +25,9 @@ const renderMovieMoods = (genreIds) => {
     .join(', ');
 };
 
-const Movie = ({
+const Result = ({
   className,
-  currentMoviePageInfo,
+  currentResultPageInfo,
   track,
   title,
   overview,
@@ -39,13 +39,10 @@ const Movie = ({
   genreIds,
   releaseDate,
   netflix,
-  iTunes,
-  el
+  iTunes
 }) => {
-  // console.log(!!iTunes);
-  
   return (
-    <div ref={el} className={classnames(className, styles.movie)}>
+    <div className={classnames(className, styles.result)}>
       <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc || defaultImage})` }} />
       <div className={styles.scrollWrapper}>
         <div className={styles.contents}>
@@ -53,9 +50,9 @@ const Movie = ({
           <div className={classnames(typography.elliot, styles.meta)}>
             <div>{ releaseDate.slice(0, 4) }</div>
             <Stars className={styles.stars} percentage={voteAverage * 10} />
-            { currentMoviePageInfo ?
+            { currentResultPageInfo ?
               (<span className={styles.pageInfo}>
-                {`${currentMoviePageInfo.display} of ${currentMoviePageInfo.total}`}
+                {`${currentResultPageInfo.display} of ${currentResultPageInfo.total}`}
               </span>) :
               null
             }
@@ -71,7 +68,7 @@ const Movie = ({
             null
           }
           <p className={classnames(typography.bottomMargin, typography.elliot)}>
-            { renderMovieMoods(genreIds) }
+            { renderResultMoods(genreIds) }
           </p>
           <p className={classnames(typography.bottomMargin, typography.harrison)}>
             { overview }
@@ -93,7 +90,7 @@ const Movie = ({
             {
               netflix ?
               (<NetflixButton
-                netflixMovie={netflix}
+                netflixResult={netflix}
                 track={track}
               />) :
               null
@@ -118,10 +115,10 @@ const Movie = ({
   );
 };
 
-Movie.propTypes = {
+Result.propTypes = {
   className: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
-  currentMoviePageInfo: PropTypes.object,
+  currentResultPageInfo: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   netflix: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
@@ -135,19 +132,17 @@ Movie.propTypes = {
   popularity: PropTypes.number.isRequired,
   genreIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   releaseDate: PropTypes.string.isRequired,
-  el: PropTypes.func,
   track: PropTypes.func
 };
 
-Movie.defaultProps = {
-  className: 'some-movie',
-  currentMoviePageInfo: null,
+Result.defaultProps = {
+  className: 'some-result',
+  currentResultPageInfo: null,
   netflix: null,
   iTunes: null,
   posterImgSrc: null,
   imgSrc: null,
-  el: () => {},
   track: () => { console.warn('track param not set', arguments); }
 };
 
-export default Movie;
+export default Result;

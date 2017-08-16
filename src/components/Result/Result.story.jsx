@@ -2,7 +2,7 @@ import React from 'react';
 import Immutable from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean, number, text } from '@storybook/addon-knobs';
-import Movie from './Movie';
+import Result from './Result';
 import Story from '../../storybook/story';
 import GENRES from '../../constants/movieGenres';
 import boysCloseUp from '../../assets/boysCloseUp.jpg';
@@ -19,7 +19,7 @@ const getGenresIds = () => {
 };
 
 const getProps = () => ({
-  title: text('title', 'The Movie Title II'),
+  title: text('title', 'The Result Title II'),
   overview: text('overview', 'This is the movie summary. A little bit of info about the plot and the characters may be found here.'),
   releaseDate: text('releaseDate', '1989-07-07'),
   netflix: boolean('Netflix', true) ?
@@ -41,14 +41,14 @@ const getProps = () => ({
   genreIds: getGenresIds()
 });
 
-storiesOf('Movie', module)
+storiesOf('Result', module)
   .addDecorator(withKnobs)
   .add('component', () => (
     <Story
-      title="Movie"
+      title="Result"
       summary="Used while loading something"
       displayInfo={boolean('displayInfo', false)}
     >
-      <Movie {...getProps()} />
+      <Result {...getProps()} />
     </Story>
   ));
