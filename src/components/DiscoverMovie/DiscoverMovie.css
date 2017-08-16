@@ -35,7 +35,7 @@
   flex: 0 0 auto;
   display: flex;
   flex-direction: row;
-  background: rgba(0,0,0,0.5);
+  background: #393939;
   padding: 1rem;
 
   @media (min-width: 600px) {
@@ -45,7 +45,7 @@
 
 .button {
   flex: 1 1 50%;
-  background: #333;
+  background: #181818;
   color: #e2d9a2; /* cream */
   display: block;
   outline: none;
