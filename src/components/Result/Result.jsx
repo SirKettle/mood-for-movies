@@ -38,6 +38,7 @@ const Result = ({
   popularity,
   genreIds,
   releaseDate,
+  currentMedia,
   netflix,
   iTunes
 }) => {
@@ -84,6 +85,7 @@ const Result = ({
                 iTunesTrack={iTunes}
                 title={title}
                 track={track}
+                currentMedia={currentMedia}
               />) :
               null
             }
@@ -132,6 +134,7 @@ Result.propTypes = {
   popularity: PropTypes.number.isRequired,
   genreIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   releaseDate: PropTypes.string.isRequired,
+  currentMedia: PropTypes.string.isRequired,
   track: PropTypes.func
 };
 

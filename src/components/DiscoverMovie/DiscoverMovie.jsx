@@ -40,11 +40,11 @@ export class DiscoverMovie extends Component {
     this.props.requestSetMood(moodKey, e.currentTarget.checked);
   }
 
-  submitRequest = () => {
+  submitRequest = (media) => {
     const { moodsSelected, navigateTo, track } = this.props;
     const moodOptions = moodsSelected.join('-').toLowerCase();
     track('suggest-button', moodOptions);
-    navigateTo('results', { media: 'movies', options: moodOptions });
+    navigateTo('results', { media, options: moodOptions });
   }
 
   renderMoods = () => {
@@ -58,20 +58,29 @@ export class DiscoverMovie extends Component {
     );
   }
 
-  renderButton = () => {
+  renderButtons = () => {
     const { moodsSelected } = this.props;
-
     const hasSelected = moodsSelected.size > 0;
 
     return (
-      <Button
-        dataRole="suggest-button"
-        className={classnames(typography.ted, styles.button, {
-          [styles.active]: hasSelected
-        })}
-        onClick={this.submitRequest}
-        disabled={!hasSelected}
-      >Suggest a movie</Button>
+      <div className={styles.actionButtons}>
+        <Button
+          dataRole="suggest-button"
+          className={classnames(typography.ted, styles.button, {
+            [styles.active]: hasSelected
+          })}
+          onClick={() => this.submitRequest('movies')}
+          disabled={!hasSelected}
+        >Movies</Button>
+        <Button
+          dataRole="suggest-button"
+          className={classnames(typography.ted, styles.button, {
+            [styles.active]: hasSelected
+          })}
+          onClick={() => this.submitRequest('tv')}
+          disabled={!hasSelected}
+        >TV shows</Button>
+      </div>
     );
   }
 
@@ -88,7 +97,7 @@ export class DiscoverMovie extends Component {
           </h2>
         </div>
         { this.renderMoods() }
-        { this.renderButton() }
+        { this.renderButtons() }
       </div>
     );
   }

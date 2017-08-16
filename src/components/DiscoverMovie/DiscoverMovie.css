@@ -31,15 +31,38 @@
   100% { color: #e2d9a2; /* cream */ }
 }
 
+.actionButtons {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  background: rgba(0,0,0,0.5);
+  padding: 1rem;
+
+  @media (min-width: 600px) {
+    padding: 2rem;
+  }
+}
+
 .button {
+  flex: 1 1 50%;
   background: #333;
   color: #e2d9a2; /* cream */
   display: block;
-  flex: 0 0 60px;
   outline: none;
   border: none;
   appearance: none;
   margin: 0;
+  border-radius: 5px;
+  margin-right: 1rem;
+  padding: 0.5rem;
+
+  @media (min-width: 321px) {
+    padding: 0.75rem;
+  }
+
+  @media (min-width: 600px) {
+    margin-right: 2rem;
+  }
 
   &.active {
     animation-name: buttonGlow;
@@ -54,11 +77,12 @@
 	}
 
   &:disabled {
+    opacity: 0.8;
     color: #666;
   }
 
-  @media (min-width: 321px) {
-    flex: 0 0 90px;
+  &:last-child {
+    margin-right: 0;
   }
 }
 
