@@ -7,6 +7,7 @@ const AFFILIATE_TOKEN = '1001lybQ';
 const CAMPAIGN_TOKEN = 'choosymovietv';
 
 export const getSafeTitle = title => title.replace(/ /gi, '-').replace(/[^A-Za-z0-9_-]/gi, '');
+export const getId = iTunesTrack => iTunesTrack.get('trackId') || iTunesTrack.get('collectionId');
 
 export const getAffiliateLink = (trackId, title) => `https://geo.itunes.apple.com/us/movie/${getSafeTitle(title)}/id${trackId}?at=${AFFILIATE_TOKEN}&ct=${CAMPAIGN_TOKEN}`;
 
@@ -16,7 +17,7 @@ const GetOnItunes = ({
   title,
   track
 }) => {
-  const affiliateLink = getAffiliateLink(iTunesTrack.get('trackId'), title);
+  const affiliateLink = getAffiliateLink(getId(iTunesTrack), title);
   
   const handleClick = () => {
     track('get-on-itunes-button', affiliateLink);
