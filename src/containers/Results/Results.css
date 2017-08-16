@@ -18,7 +18,7 @@
   /* background: #333; */
 }
 
-.currentMovie {
+.currentResult {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
@@ -48,13 +48,13 @@
 	}
 }
 
-.movieWrapper {
+.resultWrapper {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
 }
 
-.movie {
+.result {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;

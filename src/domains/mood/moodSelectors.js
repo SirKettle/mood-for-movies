@@ -1,5 +1,6 @@
 import Ramda from 'ramda';
 import { createSelector } from 'reselect';
+import * as routerSelectors from '../router/routerSelectors';
 import MOODS from '../../constants/moods';
 
 export const modelSelector = (state) => {
@@ -17,39 +18,51 @@ export const cartesianProduct = Ramda.reduce((acc, next) => {
     : next;
 }, []);
 
-export const genreGroupsSelector = createSelector(
-  moodsSelector,
-  (moods) => {
-    const genreGroups = moods.map(moodId => MOODS[moodId].genres);
+export const currentMoodsSelector = createSelector(
+  routerSelectors.activeRouteSelector,
+  activeRoute => (activeRoute.params.options || '')
+    .split('-')
+    .map(str => str.toUpperCase())
+);
 
-    if (genreGroups.size === 1) {
-      return genreGroups.toJS()[0].map(genre => [genre]);
+export const genreGroupsSelector = createSelector(
+  currentMoodsSelector,
+  (moods) => {
+    const genreGroups = moods
+      .filter(moodId => !!MOODS[moodId])
+      .map(moodId => MOODS[moodId].genres);
+
+    if (genreGroups.length === 0) {
+      return [];
+    }
+
+    if (genreGroups.length === 1) {
+      return genreGroups[0].map(genre => [genre]);
     }
 
     return cartesianProduct(genreGroups);
   }
 );
 
-export const routerSelector = state => state.router;
-
-export const activeRouteSelector = createSelector(
-  routerSelector,
-  router => router.route
-);
-
 export const currentMediaSelector = createSelector(
-  activeRouteSelector,
+  routerSelectors.activeRouteSelector,
   (activeRoute) => {
     console.log('activeRoute', activeRoute);
     return activeRoute.params.media || 'all';
   }
 );
 
-export const currentMoodsSelector = createSelector(
-  activeRouteSelector,
-  activeRoute => (activeRoute.params.options || '')
-    .split('-')
-    .map(str => str.toUpperCase())
+export const getMediaTitleLabel = media => (media === 'tv' ? 'name' : 'title');
+export const getMediaReleaseDateLabel = media => (media === 'tv' ? 'first_air_date' : 'release_date');
+
+export const isTvMediaSelector = createSelector(
+  currentMediaSelector,
+  currentMedia => currentMedia === 'tv'
+);
+
+export const isMoviesMediaSelector = createSelector(
+  currentMediaSelector,
+  currentMedia => currentMedia === 'movies'
 );
 
 export const moodsKeySelector = createSelector(
