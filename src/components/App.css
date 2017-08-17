@@ -22,8 +22,7 @@ body {
   font-size: 16px;
   font-weight: 100;
   line-height: 1.5;
-  background: #111;
-  color: #333;
+  background: #2e3d46; /* darker-blue */
   color: #3a4b54; /* dark-blue */
 }
 /* 
