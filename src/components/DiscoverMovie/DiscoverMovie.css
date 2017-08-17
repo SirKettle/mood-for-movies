@@ -3,12 +3,17 @@
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
-  background: #deb853; /* mustard */
+  background-color: #deb853; /* mustard */
+  background-position: center 105px;
+  background-repeat: no-repeat;
+  background-size: 200%;
 }
 
 .header {
   background: #333;
   color: #e2d9a2; /* cream */
+  background: #3a4b54; /* dark-blue */
+  color: #f7f4ea;
 }
 
 .intro {
@@ -24,11 +29,11 @@
 }
 
 @keyframes buttonGlow {
-  0% { color: #e2d9a2; /* cream */ }
-  40% { color: #e2d9a2; /* cream */ }
-  50% { color: #eae5c4; /* bit lighter */ }
-  70% { color: #e2d9a2; /* cream */ }
-  100% { color: #e2d9a2; /* cream */ }
+  0% { color: #f7f4ea; /* cream */ }
+  40% { color: #f7f4ea; /* cream */ }
+  50% { color: #ffffff; /* bit lighter */ }
+  70% { color: #f7f4ea; /* cream */ }
+  100% { color: #f7f4ea; /* cream */ }
 }
 
 .actionButtons {
@@ -36,6 +41,7 @@
   display: flex;
   flex-direction: row;
   background: #393939;
+  background: #3a4b54; /* dark-blue */
   padding: 1rem;
 
   @media (min-width: 600px) {
@@ -44,17 +50,18 @@
 }
 
 .button {
-  flex: 1 1 50%;
-  background: #181818;
-  color: #e2d9a2; /* cream */
+  flex: 1.25 1;
   display: block;
   outline: none;
-  border: none;
   appearance: none;
   margin: 0;
-  border-radius: 5px;
   margin-right: 1rem;
   padding: 0.5rem;
+
+  background: transparent;
+  color: #f7f4ea;
+  border: solid 3px #f7f4ea;
+  border-radius: 0;
 
   @media (min-width: 321px) {
     padding: 0.75rem;
@@ -72,16 +79,15 @@
   }
 
 	&:focus, &:hover, &:active {
-    border: none;
     outline: none;
 	}
 
   &:disabled {
-    opacity: 0.8;
-    color: #666;
+    opacity: 0.4;
   }
 
   &:last-child {
+    flex-grow: 1;
     margin-right: 0;
   }
 }

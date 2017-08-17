@@ -59,7 +59,9 @@ const Result = ({
             }
           </div>
 
-          <h2 className={classnames(typography.bottomMargin, typography.will)}>{ title }</h2>
+          <h2 className={classnames(typography.bottomMargin, typography.will, styles.title)}>
+            { title }
+          </h2>
           {
             imgSrc ?
             (<img

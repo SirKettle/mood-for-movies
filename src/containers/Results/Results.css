@@ -5,6 +5,7 @@
 }
 
 .header {
+  background: #3a4b54; /* dark-blue */
 }
 
 .getOnItunes {
@@ -14,6 +15,7 @@
 
 .loadedHeader {
   background: rgba(0,0,0,0.25);
+  color: #fff;
   /* background: transparent; */
   /* background: #333; */
 }

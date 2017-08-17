@@ -18,7 +18,7 @@ const renderMenuItems = (items) => {
         items.map(item => (
           <Button
             key={getKey()}
-            className={classnames(typography.tom, styles.item, item.className)}
+            className={classnames(typography.harrison, styles.item, item.className)}
             dataRole={item.dataRole || `header-item-${item.label.replace(/ /g, '')}`}
             onClick={item.onClick}
           >{item.label}</Button>

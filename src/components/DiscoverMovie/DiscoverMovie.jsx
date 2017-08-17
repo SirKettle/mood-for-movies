@@ -10,6 +10,7 @@ import Header from '../Header/Header';
 import MoodOptions from '../MoodOptions/MoodOptions';
 import MOODS from '../../constants/moods';
 import Button from '../Button/BaseButton';
+import backgroundImage from '../../assets/images/lights.png';
 
 import styles from './DiscoverMovie.css';
 import typography from '../../css/typography.css';
@@ -43,7 +44,7 @@ export class DiscoverMovie extends Component {
   submitRequest = (media) => {
     const { moodsSelected, navigateTo, track } = this.props;
     const moodOptions = moodsSelected.join('-').toLowerCase();
-    track('suggest-button', moodOptions);
+    track(`${media}-button`, moodOptions);
     navigateTo('results', { media, options: moodOptions });
   }
 
@@ -69,24 +70,27 @@ export class DiscoverMovie extends Component {
           className={classnames(typography.ted, styles.button, {
             [styles.active]: hasSelected
           })}
-          onClick={() => this.submitRequest('movies')}
+          onClick={() => this.submitRequest('tv')}
           disabled={!hasSelected}
-        >Movies</Button>
+        >TV shows</Button>
         <Button
           dataRole="suggest-button"
           className={classnames(typography.ted, styles.button, {
             [styles.active]: hasSelected
           })}
-          onClick={() => this.submitRequest('tv')}
+          onClick={() => this.submitRequest('movies')}
           disabled={!hasSelected}
-        >TV shows</Button>
+        >Movies</Button>
       </div>
     );
   }
 
   render() {
     return (
-      <div className={classnames(styles.discoverMovie)}>
+      <div
+        className={classnames(styles.discoverMovie)}
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
         <Header
           className={styles.header}
           menuItems={this.getHeaderMenuItems()}

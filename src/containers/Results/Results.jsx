@@ -161,6 +161,7 @@ export class Results extends Component {
     if (!currentResult) {
       return (
         <NoResults
+          currentMedia={currentMedia}
           className={styles.noResults}
         />
       );

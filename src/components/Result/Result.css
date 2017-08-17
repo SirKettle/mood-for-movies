@@ -29,6 +29,10 @@
   }
 }
 
+.title {
+  color: inherit;
+}
+
 .meta {
   display: flex;
   flex-direction: row;
