@@ -86,23 +86,14 @@ export const baseDiscoverTvQueryParams = {
   'first_air_date.gte': 2007 // 2014
 };
 
-const fetchTvShows = (dispatch, currentMedia, moodsKey, genres) => {
-  const genresKey = genres.sort().join('_');
+const fetchResults = (dispatch, basePayload, url) => {
   // set loading status to pending
   dispatch({
     type: actionTypes.LOAD_RESULTS_PENDING,
     payload: {
-      moodsKey,
-      currentMedia,
-      genresKey
+      ...basePayload
     }
   });
-
-  const queryParams = {
-    ...baseDiscoverTvQueryParams,
-    with_genres: genres.sort().join(',')
-  };
-  const url = buildUrlWithQueryParams(ENDPOINTS.DISCOVER_TV, queryParams);
 
   return fetch(url, {
     method: 'GET'
@@ -112,9 +103,7 @@ const fetchTvShows = (dispatch, currentMedia, moodsKey, genres) => {
     dispatch({
       type: actionTypes.LOAD_RESULTS_ERROR,
       payload: {
-        moodsKey,
-        currentMedia,
-        genresKey,
+        ...basePayload,
         error
       }
     });
@@ -125,61 +114,45 @@ const fetchTvShows = (dispatch, currentMedia, moodsKey, genres) => {
     dispatch({
       type: actionTypes.LOAD_RESULTS_SUCCESS,
       payload: {
-        data: payload,
-        moodsKey,
-        currentMedia,
-        genresKey
+        ...basePayload,
+        data: payload
       }
     });
   });
 };
 
-const fetchMovies = (dispatch, currentMedia, moodsKey, genres) => {
+const fetchTvShows = (dispatch, currentMedia, moodsKey, genres) => {
+  const queryParams = {
+    ...baseDiscoverTvQueryParams,
+    with_genres: genres.sort().join(',')
+  };
+  const url = buildUrlWithQueryParams(ENDPOINTS.DISCOVER_TV, queryParams);
+  
   const genresKey = genres.sort().join('_');
-  // set loading status to pending
-  dispatch({
-    type: actionTypes.LOAD_RESULTS_PENDING,
-    payload: {
-      moodsKey,
-      currentMedia,
-      genresKey
-    }
-  });
+  const basePayload = {
+    moodsKey,
+    currentMedia,
+    genresKey
+  };
 
+  return fetchResults(dispatch, basePayload, url);
+};
+
+const fetchMovies = (dispatch, currentMedia, moodsKey, genres) => {
   const queryParams = {
     ...baseDiscoverQueryParams,
     with_genres: genres.sort().join(',')
   };
   const url = buildUrlWithQueryParams(ENDPOINTS.DISCOVER_MOVIES, queryParams);
 
-  return fetch(url, {
-    method: 'GET'
-  }).then(response => response.json()
-  , (error) => {
-    // console.log(error);
-    dispatch({
-      type: actionTypes.LOAD_RESULTS_ERROR,
-      payload: {
-        moodsKey,
-        currentMedia,
-        genresKey,
-        error
-      }
-    });
-  }).then((payload) => {
-    if (!payload) {
-      return;
-    }
-    dispatch({
-      type: actionTypes.LOAD_RESULTS_SUCCESS,
-      payload: {
-        data: payload,
-        moodsKey,
-        currentMedia,
-        genresKey
-      }
-    });
-  });
+  const genresKey = genres.sort().join('_');
+  const basePayload = {
+    moodsKey,
+    currentMedia,
+    genresKey
+  };
+
+  return fetchResults(dispatch, basePayload, url);
 };
 
 export const loadResults = () => (dispatch, getState) => {
