@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './GetOnItunes.css';
 import getItOnItunes from '../../assets/images/Get_it_on_iTunes.svg';
+import getUriSafe from '../../utils/url';
 
 const AFFILIATE_TOKEN = '1001lybQ';
 const CAMPAIGN_TOKEN = 'choosymovietv';
@@ -10,15 +11,15 @@ const mediaMap = {
   movies: 'movie'
 };
 
-// this is an optional part of the url - but is handy for users
+// the title is an optional part of the url - but is handy for users
 // who have copied the url to their clipboard
-export const getUriSafeTitle = title => title.replace(/ /gi, '-').replace(/[^A-Za-z0-9_-]/gi, '');
+
 // iTunes search API returns tvShows with collectionIds, movies with trackIds
 export const getId = iTunesTrack => iTunesTrack.get('trackId') || iTunesTrack.get('collectionId');
 // iTunes search API returns tvShows with collectionIds, movies with trackIds
 export const getMediaType = currentMedia => mediaMap[currentMedia] || 'movie';
 // use geo prefix - this redirects to clients local itunes store - so safe to use 'us' as default
-export const getAffiliateLink = (trackId, title, mediaType) => `https://geo.itunes.apple.com/us/${mediaType}/${getUriSafeTitle(title)}/id${trackId}?at=${AFFILIATE_TOKEN}&ct=${CAMPAIGN_TOKEN}`;
+export const getAffiliateLink = (trackId, title, mediaType) => `https://geo.itunes.apple.com/us/${mediaType}/${getUriSafe(title)}/id${trackId}?at=${AFFILIATE_TOKEN}&ct=${CAMPAIGN_TOKEN}`;
 
 const GetOnItunes = ({
   className,

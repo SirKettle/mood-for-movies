@@ -10,6 +10,10 @@ const NetflixButton = ({
   className,
   netflixMovie
 }) => {
+  if (!netflixMovie) {
+    return null;
+  }
+
   const watchUrl = getNetflixMovieUrl(netflixMovie.get('show_id'));
 
   const handleClick = () => {
