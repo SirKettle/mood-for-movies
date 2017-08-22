@@ -2,12 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { loadResults, requestNextResult } from '../../domains/results/resultsActions';
+import { loadCredits } from '../../domains/credits/creditsActions';
 import { requestNetflixAvailability, requestItunesAvailability } from '../../domains/availability/availabilityActions';
 import { trackClick } from '../../domains/ui/uiActions';
 import * as resultsSelectors from '../../domains/results/resultsSelectors';
 import * as routerSelectors from '../../domains/router/routerSelectors';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 import * as availabilitySelectors from '../../domains/availability/availabilitySelectors';
+import * as creditsSelectors from '../../domains/credits/creditsSelectors';
 import loadingStates from '../../constants/loadingStates';
 import preloadImages from '../../utils/preloadImages';
 import Loading from '../../components/Loading/Loading';
@@ -28,12 +30,15 @@ const mapStateToProps = (state) => {
     loadingStatus: resultsSelectors.currentResultsLoadingStatusSelector(state),
     activeRoute: routerSelectors.activeRouteSelector(state),
     moodsKey: moodSelectors.moodsKeySelector(state),
-    currentMedia: moodSelectors.currentMediaSelector(state)
+    currentMedia: moodSelectors.currentMediaSelector(state),
+    cast: creditsSelectors.currentResultCastSelector(state),
+    crew: creditsSelectors.currentResultCrewSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   requestResults: () => { dispatch(loadResults()); },
+  requestCredits: (result) => { dispatch(loadCredits(result)); },
   requestNext: (args) => { dispatch(requestNextResult(args)); },
   isOnNetflix: (result) => { dispatch(requestNetflixAvailability(result)); },
   isOnItunes: (result) => { dispatch(requestItunesAvailability(result)); },
@@ -58,12 +63,13 @@ export class Results extends Component {
 
   componentDidUpdate(prevProps) {
     const { currentResult, nextResult, isOnNetflix,
-      isOnItunes, requestResults } = this.props;
+      isOnItunes, requestResults, requestCredits } = this.props;
 
     if (this.getIsNewResult(prevProps)) {
       // check for availability
       isOnNetflix(currentResult);
       isOnItunes(currentResult);
+      requestCredits(currentResult);
       
       // scroll to top
       window.scrollTo(0, 0);
@@ -156,7 +162,9 @@ export class Results extends Component {
 
   renderResult = () => {
     const { currentResult, currentResultPageInfo, currentMedia,
-      currentResultItunes, currentResultNetflix, track } = this.props;
+      currentResultItunes, currentResultNetflix, track,
+      configuration, cast, crew
+    } = this.props;
 
     if (!currentResult) {
       return (
@@ -185,7 +193,10 @@ export class Results extends Component {
       netflix: currentResultNetflix,
       iTunes: currentResultItunes,
       currentResultPageInfo,
-      currentMedia
+      currentMedia,
+      peopleImgBaseUrl: `${configuration.getIn(['images', 'base_url'])}w185`,
+      cast,
+      crew
     };
 
     return (<Result {...resultProps} />);
@@ -219,6 +230,7 @@ export class Results extends Component {
 Results.propTypes = {
   currentMedia: PropTypes.string.isRequired,
   requestResults: PropTypes.func.isRequired,
+  requestCredits: PropTypes.func.isRequired,
   track: PropTypes.func.isRequired,
   isOnNetflix: PropTypes.func.isRequired,
   isOnItunes: PropTypes.func.isRequired,
@@ -238,7 +250,11 @@ Results.propTypes = {
   configuration: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   activeRoute: PropTypes.object.isRequired,
-  moodsKey: PropTypes.string.isRequired
+  moodsKey: PropTypes.string.isRequired,
+  /* eslint react/forbid-prop-types: 0 */
+  cast: PropTypes.object.isRequired,
+  /* eslint react/forbid-prop-types: 0 */
+  crew: PropTypes.object.isRequired
 };
 
 export const Connected = connect(mapStateToProps, mapDispatchToProps)(Results);
