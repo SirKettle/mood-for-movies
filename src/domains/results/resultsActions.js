@@ -1,10 +1,5 @@
-// export const requestItunesAvailability = movie => (dispatch, getState) => {
-//   const currentCountry = configSelectors.ipCountrySelector(getState());
-
-
-//   isOnItunes: (movie) => { dispatch(requestItunesAvailability(movie)); },
-
 import 'whatwg-fetch';
+import TMDb from '../../constants/tmdb';
 import { buildUrlWithQueryParams } from '../../utils/api';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
 
@@ -16,11 +11,6 @@ export const actionTypes = {
   LOAD_RESULTS_SUCCESS: 'LOAD_RESULTS_SUCCESS',
   LOAD_RESULTS_ERROR: 'LOAD_RESULTS_ERROR',
   REQUEST_NEXT_RESULT: 'REQUEST_NEXT_RESULT'
-};
-
-const TMDb = {
-  BASE_URL: 'https://api.themoviedb.org/3',
-  API_KEY: '9b39e698383c30052915f7786495b569'
 };
 
 const ENDPOINTS = {

@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './Result.css';
 import Stars from '../Stars/Stars';
+import People from '../People/People';
 import GetOnItunes from '../GetOnItunes/GetOnItunes';
 import NetflixButton from '../NetflixButton/NetflixButton';
 import FacebookLike from '../Social/FacebookLike';
@@ -40,7 +41,10 @@ const Result = ({
   releaseDate,
   currentMedia,
   netflix,
-  iTunes
+  iTunes,
+  peopleImgBaseUrl,
+  cast,
+  crew
 }) => {
   return (
     <div className={classnames(className, styles.result)}>
@@ -101,6 +105,24 @@ const Result = ({
             }
           </div>
           <hr />
+          <h3 className={classnames(typography.bottomMargin, typography.tom)}>
+            Featured cast and crew
+          </h3>
+          <People
+            people={cast}
+            className={classnames(styles.people, styles.cast)}
+            track={track}
+            baseUrl={peopleImgBaseUrl}
+            secondaryField="character"
+            displayCount={8}
+          />
+          <People
+            people={crew}
+            className={classnames(styles.people, styles.cast)}
+            track={track}
+            baseUrl={peopleImgBaseUrl}
+          />
+          <hr />
           <p className={classnames(typography.bottomMargin, typography.elliot)}>
             { renderGenres(genreIds) }
           </p>
@@ -137,7 +159,12 @@ Result.propTypes = {
   genreIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   releaseDate: PropTypes.string.isRequired,
   currentMedia: PropTypes.string.isRequired,
-  track: PropTypes.func
+  track: PropTypes.func,
+  peopleImgBaseUrl: PropTypes.string.isRequired,
+  /* eslint react/forbid-prop-types: 0 */
+  cast: PropTypes.object.isRequired,
+  /* eslint react/forbid-prop-types: 0 */
+  crew: PropTypes.object.isRequired
 };
 
 Result.defaultProps = {

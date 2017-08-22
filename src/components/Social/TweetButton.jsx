@@ -4,7 +4,10 @@ import classnames from 'classnames';
 export default class TweetButton extends Component {
 
   componentDidMount() {
-    if (window.twttr) {
+    if (
+      window.twttr &&
+      window.twttr.widgets
+    ) {
       window.twttr.widgets.load();
     }
   }
