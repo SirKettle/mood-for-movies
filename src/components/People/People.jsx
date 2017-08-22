@@ -26,7 +26,7 @@ const People = ({
                 style={{ backgroundImage: `url(${baseUrl}${person.get('profile_path')})` }}
               />
               <div className={styles.info}>
-                <p className={classnames(typography.harrison)}>{person.get('name')}</p>
+                <p className={classnames(typography.simon)}>{person.get('name')}</p>
                 <p className={classnames(typography.elliot)}>{person.get(secondaryField)}</p>
               </div>
             </div>
