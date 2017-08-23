@@ -22,7 +22,7 @@
 // const getProps = () => ({
 //   configuration: Immutable.fromJS({ images: { base_url: 'http://some_base_url/' } }),
 //   requestNext: () => { console.log('requestNext'); },
-//   moodsKey: 'some_moods_key',
+//   moodForKey: 'some_moods_key',
 //   loadingStatus: select('loadingStatus', Object.values(loadingStates), loadingStates.COMPLETE),
 //   currentMoviePageInfo: {
 //     index: 0,

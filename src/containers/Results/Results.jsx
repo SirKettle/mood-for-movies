@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { actions as routerActions } from 'redux-router5';
 import { loadResults, requestNextResult } from '../../domains/results/resultsActions';
 import { loadCredits } from '../../domains/credits/creditsActions';
 import { requestNetflixAvailability, requestItunesAvailability } from '../../domains/availability/availabilityActions';
@@ -29,7 +30,7 @@ const mapStateToProps = (state) => {
     currentResultPageInfo: resultsSelectors.currentResultPageInfoSelector(state),
     loadingStatus: resultsSelectors.currentResultsLoadingStatusSelector(state),
     activeRoute: routerSelectors.activeRouteSelector(state),
-    moodsKey: moodSelectors.moodsKeySelector(state),
+    moodForKey: moodSelectors.moodForKeySelector(state),
     currentMedia: moodSelectors.currentMediaSelector(state),
     cast: creditsSelectors.currentResultCastSelector(state),
     crew: creditsSelectors.currentResultCrewSelector(state)
@@ -42,7 +43,8 @@ const mapDispatchToProps = dispatch => ({
   requestNext: (args) => { dispatch(requestNextResult(args)); },
   isOnNetflix: (result) => { dispatch(requestNetflixAvailability(result)); },
   isOnItunes: (result) => { dispatch(requestItunesAvailability(result)); },
-  track: (key, data) => { trackClick(dispatch, key, data); }
+  track: (key, data) => { trackClick(dispatch, key, data); },
+  navigateTo: (name, params) => dispatch(routerActions.navigateTo(name, params))
 });
 
 export class Results extends Component {
@@ -147,7 +149,7 @@ export class Results extends Component {
     const { track } = this.props;
     track('results-pagination-button', previous ? 'previous' : 'next');
     this.props.requestNext({
-      moodsKey: this.props.moodsKey,
+      moodForKey: this.props.moodForKey,
       previous
     });
   }
@@ -163,7 +165,7 @@ export class Results extends Component {
   renderResult = () => {
     const { currentResult, currentResultPageInfo, currentMedia,
       currentResultItunes, currentResultNetflix, track,
-      configuration, cast, crew
+      navigateTo, configuration, cast, crew
     } = this.props;
 
     if (!currentResult) {
@@ -180,6 +182,7 @@ export class Results extends Component {
 
     const resultProps = {
       track,
+      navigateTo,
       className: styles.result,
       title: currentResult.get(titleLabel),
       overview: currentResult.get('overview'),
@@ -232,6 +235,7 @@ Results.propTypes = {
   requestResults: PropTypes.func.isRequired,
   requestCredits: PropTypes.func.isRequired,
   track: PropTypes.func.isRequired,
+  navigateTo: PropTypes.func.isRequired,
   isOnNetflix: PropTypes.func.isRequired,
   isOnItunes: PropTypes.func.isRequired,
   requestNext: PropTypes.func.isRequired,
@@ -250,7 +254,7 @@ Results.propTypes = {
   configuration: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   activeRoute: PropTypes.object.isRequired,
-  moodsKey: PropTypes.string.isRequired,
+  moodForKey: PropTypes.string.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   cast: PropTypes.object.isRequired,
   /* eslint react/forbid-prop-types: 0 */

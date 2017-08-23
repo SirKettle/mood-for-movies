@@ -1,27 +1,30 @@
 import Immutable from 'immutable';
+import { isNil } from 'ramda';
 import { actionTypes } from './resultsActions';
 import loadingStates from '../../constants/loadingStates';
 
+const getResultsKey = payload => (isNil(payload.personId) ? payload.genresKey : payload.moodForKey);
+
 const resultsReducers = {
   [actionTypes.LOAD_RESULTS_PENDING]: (state, action) => {
-    const { currentMedia, genresKey, moodsKey } = action.payload;
-    return state.setIn(['server', currentMedia, genresKey, 'loadingStatus'], loadingStates.LOADING)
-      .setIn(['ui', moodsKey, 'currentIndex'], 0);
+    const { currentMedia, moodForKey } = action.payload;
+    return state.setIn(['server', currentMedia, getResultsKey(action.payload), 'loadingStatus'], loadingStates.LOADING)
+      .setIn(['ui', moodForKey, 'currentIndex'], 0);
   },
   [actionTypes.LOAD_RESULTS_ERROR]: (state, action) => {
-    const { currentMedia, genresKey } = action.payload;
-    return state.setIn(['server', currentMedia, genresKey, 'loadingStatus'], loadingStates.ERROR);
+    const { currentMedia } = action.payload;
+    return state.setIn(['server', currentMedia, getResultsKey(action.payload), 'loadingStatus'], loadingStates.ERROR);
   },
   [actionTypes.LOAD_RESULTS_SUCCESS]: (state, action) => {
-    const { currentMedia, data, genresKey } = action.payload;
-    return state.setIn(['server', currentMedia, genresKey, 'data'], Immutable.fromJS(data))
-      .setIn(['server', currentMedia, genresKey, 'loadingStatus'], loadingStates.COMPLETE);
+    const { currentMedia, data } = action.payload;
+    return state.setIn(['server', currentMedia, getResultsKey(action.payload), 'data'], Immutable.fromJS(data))
+      .setIn(['server', currentMedia, getResultsKey(action.payload), 'loadingStatus'], loadingStates.COMPLETE);
   },
   [actionTypes.REQUEST_NEXT_RESULT]: (state, action) => {
-    const { moodsKey, previous } = action.payload;
-    const currentIndex = state.getIn(['ui', moodsKey, 'currentIndex']);
+    const { moodForKey, previous } = action.payload;
+    const currentIndex = state.getIn(['ui', moodForKey, 'currentIndex']);
     const nextIndex = previous ? currentIndex - 1 : currentIndex + 1;
-    return state.setIn(['ui', moodsKey, 'currentIndex'], nextIndex);
+    return state.setIn(['ui', moodForKey, 'currentIndex'], nextIndex);
   }
 };
 

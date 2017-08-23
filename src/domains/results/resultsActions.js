@@ -42,12 +42,12 @@ export const loadConfiguration = (dispatch) => {
 };
 
 export const requestNextResult = args => (dispatch, getState) => {
-  const moodsKey = moodSelectors.moodsKeySelector(getState());
+  const moodForKey = moodSelectors.moodForKeySelector(getState());
   const currentMedia = moodSelectors.currentMediaSelector(getState());
   dispatch({
     type: actionTypes.REQUEST_NEXT_RESULT,
     payload: {
-      moodsKey,
+      moodForKey,
       currentMedia,
       previous: args.previous || false
     }
@@ -111,35 +111,47 @@ const fetchResults = (dispatch, basePayload, url) => {
   });
 };
 
-const fetchTvShows = (dispatch, currentMedia, moodsKey, genres) => {
+const getMoodParams = (genres, personId) => {
+  const moodParams = {};
+  if (personId) {
+    moodParams.with_people = personId;
+  } else {
+    moodParams.with_genres = genres.sort().join(',');
+  }
+  return moodParams;
+};
+
+const fetchTvShows = (dispatch, currentMedia, moodForKey, genres, personId) => {
   const queryParams = {
     ...baseDiscoverTvQueryParams,
-    with_genres: genres.sort().join(',')
+    ...getMoodParams(genres, personId)
   };
   const url = buildUrlWithQueryParams(ENDPOINTS.DISCOVER_TV, queryParams);
   
   const genresKey = genres.sort().join('_');
   const basePayload = {
-    moodsKey,
+    moodForKey,
     currentMedia,
-    genresKey
+    genresKey,
+    personId
   };
 
   return fetchResults(dispatch, basePayload, url);
 };
 
-const fetchMovies = (dispatch, currentMedia, moodsKey, genres) => {
+const fetchMovies = (dispatch, currentMedia, moodForKey, genres, personId) => {
   const queryParams = {
     ...baseDiscoverQueryParams,
-    with_genres: genres.sort().join(',')
+    ...getMoodParams(genres, personId)
   };
   const url = buildUrlWithQueryParams(ENDPOINTS.DISCOVER_MOVIES, queryParams);
 
   const genresKey = genres.sort().join('_');
   const basePayload = {
-    moodsKey,
+    moodForKey,
     currentMedia,
-    genresKey
+    genresKey,
+    personId
   };
 
   return fetchResults(dispatch, basePayload, url);
@@ -147,17 +159,27 @@ const fetchMovies = (dispatch, currentMedia, moodsKey, genres) => {
 
 export const loadResults = () => (dispatch, getState) => {
   const genreGroups = moodSelectors.genreGroupsSelector(getState());
-  const moodsKey = moodSelectors.moodsKeySelector(getState());
+  const moodForKey = moodSelectors.moodForKeySelector(getState());
   const currentMedia = moodSelectors.currentMediaSelector(getState());
   const isTv = moodSelectors.isTvMediaSelector(getState());
+  const personId = moodSelectors.currentPersonIdSelector(getState());
 
   console.log('genreGroups', genreGroups);
+
+  if (personId) {
+    if (isTv) {
+      fetchTvShows(dispatch, currentMedia, moodForKey, [], personId);
+    } else {
+      fetchMovies(dispatch, currentMedia, moodForKey, [], personId);
+    }
+    return;
+  }
   
   genreGroups.forEach((genres) => {
     if (isTv) {
-      fetchTvShows(dispatch, currentMedia, moodsKey, genres);
+      fetchTvShows(dispatch, currentMedia, moodForKey, genres, personId);
     } else {
-      fetchMovies(dispatch, currentMedia, moodsKey, genres);
+      fetchMovies(dispatch, currentMedia, moodForKey, genres, personId);
     }
   });
 };

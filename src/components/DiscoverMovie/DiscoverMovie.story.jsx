@@ -22,7 +22,7 @@ const getProps = () => ({
   requestMovies: () => {},
   requestSetMood: () => {},
   genreGroups: [],
-  moodsKey: getSelected().size ? 'something' : '',
+  moodForKey: getSelected().size ? 'something' : '',
   moodsSelected: getSelected()
 });
 

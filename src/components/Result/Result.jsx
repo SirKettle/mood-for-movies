@@ -30,6 +30,7 @@ const Result = ({
   className,
   currentResultPageInfo,
   track,
+  navigateTo,
   title,
   overview,
   posterImgSrc,
@@ -112,7 +113,9 @@ const Result = ({
             people={cast}
             className={classnames(styles.people, styles.cast)}
             track={track}
+            navigateTo={navigateTo}
             baseUrl={peopleImgBaseUrl}
+            media={currentMedia}
             secondaryField="character"
             displayCount={8}
           />
@@ -120,7 +123,9 @@ const Result = ({
             people={crew}
             className={classnames(styles.people, styles.cast)}
             track={track}
+            navigateTo={navigateTo}
             baseUrl={peopleImgBaseUrl}
+            media={currentMedia}
           />
           <hr />
           <p className={classnames(typography.bottomMargin, typography.elliot)}>
@@ -160,6 +165,7 @@ Result.propTypes = {
   releaseDate: PropTypes.string.isRequired,
   currentMedia: PropTypes.string.isRequired,
   track: PropTypes.func,
+  navigateTo: PropTypes.func,
   peopleImgBaseUrl: PropTypes.string.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   cast: PropTypes.object.isRequired,
@@ -174,6 +180,7 @@ Result.defaultProps = {
   iTunes: null,
   posterImgSrc: null,
   imgSrc: null,
+  navigateTo: () => { console.warn('navigateTo param not set', arguments); },
   track: () => { console.warn('track param not set', arguments); }
 };
 

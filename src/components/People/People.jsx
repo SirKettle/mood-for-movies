@@ -3,33 +3,49 @@ import classnames from 'classnames';
 import styles from './People.css';
 import typography from '../../css/typography.css';
 
+const handleOnClick = (person, media, navigateTo, track) => {
+  track('person-button', `${media}_${person.get('id')}_${person.get('name')}`);
+  navigateTo('person_results', { media, personId: person.get('id') });
+};
+
+const getImageUrl = (baseUrl, profileUrl) => {
+  if (!profileUrl) {
+    return 'none';
+  }
+  return `url(${baseUrl}${profileUrl})`;
+};
+
 const People = ({
   className,
-  // track,
   baseUrl,
   people,
   secondaryField,
-  displayCount
+  displayCount,
+  navigateTo,
+  track,
+  media
 }) => {
-  console.log('people', people, baseUrl);
   return (
     <div className={classnames(className, styles.people)}>
       {
         people.slice(0, displayCount)
           .map(person => (
-            <div
+            <button
               key={person.get('credit_id')}
               className={styles.person}
+              onClick={() => {
+                handleOnClick(person, media, navigateTo, track);
+              }}
             >
               <div
                 className={styles.image}
-                style={{ backgroundImage: `url(${baseUrl}${person.get('profile_path')})` }}
+                style={{ backgroundImage: getImageUrl(baseUrl, person.get('profile_path')) }}
               />
               <div className={styles.info}>
-                <p className={classnames(typography.simon)}>{person.get('name')}</p>
+                <p className={classnames(typography.simon, styles.name)}>{person.get('name')}</p>
                 <p className={classnames(typography.elliot)}>{person.get(secondaryField)}</p>
               </div>
-            </div>
+            </button>
           ))
       }
     </div>
@@ -38,9 +54,11 @@ const People = ({
 
 People.propTypes = {
   className: PropTypes.string,
-  // track: PropTypes.func,
+  track: PropTypes.func.isRequired,
+  navigateTo: PropTypes.func.isRequired,
   baseUrl: PropTypes.string.isRequired,
   secondaryField: PropTypes.string,
+  media: PropTypes.string.isRequired,
   /* eslint react/forbid-prop-types: 0 */
   people: PropTypes.object.isRequired,
   displayCount: PropTypes.number
@@ -50,7 +68,6 @@ People.defaultProps = {
   className: 'some-people',
   secondaryField: 'job',
   displayCount: 4
-  // ,track: () => { console.warn('track param not set', arguments); }
 };
 
 export default People;

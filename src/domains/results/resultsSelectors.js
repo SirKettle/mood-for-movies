@@ -2,8 +2,9 @@ import Ramda from 'ramda';
 import Immutable from 'immutable';
 import { createSelector } from 'reselect';
 import {
-  moodsKeySelector,
+  moodForKeySelector,
   genreGroupsSelector,
+  currentPersonIdSelector,
   currentMediaSelector
 } from '../mood/moodSelectors';
 import loadingStates from '../../constants/loadingStates';
@@ -51,13 +52,24 @@ export const sortUnique = list => Immutable.List(
 
 export const currentResultsSelector = createSelector(
   resultsSelector,
-  moodsKeySelector,
+  moodForKeySelector,
+  currentPersonIdSelector,
   genreGroupsSelector,
   configurationSelector,
   currentMediaSelector,
-  (results, moodsKey, genreGroups, configuration, currentMedia) => {
-    if (!configuration || !results || !genreGroups || !moodsKey) {
+  (
+    results, moodForKey, currentPersonId,
+    genreGroups, configuration, currentMedia
+  ) => {
+    if (!configuration || !results || !genreGroups || !moodForKey) {
       return null;
+    }
+
+    if (currentPersonId) {
+      return Immutable.Map({
+        results: results.getIn([currentMedia, moodForKey, 'data', 'results']),
+        loadingStatus: results.getIn([currentMedia, moodForKey, 'loadingStatus'])
+      });
     }
 
     const resultGroups = genreGroups.map((genres) => {
@@ -102,16 +114,16 @@ export const currentResultsLoadingStatusSelector = createSelector(
     if (!currentResults) {
       return loadingStates.ERROR;
     }
-    return currentResults.get('loadingStatus');
+    return currentResults.get('loadingStatus') || loadingStates.LOADING;
   }
 );
 
 export const currentResultPageInfoSelector = createSelector(
   uiSelector,
   currentResultsSelector,
-  moodsKeySelector,
-  (ui, currentResults, moodsKey) => {
-    if (!currentResults || !moodsKey || !ui) {
+  moodForKeySelector,
+  (ui, currentResults, moodForKey) => {
+    if (!currentResults || !moodForKey || !ui) {
       return null;
     }
 
@@ -120,7 +132,7 @@ export const currentResultPageInfoSelector = createSelector(
       return null;
     }
 
-    const currentCounter = ui.getIn([moodsKey, 'currentIndex']);
+    const currentCounter = ui.getIn([moodForKey, 'currentIndex']);
     const currentIndex = currentCounter % results.size;
 
     return {
@@ -134,10 +146,10 @@ export const currentResultPageInfoSelector = createSelector(
 export const currentResultSelector = createSelector(
   uiSelector,
   currentResultsSelector,
-  moodsKeySelector,
+  moodForKeySelector,
   currentResultPageInfoSelector,
-  (ui, currentResults, moodsKey, currentResultPageInfo) => {
-    if (!currentResults || !moodsKey || !ui || !currentResultPageInfo) {
+  (ui, currentResults, moodForKey, currentResultPageInfo) => {
+    if (!currentResults || !moodForKey || !ui || !currentResultPageInfo) {
       return null;
     }
 
@@ -153,10 +165,10 @@ export const currentResultSelector = createSelector(
 export const nextResultSelector = createSelector(
   uiSelector,
   currentResultsSelector,
-  moodsKeySelector,
+  moodForKeySelector,
   currentResultPageInfoSelector,
-  (ui, currentResults, moodsKey, currentResultPageInfo) => {
-    if (!currentResults || !moodsKey || !ui || !currentResultPageInfo) {
+  (ui, currentResults, moodForKey, currentResultPageInfo) => {
+    if (!currentResults || !moodForKey || !ui || !currentResultPageInfo) {
       return null;
     }
 
@@ -164,7 +176,7 @@ export const nextResultSelector = createSelector(
     if (!results || !results.size || results.size < 2) {
       return null;
     }
-    const currentCounter = ui.getIn([moodsKey, 'currentIndex']);
+    const currentCounter = ui.getIn([moodForKey, 'currentIndex']);
     const nextIndex = (currentCounter + 1) % results.size;
 
     return results.get(nextIndex);

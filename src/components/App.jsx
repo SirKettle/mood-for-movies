@@ -20,7 +20,8 @@ const components = {
   // movie: MovieSuggestion,
   about: About,
   // movie: Movie,
-  results: Results
+  results: Results,
+  person_results: Results
 };
 
 const mapStateToProps = () => routeNodeSelector('');

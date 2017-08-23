@@ -25,6 +25,11 @@ export const currentMoodsSelector = createSelector(
     .map(str => str.toUpperCase())
 );
 
+export const currentPersonIdSelector = createSelector(
+  routerSelectors.activeRouteSelector,
+  activeRoute => activeRoute.params.personId
+);
+
 export const genreGroupsSelector = createSelector(
   currentMoodsSelector,
   (moods) => {
@@ -65,8 +70,14 @@ export const isMoviesMediaSelector = createSelector(
   currentMedia => currentMedia === 'movies'
 );
 
-export const moodsKeySelector = createSelector(
+export const moodForKeySelector = createSelector(
   currentMoodsSelector,
+  currentPersonIdSelector,
   currentMediaSelector,
-  (moods, media) => `${media}-${moods.join('_')}`
+  (moods, personId, media) => {
+    if (personId) {
+      return `person-${media}-${personId}`;
+    }
+    return `${media}-${moods.join('_')}`;
+  }
 );
