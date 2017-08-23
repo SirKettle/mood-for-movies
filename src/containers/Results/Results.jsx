@@ -31,6 +31,7 @@ const mapStateToProps = (state) => {
     loadingStatus: resultsSelectors.currentResultsLoadingStatusSelector(state),
     activeRoute: routerSelectors.activeRouteSelector(state),
     moodForKey: moodSelectors.moodForKeySelector(state),
+    currentPersonName: moodSelectors.currentPersonNameSelector(state),
     currentMedia: moodSelectors.currentMediaSelector(state),
     cast: creditsSelectors.currentResultCastSelector(state),
     crew: creditsSelectors.currentResultCrewSelector(state)
@@ -55,6 +56,7 @@ export class Results extends Component {
     currentResultPageInfo: null,
     currentResultNetflix: null,
     currentResultItunes: null,
+    currentPersonName: null,
     configuration: null
   }
 
@@ -165,7 +167,7 @@ export class Results extends Component {
   renderResult = () => {
     const { currentResult, currentResultPageInfo, currentMedia,
       currentResultItunes, currentResultNetflix, track,
-      navigateTo, configuration, cast, crew
+      currentPersonName, navigateTo, configuration, cast, crew
     } = this.props;
 
     if (!currentResult) {
@@ -197,6 +199,7 @@ export class Results extends Component {
       iTunes: currentResultItunes,
       currentResultPageInfo,
       currentMedia,
+      currentPersonName,
       peopleImgBaseUrl: `${configuration.getIn(['images', 'base_url'])}w185`,
       cast,
       crew
@@ -255,6 +258,7 @@ Results.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   activeRoute: PropTypes.object.isRequired,
   moodForKey: PropTypes.string.isRequired,
+  currentPersonName: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
   cast: PropTypes.object.isRequired,
   /* eslint react/forbid-prop-types: 0 */

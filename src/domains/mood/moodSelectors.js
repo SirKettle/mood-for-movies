@@ -30,6 +30,16 @@ export const currentPersonIdSelector = createSelector(
   activeRoute => activeRoute.params.personId
 );
 
+export const currentPersonNameSelector = createSelector(
+  routerSelectors.activeRouteSelector,
+  (activeRoute) => {
+    if (!activeRoute.params.personName) {
+      return null;
+    }
+    return decodeURIComponent(activeRoute.params.personName);
+  }
+);
+
 export const genreGroupsSelector = createSelector(
   currentMoodsSelector,
   (moods) => {

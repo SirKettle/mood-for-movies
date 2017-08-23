@@ -41,6 +41,7 @@ const Result = ({
   genreIds,
   releaseDate,
   currentMedia,
+  currentPersonName,
   netflix,
   iTunes,
   peopleImgBaseUrl,
@@ -52,7 +53,6 @@ const Result = ({
       <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc || defaultImage})` }} />
       <div className={styles.scrollWrapper}>
         <div className={styles.contents}>
-          
           <div className={classnames(typography.elliot, styles.meta)}>
             <div>{ releaseDate.slice(0, 4) }</div>
             <Stars className={styles.stars} percentage={voteAverage * 10} />
@@ -63,7 +63,13 @@ const Result = ({
               null
             }
           </div>
-
+          {
+            currentPersonName
+            ? (<p className={classnames(typography.bottomMargin, typography.elliot)}>
+              { currentPersonName } - movies
+            </p>)
+            : null
+          }
           <h2 className={classnames(typography.bottomMargin, typography.will, styles.title)}>
             { title }
           </h2>
@@ -164,6 +170,7 @@ Result.propTypes = {
   genreIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   releaseDate: PropTypes.string.isRequired,
   currentMedia: PropTypes.string.isRequired,
+  currentPersonName: PropTypes.string,
   track: PropTypes.func,
   navigateTo: PropTypes.func,
   peopleImgBaseUrl: PropTypes.string.isRequired,
@@ -180,6 +187,7 @@ Result.defaultProps = {
   iTunes: null,
   posterImgSrc: null,
   imgSrc: null,
+  currentPersonName: null,
   navigateTo: () => { console.warn('navigateTo param not set', arguments); },
   track: () => { console.warn('track param not set', arguments); }
 };

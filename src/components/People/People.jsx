@@ -5,7 +5,11 @@ import typography from '../../css/typography.css';
 
 const handleOnClick = (person, media, navigateTo, track) => {
   track('person-button', `${media}_${person.get('id')}_${person.get('name')}`);
-  navigateTo('person_results', { media, personId: person.get('id') });
+  navigateTo('person_results', {
+    media: 'movies',
+    personId: person.get('id'),
+    personName: encodeURIComponent(person.get('name'))
+  });
 };
 
 const getImageUrl = (baseUrl, profileUrl) => {
