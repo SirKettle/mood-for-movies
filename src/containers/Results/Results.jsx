@@ -89,6 +89,9 @@ export class Results extends Component {
 
     if (this.getIsNewRoute(prevProps)) {
       requestResults();
+      // scroll to top - we need to do this here because,
+      // when searhing by person, the result can be the same
+      window.scrollTo(0, 0);
     }
   }
 
