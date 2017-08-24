@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './GetOnItunes.css';
 import getItOnItunes from '../../assets/images/Get_it_on_iTunes.svg';
-import getUriSafe from '../../utils/url';
+import { getUriSafe } from '../../utils/url';
 
 const AFFILIATE_TOKEN = '1001lybQ';
 const CAMPAIGN_TOKEN = 'choosymovietv';

@@ -1,14 +1,16 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 import styles from './People.css';
+import * as urlUtils from '../../utils/url';
 import typography from '../../css/typography.css';
 
 const handleOnClick = (person, media, navigateTo, track) => {
   track('person-button', `${media}_${person.get('id')}_${person.get('name')}`);
   navigateTo('person_results', {
+    // can currently only 'discover' movies by person id :/
     media: 'movies',
     personId: person.get('id'),
-    personName: encodeURIComponent(person.get('name'))
+    personName: urlUtils.encodeUriSafe(person.get('name'))
   });
 };
 

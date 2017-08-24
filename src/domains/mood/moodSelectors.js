@@ -1,6 +1,7 @@
 import Ramda from 'ramda';
 import { createSelector } from 'reselect';
 import * as routerSelectors from '../router/routerSelectors';
+import * as urlUtils from '../../utils/url';
 import MOODS from '../../constants/moods';
 
 export const modelSelector = (state) => {
@@ -36,7 +37,7 @@ export const currentPersonNameSelector = createSelector(
     if (!activeRoute.params.personName) {
       return null;
     }
-    return decodeURIComponent(activeRoute.params.personName);
+    return urlUtils.decodeUriSafe(activeRoute.params.personName);
   }
 );
 
