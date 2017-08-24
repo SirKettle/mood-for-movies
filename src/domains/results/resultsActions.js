@@ -61,7 +61,7 @@ export const baseDiscoverQueryParams = {
   sort_by: 'vote_average.desc',
   language: 'en-US',
   with_original_language: 'en',
-  'vote_count.gte': 200,
+  'vote_count.gte': 50,
   api_key: TMDb.API_KEY,
   'primary_release_date.gte': 1945 // 2014
 };
@@ -71,9 +71,8 @@ export const baseDiscoverTvQueryParams = {
   sort_by: 'popularity.desc',
   language: 'en-US',
   with_original_language: 'en',
-  'vote_count.gte': 200,
-  api_key: TMDb.API_KEY,
-  'first_air_date.gte': 2007 // 2014
+  'vote_count.gte': 50,
+  api_key: TMDb.API_KEY
 };
 
 const fetchResults = (dispatch, basePayload, url) => {
