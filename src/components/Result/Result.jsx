@@ -66,7 +66,7 @@ const Result = ({
           {
             currentPersonName
             ? (<p className={classnames(typography.bottomMargin, typography.elliot)}>
-              { currentPersonName } - movies
+              { currentPersonName } - { currentMedia }
             </p>)
             : null
           }
@@ -113,7 +113,7 @@ const Result = ({
           </div>
           <hr />
           <h3 className={classnames(typography.bottomMargin, typography.tom)}>
-            Featured cast and crew
+            Search by cast and crew
           </h3>
           <People
             people={cast}
