@@ -10,7 +10,8 @@ const handleOnClick = (person, media, navigateTo, track) => {
     // can currently only 'discover' movies by person id :/
     media: 'movies',
     personId: person.get('id'),
-    personName: urlUtils.encodeUriSafe(person.get('name'))
+    personName: urlUtils.encodeUriSafe(person.get('name')),
+    page: 1
   });
 };
 

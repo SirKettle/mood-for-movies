@@ -63,7 +63,6 @@ export const genreGroupsSelector = createSelector(
 export const currentMediaSelector = createSelector(
   routerSelectors.activeRouteSelector,
   (activeRoute) => {
-    console.log('activeRoute', activeRoute);
     return activeRoute.params.media || 'all';
   }
 );

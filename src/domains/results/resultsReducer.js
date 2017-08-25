@@ -19,12 +19,6 @@ const resultsReducers = {
     const { currentMedia, data } = action.payload;
     return state.setIn(['server', currentMedia, getResultsKey(action.payload), 'data'], Immutable.fromJS(data))
       .setIn(['server', currentMedia, getResultsKey(action.payload), 'loadingStatus'], loadingStates.COMPLETE);
-  },
-  [actionTypes.REQUEST_NEXT_RESULT]: (state, action) => {
-    const { moodForKey, previous } = action.payload;
-    const currentIndex = state.getIn(['ui', moodForKey, 'currentIndex']);
-    const nextIndex = previous ? currentIndex - 1 : currentIndex + 1;
-    return state.setIn(['ui', moodForKey, 'currentIndex'], nextIndex);
   }
 };
 

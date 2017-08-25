@@ -15,7 +15,6 @@ const ENDPOINTS = {
 };
 
 export const loadCredits = result => (dispatch, getState) => {
-  console.log('loadCredits', result.toJS());
   const currentMedia = moodSelectors.currentMediaSelector(getState());
   const isTv = moodSelectors.isTvMediaSelector(getState());
   const endpointFactory = isTv ? ENDPOINTS.CREDITS_TV : ENDPOINTS.CREDITS_MOVIE;
@@ -38,7 +37,6 @@ export const loadCredits = result => (dispatch, getState) => {
     method: 'GET'
   }).then(response => response.json()
   , (error) => {
-    // console.log(error);
     dispatch({
       type: actionTypes.LOAD_CREDITS_ERROR,
       payload: {

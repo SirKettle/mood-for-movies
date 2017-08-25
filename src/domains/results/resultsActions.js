@@ -1,7 +1,10 @@
 import 'whatwg-fetch';
+import { actions as routerActions } from 'redux-router5';
 import TMDb from '../../constants/tmdb';
 import { buildUrlWithQueryParams } from '../../utils/api';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
+import * as resultsSelectors from '../../domains/results/resultsSelectors';
+import * as routerSelectors from '../../domains/router/routerSelectors';
 
 export const actionTypes = {
   LOAD_CONFIGURATION_PENDING: 'LOAD_CONFIGURATION_PENDING',
@@ -9,8 +12,7 @@ export const actionTypes = {
   LOAD_CONFIGURATION_ERROR: 'LOAD_CONFIGURATION_ERROR',
   LOAD_RESULTS_PENDING: 'LOAD_RESULTS_PENDING',
   LOAD_RESULTS_SUCCESS: 'LOAD_RESULTS_SUCCESS',
-  LOAD_RESULTS_ERROR: 'LOAD_RESULTS_ERROR',
-  REQUEST_NEXT_RESULT: 'REQUEST_NEXT_RESULT'
+  LOAD_RESULTS_ERROR: 'LOAD_RESULTS_ERROR'
 };
 
 const ENDPOINTS = {
@@ -41,17 +43,42 @@ export const loadConfiguration = (dispatch) => {
   });
 };
 
+const getNextIndex = (currentIndex, total) => {
+  return (currentIndex + 1) % total;
+};
+
+const getPreviousIndex = (currentIndex, total) => {
+  return (currentIndex === 0 ? total : currentIndex) - 1;
+};
+
+const getNextPageIndex = (isPrevious, currentIndex, total) => {
+  const nextFunc = isPrevious ? getPreviousIndex : getNextIndex;
+  return nextFunc(currentIndex, total);
+};
+
 export const requestNextResult = args => (dispatch, getState) => {
-  const moodForKey = moodSelectors.moodForKeySelector(getState());
-  const currentMedia = moodSelectors.currentMediaSelector(getState());
-  dispatch({
-    type: actionTypes.REQUEST_NEXT_RESULT,
-    payload: {
-      moodForKey,
-      currentMedia,
-      previous: args.previous || false
-    }
-  });
+  const currentResultPageInfo = resultsSelectors.currentResultPageInfoSelector(getState());
+  const activeRoute = routerSelectors.activeRouteSelector(getState());
+  const isPrevious = args.previous || false;
+  const nextPageIndex = getNextPageIndex(
+    isPrevious,
+    currentResultPageInfo.index,
+    currentResultPageInfo.total
+  );
+  const nextPageNumber = nextPageIndex + 1;
+
+  dispatch(
+    routerActions.navigateTo(
+      activeRoute.name,
+      {
+        ...activeRoute.params,
+        page: nextPageNumber
+      },
+      {
+        replace: true
+      }
+    )
+  );
 };
 
 export const baseDiscoverQueryParams = {
@@ -88,7 +115,6 @@ const fetchResults = (dispatch, basePayload, url) => {
     method: 'GET'
   }).then(response => response.json()
   , (error) => {
-    // console.log(error);
     dispatch({
       type: actionTypes.LOAD_RESULTS_ERROR,
       payload: {
@@ -162,8 +188,6 @@ export const loadResults = () => (dispatch, getState) => {
   const currentMedia = moodSelectors.currentMediaSelector(getState());
   const isTv = moodSelectors.isTvMediaSelector(getState());
   const personId = moodSelectors.currentPersonIdSelector(getState());
-
-  console.log('genreGroups', genreGroups);
 
   if (personId) {
     if (isTv) {

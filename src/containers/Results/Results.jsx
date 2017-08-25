@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
+import { equals, omit } from 'ramda';
 import { connect } from 'react-redux';
 import { actions as routerActions } from 'redux-router5';
 import { loadResults, requestNextResult } from '../../domains/results/resultsActions';
@@ -112,7 +113,12 @@ export class Results extends Component {
     }];
   }
 
-  getIsNewRoute = prevProps => this.props.activeRoute.path !== prevProps.activeRoute.path;
+  getIsNewRoute = (prevProps) => {
+    return !equals(
+      omit(['page'], this.props.activeRoute.params),
+      omit(['page'], prevProps.activeRoute.params)
+    );
+  }
 
   getIsNewResult = (prevProps) => {
     const { currentResult, loadingStatus } = this.props;

@@ -1,6 +1,8 @@
 import Ramda from 'ramda';
 import Immutable from 'immutable';
 import { createSelector } from 'reselect';
+import * as routerSelectors from '../router/routerSelectors';
+
 import {
   moodForKeySelector,
   genreGroupsSelector,
@@ -15,11 +17,6 @@ export const configurationModelSelector = state => state.resultConfig;
 export const resultsSelector = createSelector(
   resultsModelSelector,
   model => model.get('server')
-);
-
-export const uiSelector = createSelector(
-  resultsModelSelector,
-  model => model.get('ui')
 );
 
 export const configurationSelector = createSelector(
@@ -108,6 +105,16 @@ export const currentResultsSelector = createSelector(
   }
 );
 
+export const currentResultsPageNumberSelector = createSelector(
+  routerSelectors.activeRouteSelector,
+  (activeRoute) => {
+    if (!activeRoute.params.page) {
+      return 1;
+    }
+    return Number(activeRoute.params.page);
+  }
+);
+
 export const currentResultsLoadingStatusSelector = createSelector(
   currentResultsSelector,
   (currentResults) => {
@@ -119,11 +126,10 @@ export const currentResultsLoadingStatusSelector = createSelector(
 );
 
 export const currentResultPageInfoSelector = createSelector(
-  uiSelector,
   currentResultsSelector,
-  moodForKeySelector,
-  (ui, currentResults, moodForKey) => {
-    if (!currentResults || !moodForKey || !ui) {
+  currentResultsPageNumberSelector,
+  (currentResults, currentResultsPageNumber) => {
+    if (!currentResults) {
       return null;
     }
 
@@ -131,25 +137,21 @@ export const currentResultPageInfoSelector = createSelector(
     if (!results || !results.size) {
       return null;
     }
-
-    const currentCounter = ui.getIn([moodForKey, 'currentIndex']);
-    const currentIndex = currentCounter % results.size;
-
+    
     return {
-      index: currentIndex,
-      display: currentIndex < 0 ? currentIndex + 1 + results.size : currentIndex + 1,
+      index: currentResultsPageNumber - 1,
+      display: currentResultsPageNumber,
       total: results.size
     };
   }
 );
 
 export const currentResultSelector = createSelector(
-  uiSelector,
   currentResultsSelector,
   moodForKeySelector,
   currentResultPageInfoSelector,
-  (ui, currentResults, moodForKey, currentResultPageInfo) => {
-    if (!currentResults || !moodForKey || !ui || !currentResultPageInfo) {
+  (currentResults, moodForKey, currentResultPageInfo) => {
+    if (!currentResults || !moodForKey || !currentResultPageInfo) {
       return null;
     }
 
@@ -163,12 +165,10 @@ export const currentResultSelector = createSelector(
 );
 
 export const nextResultSelector = createSelector(
-  uiSelector,
   currentResultsSelector,
-  moodForKeySelector,
   currentResultPageInfoSelector,
-  (ui, currentResults, moodForKey, currentResultPageInfo) => {
-    if (!currentResults || !moodForKey || !ui || !currentResultPageInfo) {
+  (currentResults, currentResultPageInfo) => {
+    if (!currentResults || !currentResultPageInfo) {
       return null;
     }
 
@@ -176,8 +176,8 @@ export const nextResultSelector = createSelector(
     if (!results || !results.size || results.size < 2) {
       return null;
     }
-    const currentCounter = ui.getIn([moodForKey, 'currentIndex']);
-    const nextIndex = (currentCounter + 1) % results.size;
+    
+    const nextIndex = (currentResultPageInfo.index + 1) % results.size;
 
     return results.get(nextIndex);
   }

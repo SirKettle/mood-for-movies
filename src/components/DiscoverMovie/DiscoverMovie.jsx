@@ -45,7 +45,11 @@ export class DiscoverMovie extends Component {
     const { moodsSelected, navigateTo, track } = this.props;
     const moodOptions = moodsSelected.join('-').toLowerCase();
     track(`${media}-button`, moodOptions);
-    navigateTo('results', { media, options: moodOptions });
+    navigateTo('results', {
+      media,
+      options: moodOptions,
+      page: 1
+    });
   }
 
   renderMoods = () => {

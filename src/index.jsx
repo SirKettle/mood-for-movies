@@ -21,6 +21,5 @@ const wrappedApp = (
 );
 
 router.start((/* err, state */) => {
-  // console.log('router start', err, state);
   ReactDOM.render(wrappedApp, document.getElementById('app'));
 });
