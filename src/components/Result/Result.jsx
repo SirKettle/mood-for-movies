@@ -11,6 +11,7 @@ import typography from '../../css/typography.css';
 import defaultImage from '../../assets/boys.jpg';
 import GENRES from '../../constants/movieGenres';
 import MOODS from '../../constants/moods';
+import { CREW_TO_DISPLAY } from '../../domains/credits/creditsSelectors';
 
 const renderGenres = (genreIds) => {
   return Object.keys(GENRES)
@@ -132,6 +133,8 @@ const Result = ({
             navigateTo={navigateTo}
             baseUrl={peopleImgBaseUrl}
             media={currentMedia}
+            secondaryField="jobs"
+            displayCount={CREW_TO_DISPLAY}
           />
           <hr />
           <p className={classnames(typography.bottomMargin, typography.elliot)}>
