@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import styles from './People.css';
 import * as urlUtils from '../../utils/url';
 import typography from '../../css/typography.css';
+import emptyImage from '../../assets/images/empty-avatar.png';
 
 const handleOnClick = (person, media, navigateTo, track) => {
   track('person-button', `${media}_${person.get('id')}_${person.get('name')}`);
@@ -17,7 +18,8 @@ const handleOnClick = (person, media, navigateTo, track) => {
 
 const getImageUrl = (baseUrl, profileUrl) => {
   if (!profileUrl) {
-    return 'none';
+    // return 'none';
+    return `url(${emptyImage})`;
   }
   return `url(${baseUrl}${profileUrl})`;
 };
