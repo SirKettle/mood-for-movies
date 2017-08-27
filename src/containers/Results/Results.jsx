@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
+import Swipeable from 'react-swipeable';
 import { equals, omit } from 'ramda';
 import { connect } from 'react-redux';
 import { actions as routerActions } from 'redux-router5';
@@ -173,6 +174,14 @@ export class Results extends Component {
     this.handlePaginationRequest(true);
   }
 
+  handleSwipeLeft = () => {
+    this.handleRequestNext();
+  }
+
+  handleSwipeRight = () => {
+    this.handleRequestPrevious();
+  }
+
   renderResult = () => {
     const { currentResult, currentResultPageInfo, currentMedia,
       currentResultItunes, currentResultNetflix, track,
@@ -229,13 +238,17 @@ export class Results extends Component {
     return (
       <div className={classnames(styles.currentResult)}>
         <Loading className={styles.loading} loadingStatus={loadingStatus}>
-          <div className={styles.resultWrapper}>
+          <Swipeable
+            className={styles.resultWrapper}
+            onSwipedLeft={this.handleSwipeLeft}
+            onSwipedRight={this.handleSwipeRight}
+          >
             <Header
               className={headerClassNames}
               menuItems={this.getHeaderMenuItems()}
             />
             { this.renderResult() }
-          </div>
+          </Swipeable>
         </Loading>
       </div>
     );
