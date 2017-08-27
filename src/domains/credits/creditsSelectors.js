@@ -21,15 +21,30 @@ export const currentResultCreditsSelector = createSelector(
   }
 );
 
+const getSortedCrewArray = (crew, isMovie) => {
+  const crewArray = crew.toArray();
+
+  if (isMovie) {
+    // Make sure job Director is first.
+    const directors = crewArray.filter(person => person.get('job') === 'Director');
+    const others = crewArray.filter(person => person.get('job') !== 'Director');
+    return directors.concat(others);
+  }
+
+  return crewArray;
+};
+
 export const currentResultCrewSelector = createSelector(
   currentResultCreditsSelector,
-  (currentResultCredits) => {
+  moodSelectors.isMoviesMediaSelector,
+  (currentResultCredits, isMovies) => {
     if (!currentResultCredits) {
       return Immutable.List();
     }
     
     const allCrew = currentResultCredits.get('crew');
-    const uniqueCrewArray = uniqBy(person => person.get('id'), allCrew.toArray());
+    const sortedCrewArray = getSortedCrewArray(allCrew, isMovies);
+    const uniqueCrewArray = uniqBy(person => person.get('id'), sortedCrewArray);
     const combinedCrewArray = uniqueCrewArray
     .slice(0, CREW_TO_DISPLAY)
     // This looks a little expensive so lets just
