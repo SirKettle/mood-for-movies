@@ -8,14 +8,13 @@
 }
 
 .person {
-  flex: 1 0 112px;
-  margin: 0 1rem 1rem;
-  max-width: 160px;
+  flex: 0 0 50%;
+  margin: 0 0 1rem;
   text-align: left;
   display: block;
   outline: none;
   appearance: none;
-  padding: 0;
+  padding: 0 1rem;
   border: none;
   background: transparent;
   color: inherit;
@@ -23,6 +22,14 @@
 
   &:focus, &:hover, &:active {
     outline: none;
+  }
+
+  @media (min-width: 430px) {
+    flex-basis: 33.33%;
+  }
+
+  @media (min-width: 600px) {
+    flex-basis: 25%;
   }
 }
 
