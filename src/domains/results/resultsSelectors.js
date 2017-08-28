@@ -2,6 +2,7 @@ import Ramda from 'ramda';
 import Immutable from 'immutable';
 import { createSelector } from 'reselect';
 import * as routerSelectors from '../router/routerSelectors';
+import { getNextIndex, getPreviousIndex } from './resultsActions';
 
 import {
   moodForKeySelector,
@@ -176,6 +177,46 @@ export const currentResultPageInfoSelector = createSelector(
   }
 );
 
+export const nextResultPageInfoSelector = createSelector(
+  currentResultPageInfoSelector,
+  (currentResultPageInfo) => {
+    if (!currentResultPageInfo) {
+      return null;
+    }
+
+    const nextIndex = getNextIndex(
+      currentResultPageInfo.index,
+      currentResultPageInfo.total
+    );
+    
+    return {
+      ...currentResultPageInfo,
+      index: nextIndex,
+      display: nextIndex + 1
+    };
+  }
+);
+
+export const previousResultPageInfoSelector = createSelector(
+  currentResultPageInfoSelector,
+  (currentResultPageInfo) => {
+    if (!currentResultPageInfo) {
+      return null;
+    }
+
+    const previousIndex = getPreviousIndex(
+      currentResultPageInfo.index,
+      currentResultPageInfo.total
+    );
+    
+    return {
+      ...currentResultPageInfo,
+      index: previousIndex,
+      display: previousIndex + 1
+    };
+  }
+);
+
 export const currentResultSelector = createSelector(
   currentResultsSelector,
   moodForKeySelector,
@@ -208,6 +249,25 @@ export const nextResultSelector = createSelector(
     }
     
     const nextIndex = (currentResultPageInfo.index + 1) % results.size;
+
+    return results.get(nextIndex);
+  }
+);
+
+export const previousResultSelector = createSelector(
+  currentResultsSelector,
+  currentResultPageInfoSelector,
+  (currentResults, currentResultPageInfo) => {
+    if (!currentResults || !currentResultPageInfo) {
+      return null;
+    }
+
+    const results = currentResults.get('results');
+    if (!results || !results.size || results.size < 2) {
+      return null;
+    }
+    
+    const nextIndex = (currentResultPageInfo.index - 1) % results.size;
 
     return results.get(nextIndex);
   }

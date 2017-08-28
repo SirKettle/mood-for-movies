@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
-import Swipeable from 'react-swipeable';
+import Immutable from 'immutable';
+import ReactSwipe from 'react-swipe';
 import { equals, omit } from 'ramda';
 import { connect } from 'react-redux';
 import { actions as routerActions } from 'redux-router5';
@@ -30,7 +31,10 @@ const mapStateToProps = (state) => {
     currentResultNetflix: availabilitySelectors.currentResultNetflixSelector(state),
     currentResultItunes: availabilitySelectors.currentResultItunesSelector(state),
     nextResult: resultsSelectors.nextResultSelector(state),
+    previousResult: resultsSelectors.previousResultSelector(state),
     currentResultPageInfo: resultsSelectors.currentResultPageInfoSelector(state),
+    nextResultPageInfo: resultsSelectors.nextResultPageInfoSelector(state),
+    previousResultPageInfo: resultsSelectors.previousResultPageInfoSelector(state),
     loadingStatus: resultsSelectors.currentResultsLoadingStatusSelector(state),
     activeRoute: routerSelectors.activeRouteSelector(state),
     moodForKey: moodSelectors.moodForKeySelector(state),
@@ -56,7 +60,10 @@ export class Results extends Component {
   static defaultProps = {
     currentResult: null,
     nextResult: null,
+    previousResult: null,
     currentResultPageInfo: null,
+    nextResultPageInfo: null,
+    previousResultPageInfo: null,
     currentResultNetflix: null,
     currentResultItunes: null,
     currentPersonName: null,
@@ -176,18 +183,55 @@ export class Results extends Component {
     this.handlePaginationRequest(true);
   }
 
-  handleSwipeLeft = () => {
-    this.handleRequestNext();
+  handleOnSwipe = (index) => {
+    const isPrevious = index === 2;
+    this.handlePaginationRequest(isPrevious);
   }
 
-  handleSwipeRight = () => {
-    this.handleRequestPrevious();
+  renderResult = (
+    result,
+    pageInfo,
+    netflix = null,
+    iTunes = null,
+    cast = Immutable.List(),
+    crew = Immutable.List()
+  ) => {
+    const { currentMedia, track,
+      currentPersonName, navigateTo, profileImagesBaseUrl
+    } = this.props;
+    const releaseDateLabel = moodSelectors.getMediaReleaseDateLabel(currentMedia);
+    const titleLabel = moodSelectors.getMediaTitleLabel(currentMedia);
+
+    const resultProps = {
+      track,
+      navigateTo,
+      className: styles.result,
+      title: result.get(titleLabel),
+      overview: result.get('overview'),
+      posterImgSrc: this.getImgSrc(result, 'poster_path'),
+      imgSrc: this.getImgSrc(result, 'backdrop_path'),
+      voteCount: result.get('vote_count'),
+      voteAverage: result.get('vote_average'),
+      popularity: result.get('popularity'),
+      genreIds: result.get('genre_ids').toArray(),
+      releaseDate: result.get(releaseDateLabel),
+      netflix,
+      iTunes,
+      currentResultPageInfo: pageInfo,
+      currentMedia,
+      currentPersonName,
+      peopleImgBaseUrl: profileImagesBaseUrl,
+      cast,
+      crew
+    };
+
+    return (<Result {...resultProps} />);
   }
 
-  renderResult = () => {
-    const { currentResult, currentResultPageInfo, currentMedia,
-      currentResultItunes, currentResultNetflix, track,
-      currentPersonName, navigateTo, profileImagesBaseUrl, cast, crew
+  renderResults = () => {
+    const { currentResult, currentMedia, currentResultItunes,
+      currentResultNetflix, cast, crew, nextResult, previousResult,
+      currentResultPageInfo, nextResultPageInfo, previousResultPageInfo
     } = this.props;
 
     if (!currentResult) {
@@ -199,33 +243,29 @@ export class Results extends Component {
       );
     }
 
-    const releaseDateLabel = moodSelectors.getMediaReleaseDateLabel(currentMedia);
-    const titleLabel = moodSelectors.getMediaTitleLabel(currentMedia);
+    const currentResultComponent = this.renderResult(
+      currentResult, currentResultPageInfo, currentResultNetflix,
+      currentResultItunes, cast, crew
+    );
 
-    const resultProps = {
-      track,
-      navigateTo,
-      className: styles.result,
-      title: currentResult.get(titleLabel),
-      overview: currentResult.get('overview'),
-      posterImgSrc: this.getImgSrc(currentResult, 'poster_path'),
-      imgSrc: this.getImgSrc(currentResult, 'backdrop_path'),
-      voteCount: currentResult.get('vote_count'),
-      voteAverage: currentResult.get('vote_average'),
-      popularity: currentResult.get('popularity'),
-      genreIds: currentResult.get('genre_ids').toArray(),
-      releaseDate: currentResult.get(releaseDateLabel),
-      netflix: currentResultNetflix,
-      iTunes: currentResultItunes,
-      currentResultPageInfo,
-      currentMedia,
-      currentPersonName,
-      peopleImgBaseUrl: profileImagesBaseUrl,
-      cast,
-      crew
-    };
+    if (!nextResult || !previousResult) {
+      return currentResultComponent;
+    }
 
-    return (<Result {...resultProps} />);
+    return (
+      <ReactSwipe
+        key={currentResult.get('id')}
+        className={styles.carousel}
+        swipeOptions={{
+          continuous: true,
+          callback: this.handleOnSwipe
+        }}
+      >
+        { currentResultComponent }
+        { this.renderResult(nextResult, nextResultPageInfo) }
+        { this.renderResult(previousResult, previousResultPageInfo) }
+      </ReactSwipe>
+    );
   }
 
   render() {
@@ -240,17 +280,13 @@ export class Results extends Component {
     return (
       <div className={classnames(styles.currentResult)}>
         <Loading className={styles.loading} loadingStatus={loadingStatus}>
-          <Swipeable
-            className={styles.resultWrapper}
-            onSwipedLeft={this.handleSwipeLeft}
-            onSwipedRight={this.handleSwipeRight}
-          >
+          <div className={styles.resultWrapper}>
             <Header
               className={headerClassNames}
               menuItems={this.getHeaderMenuItems()}
             />
-            { this.renderResult() }
-          </Swipeable>
+            { this.renderResults() }
+          </div>
         </Loading>
       </div>
     );
@@ -275,7 +311,13 @@ Results.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   nextResult: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
+  previousResult: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
   currentResultPageInfo: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
+  nextResultPageInfo: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
+  previousResultPageInfo: PropTypes.object,
   loadingStatus: PropTypes.string.isRequired,
   profileImagesBaseUrl: PropTypes.string,
   movieImagesBaseUrl: PropTypes.string,

@@ -60,10 +60,22 @@
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+  overflow-y: visible;
+  overflow-x: hidden;
 }
 
 .noResults {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+}
+
+.carousel {
+  overflow-y: visible!important;
+
+  & > * {
+    overflow-y: visible!important;
+    display: flex;
+    flex-direction: row;
+  }
 }

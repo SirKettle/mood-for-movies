@@ -106,6 +106,7 @@
     "react-router": "^3.0.2",
     "react-router-redux": "^4.0.8",
     "react-router5": "^4.0.1",
+    "react-swipe": "^5.0.8",
     "react-swipeable": "^4.1.0",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.0",

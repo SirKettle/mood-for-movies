@@ -43,11 +43,11 @@ export const loadConfiguration = (dispatch) => {
   });
 };
 
-const getNextIndex = (currentIndex, total) => {
+export const getNextIndex = (currentIndex, total) => {
   return (currentIndex + 1) % total;
 };
 
-const getPreviousIndex = (currentIndex, total) => {
+export const getPreviousIndex = (currentIndex, total) => {
   return (currentIndex === 0 ? total : currentIndex) - 1;
 };
 
