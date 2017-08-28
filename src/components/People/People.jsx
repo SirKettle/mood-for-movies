@@ -40,7 +40,7 @@ const People = ({
         people.slice(0, displayCount)
           .map(person => (
             <button
-              key={person.get('credit_id')}
+              key={person.get('credit_id') || person.get('id')}
               className={styles.person}
               onClick={() => {
                 handleOnClick(person, media, navigateTo, track);
@@ -52,7 +52,11 @@ const People = ({
               />
               <div className={styles.info}>
                 <p className={classnames(typography.simon, styles.name)}>{person.get('name')}</p>
-                <p className={classnames(typography.elliot)}>{person.get(secondaryField)}</p>
+                {
+                  secondaryField
+                  ? (<p className={classnames(typography.elliot)}>{person.get(secondaryField)}</p>)
+                  : null
+                }
               </div>
             </button>
           ))
@@ -67,7 +71,7 @@ People.propTypes = {
   navigateTo: PropTypes.func.isRequired,
   baseUrl: PropTypes.string.isRequired,
   secondaryField: PropTypes.string,
-  media: PropTypes.string.isRequired,
+  media: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
   people: PropTypes.object.isRequired,
   displayCount: PropTypes.number
@@ -75,8 +79,9 @@ People.propTypes = {
 
 People.defaultProps = {
   className: 'some-people',
-  secondaryField: 'job',
-  displayCount: 4
+  secondaryField: null,
+  displayCount: 4,
+  media: 'all'
 };
 
 export default People;

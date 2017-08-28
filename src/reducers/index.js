@@ -5,6 +5,7 @@ import mood from '../domains/mood/moodReducer';
 import config from '../domains/config/configReducer';
 import availability from '../domains/availability/availabilityReducer';
 import credits from '../domains/credits/creditsReducer';
+import search from '../domains/search/searchReducer';
 import { resultsReducer, configurationReducer } from '../domains/results/resultsReducer';
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   mood,
   availability,
   credits,
+  search,
   results: resultsReducer,
   resultConfig: configurationReducer
 });

@@ -87,7 +87,6 @@ export const baseDiscoverQueryParams = {
   include_adult: false,
   sort_by: 'vote_average.desc',
   language: 'en-US',
-  with_original_language: 'en',
   'vote_count.gte': 50,
   api_key: TMDb.API_KEY,
   'primary_release_date.gte': 1945 // 2014
@@ -100,6 +99,15 @@ export const baseDiscoverTvQueryParams = {
   with_original_language: 'en',
   'vote_count.gte': 50,
   api_key: TMDb.API_KEY
+};
+
+const getMovieLanguageParams = (allLanguages) => {
+  if (allLanguages) {
+    return {};
+  }
+  return {
+    with_original_language: 'en'
+  };
 };
 
 const fetchResults = (dispatch, basePayload, url) => {
@@ -164,9 +172,13 @@ const fetchTvShows = (dispatch, currentMedia, moodForKey, genres, personId) => {
   return fetchResults(dispatch, basePayload, url);
 };
 
-const fetchMovies = (dispatch, currentMedia, moodForKey, genres, personId) => {
+const fetchMovies = (
+  dispatch, currentMedia, moodForKey,
+  genres, personId, allLanguages = false
+) => {
   const queryParams = {
     ...baseDiscoverQueryParams,
+    ...getMovieLanguageParams(allLanguages),
     ...getMoodParams(genres, personId)
   };
   const url = buildUrlWithQueryParams(ENDPOINTS.DISCOVER_MOVIES, queryParams);
@@ -193,7 +205,7 @@ export const loadResults = () => (dispatch, getState) => {
     if (isTv) {
       fetchTvShows(dispatch, currentMedia, moodForKey, [], personId);
     } else {
-      fetchMovies(dispatch, currentMedia, moodForKey, [], personId);
+      fetchMovies(dispatch, currentMedia, moodForKey, [], personId, true);
     }
     return;
   }

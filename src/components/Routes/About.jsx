@@ -65,4 +65,4 @@ function About() {
   );
 }
 
-export default connect(() => routeNodeSelector('about'))(About);
+export default connect(() => routeNodeSelector(''))(About);
