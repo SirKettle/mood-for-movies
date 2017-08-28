@@ -24,6 +24,36 @@ export const configurationSelector = createSelector(
   model => model.get('data')
 );
 
+export const imagesBaseUrlSelector = createSelector(
+  configurationSelector,
+  (configuration) => {
+    if (!configuration) {
+      return null;
+    }
+    return configuration.getIn(['images', 'base_url']);
+  }
+);
+
+export const profileImagesBaseUrlSelector = createSelector(
+  imagesBaseUrlSelector,
+  (baseUrl) => {
+    if (!baseUrl) {
+      return null;
+    }
+    return `${baseUrl}w185`;
+  }
+);
+
+export const movieImagesBaseUrlSelector = createSelector(
+  imagesBaseUrlSelector,
+  (baseUrl) => {
+    if (!baseUrl) {
+      return null;
+    }
+    return `${baseUrl}w780`;
+  }
+);
+
 export const configurationLoadingSelector = createSelector(
   configurationModelSelector,
   model => model.get('loadingStatus')

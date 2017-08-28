@@ -7,4 +7,4 @@ function ResultsView() {
   return (<Results />);
 }
 
-export default connect(() => routeNodeSelector('results'))(ResultsView);
+export default connect(() => routeNodeSelector(''))(ResultsView);

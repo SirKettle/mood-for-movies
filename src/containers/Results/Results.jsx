@@ -24,7 +24,8 @@ import typography from '../../css/typography.css';
 
 const mapStateToProps = (state) => {
   return {
-    configuration: resultsSelectors.configurationSelector(state),
+    profileImagesBaseUrl: resultsSelectors.profileImagesBaseUrlSelector(state),
+    movieImagesBaseUrl: resultsSelectors.movieImagesBaseUrlSelector(state),
     currentResult: resultsSelectors.currentResultSelector(state),
     currentResultNetflix: availabilitySelectors.currentResultNetflixSelector(state),
     currentResultItunes: availabilitySelectors.currentResultItunesSelector(state),
@@ -59,7 +60,8 @@ export class Results extends Component {
     currentResultNetflix: null,
     currentResultItunes: null,
     currentPersonName: null,
-    configuration: null
+    profileImagesBaseUrl: null,
+    movieImagesBaseUrl: null
   }
 
   componentWillMount() {
@@ -147,11 +149,11 @@ export class Results extends Component {
   }
 
   getImgSrc = (result, srcKey) => {
-    const { configuration } = this.props;
+    const { movieImagesBaseUrl } = this.props;
     const src = result.get(srcKey);
     
     if (src) {
-      return `${configuration.getIn(['images', 'base_url'])}w780${src}`;
+      return `${movieImagesBaseUrl}${src}`;
     }
 
     return null;
@@ -185,7 +187,7 @@ export class Results extends Component {
   renderResult = () => {
     const { currentResult, currentResultPageInfo, currentMedia,
       currentResultItunes, currentResultNetflix, track,
-      currentPersonName, navigateTo, configuration, cast, crew
+      currentPersonName, navigateTo, profileImagesBaseUrl, cast, crew
     } = this.props;
 
     if (!currentResult) {
@@ -218,7 +220,7 @@ export class Results extends Component {
       currentResultPageInfo,
       currentMedia,
       currentPersonName,
-      peopleImgBaseUrl: `${configuration.getIn(['images', 'base_url'])}w185`,
+      peopleImgBaseUrl: profileImagesBaseUrl,
       cast,
       crew
     };
@@ -275,8 +277,8 @@ Results.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   currentResultPageInfo: PropTypes.object,
   loadingStatus: PropTypes.string.isRequired,
-  /* eslint react/forbid-prop-types: 0 */
-  configuration: PropTypes.object,
+  profileImagesBaseUrl: PropTypes.string,
+  movieImagesBaseUrl: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
   activeRoute: PropTypes.object.isRequired,
   moodForKey: PropTypes.string.isRequired,

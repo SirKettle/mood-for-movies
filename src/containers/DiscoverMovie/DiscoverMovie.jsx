@@ -6,14 +6,14 @@ import { actions as routerActions } from 'redux-router5';
 import { setMood } from '../../domains/mood/moodActions';
 import { trackClick } from '../../domains/ui/uiActions';
 import * as moodSelectors from '../../domains/mood/moodSelectors';
-import Header from '../Header/Header';
-import MoodOptions from '../MoodOptions/MoodOptions';
 import MOODS from '../../constants/moods';
-import Button from '../Button/BaseButton';
 import backgroundImage from '../../assets/images/lights.png';
+import typography from '../../css/typography.css';
+import Header from '../../components/Header/Header';
+import MoodOptions from '../../components/MoodOptions/MoodOptions';
+import Button from '../../components/Button/BaseButton';
 
 import styles from './DiscoverMovie.css';
-import typography from '../../css/typography.css';
 
 const mapStateToProps = (state) => {
   return {
@@ -31,9 +31,13 @@ const mapDispatchToProps = dispatch => ({
 export class DiscoverMovie extends Component {
 
   getHeaderMenuItems = () => {
+    const { navigateTo } = this.props;
     return [{
+      label: 'People',
+      onClick: () => { navigateTo('search'); }
+    }, {
       label: 'About',
-      onClick: () => { window.location.href = '/#/about'; }
+      onClick: () => { navigateTo('about'); }
     }];
   }
 

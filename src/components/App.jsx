@@ -7,8 +7,8 @@ import { requestIpInfo } from '../domains/config/configActions';
 
 import Home from './Routes/Home';
 import About from './Routes/About';
-// import Movie from './Routes/Movie';
 import Results from './Routes/Results';
+import Search from './Routes/Search';
 import NotFound from './NotFound';
 
 import '../css/reset.css';
@@ -17,11 +17,10 @@ import typography from '../css/typography.css';
 
 const components = {
   __root__: Home,
-  // movie: MovieSuggestion,
   about: About,
-  // movie: Movie,
   results: Results,
-  person_results: Results
+  person_results: Results,
+  search: Search
 };
 
 const mapStateToProps = () => routeNodeSelector('');
