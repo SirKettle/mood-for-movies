@@ -60,6 +60,46 @@
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+  transform: translateX(0);
+  animation-duration: 100ms;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-out;
+}
+
+@keyframes toleft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-200%); }
+}
+
+@keyframes toright {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes fromleft {
+  0% { transform: translateX(-200%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes fromright {
+  0% { transform: translateX(200%); }
+  100% { transform: translateX(0); }
+}
+
+.toLeft {
+  animation-name: toleft;
+}
+
+.toRight {
+  animation-name: toright;
+}
+
+.fromLeft {
+  animation-name: fromleft;
+}
+
+.fromRight {
+  animation-name: fromright;
 }
 
 .noResults {

@@ -64,9 +64,27 @@ export class Results extends Component {
     movieImagesBaseUrl: null
   }
 
+  state = {
+    swipeClass: null
+  }
+
   componentWillMount() {
     const { requestResults } = this.props;
     requestResults();
+  }
+
+  componentWillReceiveProps(prevProps) {
+    if (this.getIsNewResult(prevProps) && this.state.swipeClass) {
+      if (this.state.swipeClass === 'toLeft') {
+        this.setState({ swipeClass: 'fromRight' });
+        return;
+      }
+      if (this.state.swipeClass === 'toRight') {
+        this.setState({ swipeClass: 'fromLeft' });
+        return;
+      }
+      this.setState({ swipeClass: null });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -177,11 +195,13 @@ export class Results extends Component {
   }
 
   handleSwipeLeft = () => {
-    this.handleRequestNext();
+    this.setState({ swipeClass: 'toLeft' });
+    setTimeout(this.handleRequestNext, 100);
   }
 
   handleSwipeRight = () => {
-    this.handleRequestPrevious();
+    this.setState({ swipeClass: 'toRight' });
+    setTimeout(this.handleRequestPrevious, 100);
   }
 
   renderResult = () => {
@@ -201,11 +221,14 @@ export class Results extends Component {
 
     const releaseDateLabel = moodSelectors.getMediaReleaseDateLabel(currentMedia);
     const titleLabel = moodSelectors.getMediaTitleLabel(currentMedia);
+    const className = classnames(styles.result, {
+      [styles[this.state.swipeClass]]: !!this.state.swipeClass
+    });
 
     const resultProps = {
       track,
       navigateTo,
-      className: styles.result,
+      className,
       title: currentResult.get(titleLabel),
       overview: currentResult.get('overview'),
       posterImgSrc: this.getImgSrc(currentResult, 'poster_path'),
