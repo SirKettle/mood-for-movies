@@ -13,15 +13,14 @@ export default class TweetButton extends Component {
   }
 
   getTweetPrePopulatedText = () => {
-    // const { title } = this.props;
-    // const text = `Choosy Movie just recommended me ${title}`;
-    const text = 'Choosy Movie just recommended me a movie based on my mood!';
+    const { title } = this.props;
+    const text = `Choosy Movie just recommended me "${title}"`;
+    // const text = 'Choosy Movie just recommended me a movie based on my mood!';
     return encodeURIComponent(text);
   }
 
   render() {
-    const { className, title } = this.props;
-    console.log(title);
+    const { className } = this.props;
 
     return (
       <div
