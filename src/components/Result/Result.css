@@ -73,28 +73,6 @@
 .pageInfo {
 }
 
-.backdrop {
-  position: fixed;
-  top: -150px;
-  bottom: -50px;
-  left: -50px;
-  right: -50px;
-  z-index: 0;
-  background-color: black;
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: blur(15px);
-
-  &:after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    bottom: 0; right: 0;
-    background: rgba(0,0,0,0.25);
-    z-index: 0;
-  }
-}
-
 .image {
   clear: both;
   max-width: 100%;
