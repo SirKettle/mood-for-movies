@@ -272,3 +272,11 @@ export const previousResultSelector = createSelector(
     return results.get(nextIndex);
   }
 );
+
+export const getPageInfoByIndex = (results, index) => ({
+  index,
+  display: index + 1,
+  total: results.size
+});
+
+export const getResultByIndex = (results, index) => results.get(index);

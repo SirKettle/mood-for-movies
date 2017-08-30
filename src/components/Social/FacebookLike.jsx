@@ -11,8 +11,7 @@ export default class FacebookLike extends Component {
   }
 
   render() {
-    const { className, title } = this.props;
-    console.log(title);
+    const { className } = this.props;
 
     return (
       <div
@@ -35,11 +34,9 @@ export default class FacebookLike extends Component {
 }
 
 FacebookLike.propTypes = {
-  className: PropTypes.string,
-  title: PropTypes.string
+  className: PropTypes.string
 };
 
 FacebookLike.defaultProps = {
-  className: 'facebook-like-button',
-  title: 'Choosy movie facebook like title'
+  className: 'facebook-like-button'
 };

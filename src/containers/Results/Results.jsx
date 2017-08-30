@@ -5,7 +5,7 @@ import ReactSwipe from 'react-swipe';
 import { equals, omit } from 'ramda';
 import { connect } from 'react-redux';
 import { actions as routerActions } from 'redux-router5';
-import { loadResults, requestNextResult } from '../../domains/results/resultsActions';
+import { loadResults, requestNextResult, getPreviousIndex } from '../../domains/results/resultsActions';
 import { loadCredits } from '../../domains/credits/creditsActions';
 import { requestNetflixAvailability, requestItunesAvailability } from '../../domains/availability/availabilityActions';
 import { trackClick } from '../../domains/ui/uiActions';
@@ -28,13 +28,12 @@ const mapStateToProps = (state) => {
     profileImagesBaseUrl: resultsSelectors.profileImagesBaseUrlSelector(state),
     movieImagesBaseUrl: resultsSelectors.movieImagesBaseUrlSelector(state),
     currentResult: resultsSelectors.currentResultSelector(state),
+    currentResults: resultsSelectors.currentResultsSelector(state),
     currentResultNetflix: availabilitySelectors.currentResultNetflixSelector(state),
     currentResultItunes: availabilitySelectors.currentResultItunesSelector(state),
     nextResult: resultsSelectors.nextResultSelector(state),
     previousResult: resultsSelectors.previousResultSelector(state),
     currentResultPageInfo: resultsSelectors.currentResultPageInfoSelector(state),
-    nextResultPageInfo: resultsSelectors.nextResultPageInfoSelector(state),
-    previousResultPageInfo: resultsSelectors.previousResultPageInfoSelector(state),
     loadingStatus: resultsSelectors.currentResultsLoadingStatusSelector(state),
     activeRoute: routerSelectors.activeRouteSelector(state),
     moodForKey: moodSelectors.moodForKeySelector(state),
@@ -59,11 +58,10 @@ export class Results extends Component {
 
   static defaultProps = {
     currentResult: null,
+    currentResults: null,
     nextResult: null,
     previousResult: null,
     currentResultPageInfo: null,
-    nextResultPageInfo: null,
-    previousResultPageInfo: null,
     currentResultNetflix: null,
     currentResultItunes: null,
     currentPersonName: null,
@@ -77,7 +75,7 @@ export class Results extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { currentResult, nextResult, isOnNetflix,
+    const { currentResult, nextResult, previousResult, isOnNetflix,
       isOnItunes, requestResults, requestCredits } = this.props;
 
     if (this.getIsNewResult(prevProps)) {
@@ -94,6 +92,14 @@ export class Results extends Component {
         preloadImages([
           this.getImgSrc(nextResult, 'poster_path'),
           this.getImgSrc(nextResult, 'backdrop_path')
+        ]);
+      }
+
+      if (previousResult) {
+        // preload images for next result
+        preloadImages([
+          this.getImgSrc(previousResult, 'poster_path'),
+          this.getImgSrc(previousResult, 'backdrop_path')
         ]);
       }
     }
@@ -183,26 +189,35 @@ export class Results extends Component {
     this.handlePaginationRequest(true);
   }
 
-  handleOnSwipe = (index) => {
-    const isPrevious = index === 2;
+  handleOnSwipe = (newIndex) => {
+    const { currentResults, currentResultPageInfo } = this.props;
+    const results = currentResults && currentResults.get('results');
+    const isPrevious = newIndex === getPreviousIndex(currentResultPageInfo.index, results.size);
     this.handlePaginationRequest(isPrevious);
   }
 
-  renderResult = (
-    result,
-    pageInfo,
-    netflix = null,
-    iTunes = null,
-    cast = Immutable.List(),
-    crew = Immutable.List()
-  ) => {
-    const { currentMedia, track,
+  renderResult = (result, index) => {
+    // pageInfo,
+    // netflix = null,
+    // iTunes = null,
+    // cast = Immutable.List(),
+    // crew = Immutable.List()
+    const { currentMedia, track, currentResults,
       currentPersonName, navigateTo, profileImagesBaseUrl
     } = this.props;
     const releaseDateLabel = moodSelectors.getMediaReleaseDateLabel(currentMedia);
     const titleLabel = moodSelectors.getMediaTitleLabel(currentMedia);
 
+    const results = currentResults && currentResults.get('results');
+
+    if (!result) {
+      console.log(result, index);
+      console.trace();
+      return null;
+    }
+
     const resultProps = {
+      key: result.get('id'),
       track,
       navigateTo,
       className: styles.result,
@@ -215,23 +230,23 @@ export class Results extends Component {
       popularity: result.get('popularity'),
       genreIds: result.get('genre_ids').toArray(),
       releaseDate: result.get(releaseDateLabel),
-      netflix,
-      iTunes,
-      currentResultPageInfo: pageInfo,
+      pageInfo: resultsSelectors.getPageInfoByIndex(results, index),
       currentMedia,
       currentPersonName,
       peopleImgBaseUrl: profileImagesBaseUrl,
-      cast,
-      crew
+      netflix: null,
+      iTunes: null,
+      cast: Immutable.List(),
+      crew: Immutable.List()
     };
 
     return (<Result {...resultProps} />);
   }
 
   renderResults = () => {
-    const { currentResult, currentMedia, currentResultItunes,
+    const { currentResults, currentResult, currentMedia, currentResultItunes,
       currentResultNetflix, cast, crew, nextResult, previousResult,
-      currentResultPageInfo, nextResultPageInfo, previousResultPageInfo
+      currentResultPageInfo, activeRoute
     } = this.props;
 
     if (!currentResult) {
@@ -252,18 +267,47 @@ export class Results extends Component {
       return currentResultComponent;
     }
 
+    // if (booger) {
+    //   return (
+    //     <ReactSwipe
+    //       key={currentResult.get('id')}
+    //       className={styles.carousel}
+    //       swipeOptions={{
+    //         continuous: true,
+    //         callback: this.handleOnSwipe
+    //       }}
+    //     >
+    //       { currentResultComponent }
+    //       { this.renderResult(nextResult, nextResultPageInfo) }
+    //       { this.renderResult(previousResult, previousResultPageInfo) }
+    //     </ReactSwipe>
+    //   );
+    // }
+
+    const results = currentResults && currentResults.get('results');
+
+    if (!results || !results.size) {
+      return (
+        <NoResults
+          currentMedia={currentMedia}
+          className={styles.noResults}
+        />
+      );
+    }
+
+    const searchKey = activeRoute.params.options || activeRoute.params.personId;
+
     return (
       <ReactSwipe
-        key={currentResult.get('id')}
+        key={searchKey}
         className={styles.carousel}
         swipeOptions={{
           continuous: true,
-          callback: this.handleOnSwipe
+          callback: this.handleOnSwipe,
+          startSlide: currentResultPageInfo.index
         }}
       >
-        { currentResultComponent }
-        { this.renderResult(nextResult, nextResultPageInfo) }
-        { this.renderResult(previousResult, previousResultPageInfo) }
+        { results.map(this.renderResult) }
       </ReactSwipe>
     );
   }
@@ -305,6 +349,8 @@ Results.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   currentResult: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
+  currentResults: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
   currentResultNetflix: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   currentResultItunes: PropTypes.object,
@@ -314,10 +360,6 @@ Results.propTypes = {
   previousResult: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   currentResultPageInfo: PropTypes.object,
-  /* eslint react/forbid-prop-types: 0 */
-  nextResultPageInfo: PropTypes.object,
-  /* eslint react/forbid-prop-types: 0 */
-  previousResultPageInfo: PropTypes.object,
   loadingStatus: PropTypes.string.isRequired,
   profileImagesBaseUrl: PropTypes.string,
   movieImagesBaseUrl: PropTypes.string,

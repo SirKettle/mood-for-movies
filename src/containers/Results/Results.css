@@ -64,6 +64,15 @@
   overflow-x: hidden;
 }
 
+.temp {
+  margin: 1rem;
+  text-align: center;
+  color: white;
+  font-size: 80px;
+  padding: 10rem 0;
+  background: red;
+}
+
 .noResults {
   display: flex;
   flex: 1 0 auto;

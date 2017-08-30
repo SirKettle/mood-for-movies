@@ -5,10 +5,10 @@ import Stars from '../Stars/Stars';
 import People from '../People/People';
 import GetOnItunes from '../GetOnItunes/GetOnItunes';
 import NetflixButton from '../NetflixButton/NetflixButton';
-import FacebookLike from '../Social/FacebookLike';
-import TweetButton from '../Social/TweetButton';
+// import FacebookLike from '../Social/FacebookLike';
+// import TweetButton from '../Social/TweetButton';
 import typography from '../../css/typography.css';
-import defaultImage from '../../assets/boys.jpg';
+// import defaultImage from '../../assets/boys.jpg';
 import GENRES from '../../constants/movieGenres';
 import MOODS from '../../constants/moods';
 import { CREW_TO_DISPLAY } from '../../domains/credits/creditsSelectors';
@@ -29,12 +29,12 @@ const renderResultMoods = (genreIds) => {
 
 const Result = ({
   className,
-  currentResultPageInfo,
+  pageInfo,
   track,
   navigateTo,
   title,
   overview,
-  posterImgSrc,
+  // posterImgSrc,
   imgSrc,
   voteCount,
   voteAverage,
@@ -49,17 +49,25 @@ const Result = ({
   cast,
   crew
 }) => {
+    // <div className={classnames(typography.bottomMargin, styles.socialButtons)}>
+    //   <FacebookLike />
+    //   <TweetButton title={title} />
+    // </div>
+      // {
+      //   posterImgSrc ?
+      //   (<div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc})` }} />)
+      //   : null
+      // }
   return (
     <div className={classnames(className, styles.result)}>
-      <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc || defaultImage})` }} />
       <div className={styles.scrollWrapper}>
         <div className={styles.contents}>
           <div className={classnames(typography.elliot, styles.meta)}>
             <div>{ releaseDate.slice(0, 4) }</div>
             <Stars className={styles.stars} percentage={voteAverage * 10} />
-            { currentResultPageInfo ?
+            { pageInfo ?
               (<span className={styles.pageInfo}>
-                {`${currentResultPageInfo.display} of ${currentResultPageInfo.total}`}
+                {`${pageInfo.display} of ${pageInfo.total}`}
               </span>) :
               null
             }
@@ -76,10 +84,10 @@ const Result = ({
           </h2>
           {
             imgSrc ?
-            (<img
-              className={classnames(typography.bottomMargin, styles.image)}
-              alt={title} src={imgSrc}
-            />) :
+              (<img
+                className={classnames(typography.bottomMargin, styles.image)}
+                alt={title} src={imgSrc}
+              />) :
             null
           }
           <p className={classnames(typography.bottomMargin, typography.elliot)}>
@@ -88,10 +96,6 @@ const Result = ({
           <p className={classnames(typography.bottomMargin, typography.harrison)}>
             { overview }
           </p>
-          <div className={classnames(typography.bottomMargin, styles.socialButtons)}>
-            <FacebookLike title={title} />
-            <TweetButton title={title} />
-          </div>
           <div className={styles.availableOn}>
             {
               iTunes ?
@@ -158,14 +162,14 @@ const Result = ({
 Result.propTypes = {
   className: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
-  currentResultPageInfo: PropTypes.object,
+  pageInfo: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   netflix: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   iTunes: PropTypes.object,
   title: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
-  posterImgSrc: PropTypes.string,
+  // posterImgSrc: PropTypes.string,
   imgSrc: PropTypes.string,
   voteCount: PropTypes.number.isRequired,
   voteAverage: PropTypes.number.isRequired,
@@ -185,10 +189,10 @@ Result.propTypes = {
 
 Result.defaultProps = {
   className: 'some-result',
-  currentResultPageInfo: null,
+  pageInfo: null,
   netflix: null,
   iTunes: null,
-  posterImgSrc: null,
+  // posterImgSrc: null,
   imgSrc: null,
   currentPersonName: null,
   navigateTo: () => { console.warn('navigateTo param not set', arguments); },
