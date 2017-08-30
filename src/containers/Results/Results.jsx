@@ -196,12 +196,12 @@ export class Results extends Component {
 
   handleSwipeLeft = () => {
     this.setState({ swipeClass: 'toLeft' });
-    setTimeout(this.handleRequestNext, 100);
+    setTimeout(this.handleRequestNext, 150);
   }
 
   handleSwipeRight = () => {
     this.setState({ swipeClass: 'toRight' });
-    setTimeout(this.handleRequestPrevious, 100);
+    setTimeout(this.handleRequestPrevious, 150);
   }
 
   renderResult = () => {
@@ -260,6 +260,7 @@ export class Results extends Component {
         [styles.loadedHeader]: getIsLoaded
       }
     );
+    const posterImgSrc = currentResult && this.getImgSrc(currentResult, 'poster_path');
     return (
       <div className={classnames(styles.currentResult)}>
         <Loading className={styles.loading} loadingStatus={loadingStatus}>
@@ -272,6 +273,10 @@ export class Results extends Component {
               className={headerClassNames}
               menuItems={this.getHeaderMenuItems()}
             />
+            { posterImgSrc ?
+              (<div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc})` }} />)
+              : null
+            }
             { this.renderResult() }
           </Swipeable>
         </Loading>

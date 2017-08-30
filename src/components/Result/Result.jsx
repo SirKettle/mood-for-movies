@@ -8,7 +8,6 @@ import NetflixButton from '../NetflixButton/NetflixButton';
 import FacebookLike from '../Social/FacebookLike';
 import TweetButton from '../Social/TweetButton';
 import typography from '../../css/typography.css';
-import defaultImage from '../../assets/boys.jpg';
 import GENRES from '../../constants/movieGenres';
 import MOODS from '../../constants/moods';
 import { CREW_TO_DISPLAY } from '../../domains/credits/creditsSelectors';
@@ -34,7 +33,6 @@ const Result = ({
   navigateTo,
   title,
   overview,
-  posterImgSrc,
   imgSrc,
   voteCount,
   voteAverage,
@@ -51,7 +49,6 @@ const Result = ({
 }) => {
   return (
     <div className={classnames(className, styles.result)}>
-      <div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc || defaultImage})` }} />
       <div className={styles.scrollWrapper}>
         <div className={styles.contents}>
           <div className={classnames(typography.elliot, styles.meta)}>
@@ -165,7 +162,6 @@ Result.propTypes = {
   iTunes: PropTypes.object,
   title: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
-  posterImgSrc: PropTypes.string,
   imgSrc: PropTypes.string,
   voteCount: PropTypes.number.isRequired,
   voteAverage: PropTypes.number.isRequired,
@@ -188,7 +184,6 @@ Result.defaultProps = {
   currentResultPageInfo: null,
   netflix: null,
   iTunes: null,
-  posterImgSrc: null,
   imgSrc: null,
   currentPersonName: null,
   navigateTo: () => { console.warn('navigateTo param not set', arguments); },
