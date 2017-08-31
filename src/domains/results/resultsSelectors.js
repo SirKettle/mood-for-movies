@@ -212,3 +212,22 @@ export const nextResultSelector = createSelector(
     return results.get(nextIndex);
   }
 );
+
+export const previousResultSelector = createSelector(
+  currentResultsSelector,
+  currentResultPageInfoSelector,
+  (currentResults, currentResultPageInfo) => {
+    if (!currentResults || !currentResultPageInfo) {
+      return null;
+    }
+
+    const results = currentResults.get('results');
+    if (!results || !results.size || results.size < 2) {
+      return null;
+    }
+    
+    const nextIndex = (currentResultPageInfo.index - 1) % results.size;
+
+    return results.get(nextIndex);
+  }
+);

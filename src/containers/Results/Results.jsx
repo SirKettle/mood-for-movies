@@ -30,6 +30,7 @@ const mapStateToProps = (state) => {
     currentResultNetflix: availabilitySelectors.currentResultNetflixSelector(state),
     currentResultItunes: availabilitySelectors.currentResultItunesSelector(state),
     nextResult: resultsSelectors.nextResultSelector(state),
+    previousResult: resultsSelectors.previousResultSelector(state),
     currentResultPageInfo: resultsSelectors.currentResultPageInfoSelector(state),
     loadingStatus: resultsSelectors.currentResultsLoadingStatusSelector(state),
     activeRoute: routerSelectors.activeRouteSelector(state),
@@ -56,6 +57,7 @@ export class Results extends Component {
   static defaultProps = {
     currentResult: null,
     nextResult: null,
+    previousResult: null,
     currentResultPageInfo: null,
     currentResultNetflix: null,
     currentResultItunes: null,
@@ -88,7 +90,7 @@ export class Results extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { currentResult, nextResult, isOnNetflix,
+    const { currentResult, nextResult, previousResult, isOnNetflix,
       isOnItunes, requestResults, requestCredits } = this.props;
 
     if (this.getIsNewResult(prevProps)) {
@@ -105,6 +107,14 @@ export class Results extends Component {
         preloadImages([
           this.getImgSrc(nextResult, 'poster_path'),
           this.getImgSrc(nextResult, 'backdrop_path')
+        ]);
+      }
+
+      if (previousResult) {
+        // preload images for previous result
+        preloadImages([
+          this.getImgSrc(previousResult, 'poster_path'),
+          this.getImgSrc(previousResult, 'backdrop_path')
         ]);
       }
     }
@@ -302,6 +312,8 @@ Results.propTypes = {
   currentResultItunes: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   nextResult: PropTypes.object,
+  /* eslint react/forbid-prop-types: 0 */
+  previousResult: PropTypes.object,
   /* eslint react/forbid-prop-types: 0 */
   currentResultPageInfo: PropTypes.object,
   loadingStatus: PropTypes.string.isRequired,
