@@ -118,10 +118,12 @@
 }
 
 .fromLeft {
+  animation-duration: 200ms;
   animation-name: fromleft;
 }
 
 .fromRight {
+  animation-duration: 200ms;
   animation-name: fromright;
 }
 
