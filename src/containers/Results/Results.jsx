@@ -271,6 +271,10 @@ export class Results extends Component {
       }
     );
     const posterImgSrc = currentResult && this.getImgSrc(currentResult, 'poster_path');
+    const swipeConfig = {
+      delta: 20,
+      flickThreshold: 1.8
+    };
     return (
       <div className={classnames(styles.currentResult)}>
         <Loading className={styles.loading} loadingStatus={loadingStatus}>
@@ -278,6 +282,7 @@ export class Results extends Component {
             className={styles.resultWrapper}
             onSwipedLeft={this.handleSwipeLeft}
             onSwipedRight={this.handleSwipeRight}
+            {...swipeConfig}
           >
             <Header
               className={headerClassNames}
