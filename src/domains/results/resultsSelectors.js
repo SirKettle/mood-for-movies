@@ -74,7 +74,7 @@ export const sortByVoteAverage = Ramda.sort((a, b) => {
 });
 
 export const sortUnique = list => Immutable.List(
-  sortByVoteAverage(removeDuplicateIds(list.toArray()))
+  removeDuplicateIds(list.toArray())
 );
 
 export const currentResultsSelector = createSelector(

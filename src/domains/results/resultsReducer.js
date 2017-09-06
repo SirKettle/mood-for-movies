@@ -1,9 +1,13 @@
 import Immutable from 'immutable';
-import { isNil } from 'ramda';
+import { isNil, sort } from 'ramda';
 import { actionTypes } from './resultsActions';
 import loadingStates from '../../constants/loadingStates';
 
 const getResultsKey = payload => (isNil(payload.personId) ? payload.genresKey : payload.moodForKey);
+
+export const shuffle = sort(() => {
+  return Math.random() > 0.5 ? 1 : -1;
+});
 
 const resultsReducers = {
   [actionTypes.LOAD_RESULTS_PENDING]: (state, action) => {
@@ -17,7 +21,13 @@ const resultsReducers = {
   },
   [actionTypes.LOAD_RESULTS_SUCCESS]: (state, action) => {
     const { currentMedia, data } = action.payload;
-    return state.setIn(['server', currentMedia, getResultsKey(action.payload), 'data'], Immutable.fromJS(data))
+    return state.setIn(
+        ['server', currentMedia, getResultsKey(action.payload), 'data'],
+        Immutable.fromJS({
+          ...data,
+          results: shuffle(data.results)
+        })
+      )
       .setIn(['server', currentMedia, getResultsKey(action.payload), 'loadingStatus'], loadingStates.COMPLETE);
   }
 };
