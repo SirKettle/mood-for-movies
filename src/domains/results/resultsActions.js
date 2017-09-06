@@ -89,6 +89,12 @@ const SORT_BY = {
 
 const MIN_VOTES = 21;
 
+const getRandomSortBy = () => {
+  const values = Object.values(SORT_BY);
+  const index = Math.floor(Math.random() * values.length);
+  return values[index];
+};
+
 export const baseDiscoverQueryParams = {
   page: 1,
   include_video: false,
@@ -182,13 +188,19 @@ const fetchTvShows = (dispatch, currentMedia, moodForKey, genres, personId) => {
 
 const fetchMovies = (
   dispatch, currentMedia, moodForKey,
-  genres, personId, allLanguages = false
+  genres, personId,
+  allLanguages = false, randomSort = false
 ) => {
   const queryParams = {
     ...baseDiscoverQueryParams,
     ...getMovieLanguageParams(allLanguages),
     ...getMoodParams(genres, personId)
   };
+
+  if (randomSort) {
+    queryParams.sort_by = getRandomSortBy();
+  }
+
   const url = buildUrlWithQueryParams(ENDPOINTS.DISCOVER_MOVIES, queryParams);
 
   const genresKey = genres.sort().join('_');
@@ -209,11 +221,14 @@ export const loadResults = () => (dispatch, getState) => {
   const isTv = moodSelectors.isTvMediaSelector(getState());
   const personId = moodSelectors.currentPersonIdSelector(getState());
 
+  const allLanguages = !!personId;
+  const randomSort = !personId;
+
   if (personId) {
     if (isTv) {
       fetchTvShows(dispatch, currentMedia, moodForKey, [], personId);
     } else {
-      fetchMovies(dispatch, currentMedia, moodForKey, [], personId, true);
+      fetchMovies(dispatch, currentMedia, moodForKey, [], personId, allLanguages, randomSort);
     }
     return;
   }
@@ -222,7 +237,7 @@ export const loadResults = () => (dispatch, getState) => {
     if (isTv) {
       fetchTvShows(dispatch, currentMedia, moodForKey, genres, personId);
     } else {
-      fetchMovies(dispatch, currentMedia, moodForKey, genres, personId);
+      fetchMovies(dispatch, currentMedia, moodForKey, genres, personId, allLanguages, randomSort);
     }
   });
 };
