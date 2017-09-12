@@ -37,6 +37,7 @@ const mapStateToProps = (state) => {
     moodForKey: moodSelectors.moodForKeySelector(state),
     currentPersonName: moodSelectors.currentPersonNameSelector(state),
     currentMedia: moodSelectors.currentMediaSelector(state),
+    sort: resultsSelectors.resultsSortSelector(state),
     cast: creditsSelectors.currentResultCastSelector(state),
     crew: creditsSelectors.currentResultCrewSelector(state)
   };
@@ -63,7 +64,8 @@ export class Results extends Component {
     currentResultItunes: null,
     currentPersonName: null,
     profileImagesBaseUrl: null,
-    movieImagesBaseUrl: null
+    movieImagesBaseUrl: null,
+    sort: null
   }
 
   state = {
@@ -128,12 +130,15 @@ export class Results extends Component {
   }
 
   getHeaderMenuItems = () => {
-    const { currentResultPageInfo } = this.props;
+    const { currentResultPageInfo, navigateTo } = this.props;
     const showPagination = currentResultPageInfo && currentResultPageInfo.total > 1;
     if (this.getIsLoading() || !showPagination) {
       return null;
     }
     return [{
+      label: 'Settings',
+      onClick: () => { navigateTo('settings'); }
+    }, {
       label: '<',
       onClick: this.handleRequestPrevious,
       className: typography.phil
@@ -216,7 +221,7 @@ export class Results extends Component {
 
   renderResult = () => {
     const { currentResult, currentResultPageInfo, currentMedia,
-      currentResultItunes, currentResultNetflix, track,
+      currentResultItunes, currentResultNetflix, track, sort,
       currentPersonName, navigateTo, profileImagesBaseUrl, cast, crew
     } = this.props;
 
@@ -254,6 +259,7 @@ export class Results extends Component {
       currentMedia,
       currentPersonName,
       peopleImgBaseUrl: profileImagesBaseUrl,
+      sortBy: sort ? sort.label : null,
       cast,
       crew
     };
@@ -327,6 +333,8 @@ Results.propTypes = {
   /* eslint react/forbid-prop-types: 0 */
   activeRoute: PropTypes.object.isRequired,
   moodForKey: PropTypes.string.isRequired,
+  /* eslint react/forbid-prop-types: 0 */
+  sort: PropTypes.object,
   currentPersonName: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
   cast: PropTypes.object.isRequired,

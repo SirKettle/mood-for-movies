@@ -1,0 +1,32 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  background: #e2d9a2; /* cream */
+  background: #deb853; /* mustard */
+}
+
+.header {
+  background: #3a4b54; /* dark-blue */
+}
+
+.contents {
+  padding: 1.25rem 1.5rem 2rem;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 600px) {
+    padding: 2rem 2.5rem;
+  }
+}
+
+.form {
+  display: flex;
+}
+
+.input {
+  border: solid 3px white;
+  padding: 0.5rem 1rem;
+  flex: 1 0 auto;
+}

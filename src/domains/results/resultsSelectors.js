@@ -2,6 +2,7 @@ import Ramda from 'ramda';
 import Immutable from 'immutable';
 import { createSelector } from 'reselect';
 import * as routerSelectors from '../router/routerSelectors';
+import * as settingsSelectors from '../settings/settingsSelectors';
 
 import {
   moodForKeySelector,
@@ -73,9 +74,36 @@ export const sortByVoteAverage = Ramda.sort((a, b) => {
   return -1;
 });
 
-export const sortUnique = list => Immutable.List(
+export const removeDuplicates = list => Immutable.List(
   removeDuplicateIds(list.toArray())
 );
+
+export const resultsSortSelector = createSelector(
+  settingsSelectors.sortSelector,
+  sortKey => settingsSelectors.sortMap[sortKey]
+);
+
+const sortFunc = (sortBy, highToLow) => (a, b) => {
+  if (!a || !b) {
+    return 0;
+  }
+  
+  if (a.get(sortBy) < b.get(sortBy)) {
+    return highToLow ? 1 : -1;
+  }
+
+  return highToLow ? -1 : 1;
+};
+
+const sortListBy = (sortBy, highToLow) => Ramda.sort(sortFunc(sortBy, highToLow));
+
+const sortList = (list, sortBy, highToLow) => {
+  console.log('sortList', sortBy, highToLow);
+  if (!sortBy) {
+    return list;
+  }
+  return Immutable.List(sortListBy(sortBy, highToLow)(list.toArray()));
+};
 
 export const currentResultsSelector = createSelector(
   resultsSelector,
@@ -84,17 +112,26 @@ export const currentResultsSelector = createSelector(
   genreGroupsSelector,
   configurationSelector,
   currentMediaSelector,
+  resultsSortSelector,
   (
     results, moodForKey, currentPersonId,
-    genreGroups, configuration, currentMedia
+    genreGroups, configuration, currentMedia,
+    resultsSort
   ) => {
     if (!configuration || !results || !genreGroups || !moodForKey) {
       return null;
     }
 
+    const sortByParam = resultsSort ? resultsSort.sortBy : null;
+    const highToLowParam = resultsSort ? resultsSort.highToLow : null;
+
     if (currentPersonId) {
       return Immutable.Map({
-        results: results.getIn([currentMedia, moodForKey, 'data', 'results']),
+        results: sortList(
+          results.getIn([currentMedia, moodForKey, 'data', 'results']),
+          sortByParam,
+          highToLowParam
+        ),
         loadingStatus: results.getIn([currentMedia, moodForKey, 'loadingStatus'])
       });
     }
@@ -129,7 +166,11 @@ export const currentResultsSelector = createSelector(
     };
 
     return Immutable.Map({
-      results: sortUnique(allResults),
+      results: sortList(
+        removeDuplicates(allResults),
+        sortByParam,
+        highToLowParam
+      ),
       loadingStatus: getLoadingStatus()
     });
   }

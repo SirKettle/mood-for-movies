@@ -44,6 +44,7 @@ const Result = ({
   netflix,
   iTunes,
   peopleImgBaseUrl,
+  sortBy,
   cast,
   crew
 }) => {
@@ -65,6 +66,13 @@ const Result = ({
             currentPersonName
             ? (<p className={classnames(typography.bottomMargin, typography.elliot)}>
               { currentPersonName } - { currentMedia }
+            </p>)
+            : null
+          }
+          {
+            sortBy
+            ? (<p className={classnames(typography.bottomMargin, typography.elliot)}>
+              Sorted by: { sortBy }
             </p>)
             : null
           }
@@ -173,6 +181,7 @@ Result.propTypes = {
   track: PropTypes.func,
   navigateTo: PropTypes.func,
   peopleImgBaseUrl: PropTypes.string.isRequired,
+  sortBy: PropTypes.string,
   /* eslint react/forbid-prop-types: 0 */
   cast: PropTypes.object.isRequired,
   /* eslint react/forbid-prop-types: 0 */
@@ -185,6 +194,7 @@ Result.defaultProps = {
   netflix: null,
   iTunes: null,
   imgSrc: null,
+  sortBy: null,
   currentPersonName: null,
   navigateTo: () => { console.warn('navigateTo param not set', arguments); },
   track: () => { console.warn('track param not set', arguments); }

@@ -6,6 +6,7 @@ import config from '../domains/config/configReducer';
 import availability from '../domains/availability/availabilityReducer';
 import credits from '../domains/credits/creditsReducer';
 import search from '../domains/search/searchReducer';
+import settings from '../domains/settings/settingsReducer';
 import { resultsReducer, configurationReducer } from '../domains/results/resultsReducer';
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   availability,
   credits,
   search,
+  settings,
   results: resultsReducer,
   resultConfig: configurationReducer
 });

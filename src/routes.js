@@ -3,7 +3,8 @@ export const ROUTES = {
   ABOUT: { name: 'about', path: '/about' },
   RESULTS: { name: 'results', path: '/results/:media/:options/:page' },
   PERSON_RESULTS: { name: 'person_results', path: '/people/:personId/:personName/:media/:page' },
-  SEARCH: { name: 'search', path: '/search' }
+  SEARCH: { name: 'search', path: '/search' },
+  SETTINGS: { name: 'settings', path: '/settings' }
 };
 
 const routes = Object.values(ROUTES);
