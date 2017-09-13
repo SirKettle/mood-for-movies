@@ -8,6 +8,10 @@
   background: #3a4b54; /* dark-blue */
 }
 
+.arrowFont {
+  font-family: monospace;
+}
+
 .getOnItunes {
   margin: 0;
   padding: 0;

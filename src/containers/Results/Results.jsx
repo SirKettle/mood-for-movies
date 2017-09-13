@@ -141,11 +141,11 @@ export class Results extends Component {
     }, {
       label: '<',
       onClick: this.handleRequestPrevious,
-      className: typography.phil
+      className: classnames(typography.phil, styles.arrowFont)
     }, {
       label: '>',
       onClick: this.handleRequestNext,
-      className: typography.phil
+      className: classnames(typography.phil, styles.arrowFont)
     }];
   }
 
