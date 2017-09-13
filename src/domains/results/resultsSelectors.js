@@ -126,9 +126,13 @@ export const currentResultsSelector = createSelector(
     const highToLowParam = resultsSort ? resultsSort.highToLow : null;
 
     if (currentPersonId) {
+      const unsortedResults = results.getIn([currentMedia, moodForKey, 'data', 'results']);
+      if (!unsortedResults) {
+        return null;
+      }
       return Immutable.Map({
         results: sortList(
-          results.getIn([currentMedia, moodForKey, 'data', 'results']),
+          unsortedResults,
           sortByParam,
           highToLowParam
         ),
