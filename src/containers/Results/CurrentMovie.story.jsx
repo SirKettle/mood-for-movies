@@ -37,7 +37,8 @@
 //     null,
 //   currentMovie: Immutable.fromJS({
 //     title: text('title', 'The Current Movie'),
-//     overview: text('overview', 'This is the the current movie\'s summary. A little bit of info about the plot and the characters may be found here.'),
+//     overview: text('overview', 'This is the the current movie\'s summary.
+// A little bit of info about the plot and the characters may be found here.'),
 //     poster_path: text('posterImgSrc', '') || null,
 //     backdrop_path: text('backdropImgSrc', '') || null,
 //     vote_count: number('voteCount', 345),

@@ -194,7 +194,7 @@ export const currentResultsLoadingStatusSelector = createSelector(
   currentResultsSelector,
   (currentResults) => {
     if (!currentResults) {
-      return loadingStates.ERROR;
+      return loadingStates.LOADING;
     }
     return currentResults.get('loadingStatus') || loadingStates.LOADING;
   }
