@@ -4,20 +4,20 @@ import loadingStates from '../../constants/loadingStates';
 
 const searchReducers = {
   [actionTypes.LOAD_SEARCH_PENDING]: (state) => {
-    return state.setIn(['people', 'loadingStatus'], loadingStates.LOADING);
+    return state.setIn(['items', 'loadingStatus'], loadingStates.LOADING);
   },
   [actionTypes.LOAD_SEARCH_ERROR]: (state) => {
-    return state.setIn(['people', 'loadingStatus'], loadingStates.ERROR);
+    return state.setIn(['items', 'loadingStatus'], loadingStates.ERROR);
   },
   [actionTypes.LOAD_SEARCH_SUCCESS]: (state, action) => {
     const { data } = action.payload;
-    return state.setIn(['people', 'data'], Immutable.fromJS(data))
-      .setIn(['people', 'loadingStatus'], loadingStates.COMPLETE);
+    return state.setIn(['items', 'data'], Immutable.fromJS(data))
+      .setIn(['items', 'loadingStatus'], loadingStates.COMPLETE);
   }
 };
 
 const initialState = Immutable.fromJS({
-  people: {}
+  items: {}
 });
 
 export default (state = initialState, action) => {

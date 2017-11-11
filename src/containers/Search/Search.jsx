@@ -2,25 +2,26 @@ import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { actions as routerActions } from 'redux-router5';
-import { searchPeople } from '../../domains/search/searchActions';
+import { searchItems } from '../../domains/search/searchActions';
 import { trackClick } from '../../domains/ui/uiActions';
 import * as resultsSelectors from '../../domains/results/resultsSelectors';
 import * as searchSelectors from '../../domains/search/searchSelectors';
 import Header from '../../components/Header/Header';
-import People from '../../components/People/People';
+import MediaList from '../../components/MediaList/MediaList';
 import styles from './Search.css';
 import typography from '../../css/typography.css';
 
 const mapStateToProps = (state) => {
   return {
     profileImagesBaseUrl: resultsSelectors.profileImagesBaseUrlSelector(state),
-    people: searchSelectors.peopleSelector(state)
+    movieImagesBaseUrl: resultsSelectors.movieImagesBaseUrlSelector(state),
+    items: searchSelectors.itemsSelector(state)
     // loadingStatus: resultsSelectors.currentSearchLoadingStatusSelector(state),
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  requestSearch: (query) => { dispatch(searchPeople(query)); },
+  requestSearch: (query) => { dispatch(searchItems(query)); },
   track: (key, data) => { trackClick(dispatch, key, data); },
   navigateTo: (name, params) => dispatch(routerActions.navigateTo(name, params))
 });
@@ -28,8 +29,9 @@ const mapDispatchToProps = dispatch => ({
 export class Search extends Component {
 
   static defaultProps = {
-    people: null,
-    profileImagesBaseUrl: null
+    items: null,
+    profileImagesBaseUrl: null,
+    movieImagesBaseUrl: null
   }
 
   state = {
@@ -64,23 +66,24 @@ export class Search extends Component {
     this.requestQuery(event.target.value);
   }
 
-  renderPeople = () => {
-    const { people, track, navigateTo, profileImagesBaseUrl } = this.props;
+  renderItems = () => {
+    const { items, track, navigateTo, profileImagesBaseUrl, movieImagesBaseUrl } = this.props;
 
-    if (!people) {
+    if (!items) {
       return null;
     }
     
-    const peopleProps = {
-      className: styles.people,
+    const props = {
+      className: styles.items,
       track,
       navigateTo,
-      baseUrl: profileImagesBaseUrl,
-      people,
+      profileImagesBaseUrl,
+      movieImagesBaseUrl,
+      items,
       displayCount: 20
     };
 
-    return (<People {...peopleProps} />);
+    return (<MediaList {...props} />);
   }
 
   render() {
@@ -92,19 +95,19 @@ export class Search extends Component {
         />
         <div className={styles.contents}>
           <h3 className={classnames(typography.bottomMargin, typography.will)}>
-            Search for your favourite star or director
+            Search for your favourite movie, tv show, or one of the cast and crew
           </h3>
           <div className={styles.form}>
             <input
               className={classnames(typography.harrison, styles.input)}
               type="text"
               onChange={this.handleQueryChange}
-              placeholder="Name of person..."
+              placeholder="Start typing to search..."
               autoFocus
             />
           </div>
           <hr />
-          { this.renderPeople() }
+          { this.renderItems() }
         </div>
       </div>
     );
@@ -116,8 +119,9 @@ Search.propTypes = {
   track: PropTypes.func.isRequired,
   navigateTo: PropTypes.func.isRequired,
   /* eslint react/forbid-prop-types: 0 */
-  people: PropTypes.object,
-  profileImagesBaseUrl: PropTypes.string
+  items: PropTypes.object,
+  profileImagesBaseUrl: PropTypes.string,
+  movieImagesBaseUrl: PropTypes.string
 };
 
 export const Connected = connect(mapStateToProps, mapDispatchToProps)(Search);

@@ -2,13 +2,13 @@ import { createSelector } from 'reselect';
 
 export const searchSelector = state => state.search;
 
-export const peopleSelector = createSelector(
+export const itemsSelector = createSelector(
   searchSelector,
   (search) => {
     if (!search) {
       return null;
     }
 
-    return search.getIn(['people', 'data', 'results']);
+    return search.getIn(['items', 'data', 'results']);
   }
 );

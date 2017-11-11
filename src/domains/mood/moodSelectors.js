@@ -63,6 +63,9 @@ export const genreGroupsSelector = createSelector(
 export const currentMediaSelector = createSelector(
   routerSelectors.activeRouteSelector,
   (activeRoute) => {
+    if (activeRoute.name === 'movies' || activeRoute.name === 'tv') {
+      return activeRoute.name;
+    }
     return activeRoute.params.media || 'all';
   }
 );

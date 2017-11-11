@@ -9,12 +9,13 @@ export const actionTypes = {
 };
 
 const ENDPOINTS = {
-  SEARCH_PERSON: `${TMDb.BASE_URL}/search/person` // /search/person?api_key=9b39e698383c30052915f7786495b569&language=en-US&query=tom&page=1&include_adult=false
+  SEARCH_PERSON: `${TMDb.BASE_URL}/search/person`, // /search/person?api_key=9b39e698383c30052915f7786495b569&language=en-US&query=tom&page=1&include_adult=false
+  SEARCH_MULTI: `${TMDb.BASE_URL}/search/multi` // /search/multi?api_key=9b39e698383c30052915f7786495b569&language=en-US&query=tom&page=1&include_adult=false
 };
 
-export const searchPeople = query => (dispatch) => {
+export const searchItems = query => (dispatch) => {
   const url = buildUrlWithQueryParams(
-    ENDPOINTS.SEARCH_PERSON, {
+    ENDPOINTS.SEARCH_MULTI, {
       api_key: TMDb.API_KEY,
       query
     }

@@ -12,13 +12,18 @@ export const actionTypes = {
   LOAD_CONFIGURATION_ERROR: 'LOAD_CONFIGURATION_ERROR',
   LOAD_RESULTS_PENDING: 'LOAD_RESULTS_PENDING',
   LOAD_RESULTS_SUCCESS: 'LOAD_RESULTS_SUCCESS',
-  LOAD_RESULTS_ERROR: 'LOAD_RESULTS_ERROR'
+  LOAD_RESULTS_ERROR: 'LOAD_RESULTS_ERROR',
+  LOAD_SINGLE_RESULT_PENDING: 'LOAD_SINGLE_RESULT_PENDING',
+  LOAD_SINGLE_RESULT_SUCCESS: 'LOAD_SINGLE_RESULT_SUCCESS',
+  LOAD_SINGLE_RESULT_ERROR: 'LOAD_SINGLE_RESULT_ERROR'
 };
 
 const ENDPOINTS = {
-  CONFIGURATION: `${TMDb.BASE_URL}/configuration`, // /configuration?api_key=<<api_key>>
+  CONFIGURATION: `${TMDb.BASE_URL}/configuration`, // /configuration?api_key=9b39e698383c30052915f7786495b569
   DISCOVER_MOVIES: `${TMDb.BASE_URL}/discover/movie`, // /discover/movie?with_genres=35&&api_key=9b39e698383c30052915f7786495b569
-  DISCOVER_TV: `${TMDb.BASE_URL}/discover/tv` // /discover/tv?with_genres=35&&api_key=9b39e698383c30052915f7786495b569
+  DISCOVER_TV: `${TMDb.BASE_URL}/discover/tv`, // /discover/tv?with_genres=35&&api_key=9b39e698383c30052915f7786495b569
+  MOVIE: id => `${TMDb.BASE_URL}/movie/${id}`,
+  TV: id => `${TMDb.BASE_URL}/tv/${id}`
 };
 
 export const loadConfiguration = (dispatch) => {
@@ -238,5 +243,49 @@ export const loadResults = () => (dispatch, getState) => {
     } else {
       fetchMovies(dispatch, currentMedia, moodForKey, genres, personId, sortByParam, allLanguages);
     }
+  });
+};
+
+export const loadSingleResult = () => (dispatch, getState) => {
+  const currentResultId = resultsSelectors.currentResultIdSelector(getState());
+  const currentMedia = moodSelectors.currentMediaSelector(getState());
+  const isTv = moodSelectors.isTvMediaSelector(getState());
+  const endpointFactory = isTv ? ENDPOINTS.TV : ENDPOINTS.MOVIE;
+  const url = buildUrlWithQueryParams(endpointFactory(currentResultId), { api_key: TMDb.API_KEY });
+
+  const basePayload = {
+    currentMedia,
+    id: currentResultId
+  };
+
+  dispatch({
+    type: actionTypes.LOAD_SINGLE_RESULT_PENDING,
+    payload: {
+      ...basePayload
+    }
+  });
+
+  return fetch(url, {
+    method: 'GET'
+  }).then(response => response.json()
+  , (error) => {
+    dispatch({
+      type: actionTypes.LOAD_SINGLE_RESULT_ERROR,
+      payload: {
+        ...basePayload,
+        error
+      }
+    });
+  }).then((payload) => {
+    if (!payload) {
+      return;
+    }
+    dispatch({
+      type: actionTypes.LOAD_SINGLE_RESULT_SUCCESS,
+      payload: {
+        ...basePayload,
+        data: payload
+      }
+    });
   });
 };

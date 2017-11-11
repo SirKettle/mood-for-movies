@@ -29,6 +29,19 @@ const resultsReducers = {
         })
       )
       .setIn(['server', currentMedia, getResultsKey(action.payload), 'loadingStatus'], loadingStates.COMPLETE);
+  },
+  [actionTypes.LOAD_SINGLE_RESULT_PENDING]: (state, action) => {
+    const { currentMedia, id } = action.payload;
+    return state.setIn([currentMedia, id, 'loadingStatus'], loadingStates.LOADING);
+  },
+  [actionTypes.LOAD_SINGLE_RESULT_ERROR]: (state, action) => {
+    const { currentMedia, id } = action.payload;
+    return state.setIn([currentMedia, id, 'loadingStatus'], loadingStates.ERROR);
+  },
+  [actionTypes.LOAD_SINGLE_RESULT_SUCCESS]: (state, action) => {
+    const { currentMedia, id, data } = action.payload;
+    return state.setIn([currentMedia, id, 'loadingStatus'], loadingStates.COMPLETE)
+      .setIn([currentMedia, id, 'data'], Immutable.fromJS(data));
   }
 };
 
@@ -44,7 +57,9 @@ const configurationReducers = {
 const initialStates = {
   results: Immutable.Map({
     ui: Immutable.Map({}),
-    server: Immutable.Map({})
+    server: Immutable.Map({}),
+    movies: Immutable.Map({}),
+    tv: Immutable.Map({})
   }),
   configuration: Immutable.Map({
     data: null,

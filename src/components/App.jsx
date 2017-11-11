@@ -11,6 +11,7 @@ import cookies from '../constants/cookies';
 import Home from './Routes/Home';
 import About from './Routes/About';
 import Results from './Routes/Results';
+import SingleResult from './Routes/SingleResult';
 import Search from './Routes/Search';
 import Settings from './Routes/Settings';
 import NotFound from './NotFound';
@@ -25,7 +26,9 @@ const components = {
   results: Results,
   person_results: Results,
   search: Search,
-  settings: Settings
+  settings: Settings,
+  movies: SingleResult,
+  tv: SingleResult
 };
 
 const mapStateToProps = () => routeNodeSelector('');

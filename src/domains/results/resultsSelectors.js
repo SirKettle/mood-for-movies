@@ -221,11 +221,45 @@ export const currentResultPageInfoSelector = createSelector(
   }
 );
 
+export const currentResultIdSelector = createSelector(
+  routerSelectors.activeRouteSelector,
+  activeRoute => activeRoute.params.lookupId
+);
+
+export const currentSingleResultSelector = createSelector(
+  resultsModelSelector,
+  currentResultIdSelector,
+  currentMediaSelector,
+  (model, currentResultId, currentMedia) => {
+    if (!currentResultId) {
+      return null;
+    }
+    return model.getIn([currentMedia, currentResultId, 'data']) || null;
+  }
+);
+
+export const currentSingleResultLoadingStatusSelector = createSelector(
+  resultsModelSelector,
+  currentResultIdSelector,
+  currentMediaSelector,
+  (model, currentResultId, currentMedia) => {
+    if (!currentResultId) {
+      return null;
+    }
+    return model.getIn([currentMedia, currentResultId, 'loadingStatus']) || loadingStates.LOADING;
+  }
+);
+
 export const currentResultSelector = createSelector(
+  currentSingleResultSelector,
   currentResultsSelector,
   moodForKeySelector,
   currentResultPageInfoSelector,
-  (currentResults, moodForKey, currentResultPageInfo) => {
+  (currentSingleResult, currentResults, moodForKey, currentResultPageInfo) => {
+    if (currentSingleResult) {
+      return currentSingleResult;
+    }
+
     if (!currentResults || !moodForKey || !currentResultPageInfo) {
       return null;
     }

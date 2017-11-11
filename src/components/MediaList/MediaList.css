@@ -1,0 +1,48 @@
+
+.items {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 -1rem;
+  align-items: flex-start;
+}
+
+.item {
+  flex: 0 0 50%;
+  margin: 0 0 1rem;
+  text-align: left;
+  display: block;
+  outline: none;
+  appearance: none;
+  padding: 0 1rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  border-radius: 0;
+
+  &:focus, &:hover, &:active {
+    outline: none;
+  }
+
+  @media (min-width: 430px) {
+    flex-basis: 33.33%;
+  }
+
+  @media (min-width: 600px) {
+    flex-basis: 25%;
+  }
+}
+
+.image {
+  height: 160px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgba(255,255,255,0.2);
+  margin-bottom: 0.5rem;
+  border: solid 3px white;
+}
+
+.info {
+  white-space: wrap;
+}
