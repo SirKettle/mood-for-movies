@@ -19,7 +19,7 @@ import Loading from '../../components/Loading/Loading';
 import Result from '../../components/Result/Result';
 import NoResults from '../../components/NoResults/NoResults';
 import Header from '../../components/Header/Header';
-import styles from './Results.css';
+import styles from '../Results.css';
 import typography from '../../css/typography.css';
 
 const mapStateToProps = (state) => {

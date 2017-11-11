@@ -33,7 +33,7 @@ export class DiscoverMovie extends Component {
   getHeaderMenuItems = () => {
     const { navigateTo } = this.props;
     return [{
-      label: 'People',
+      label: 'Search',
       onClick: () => { navigateTo('search'); }
     }, {
       label: 'About',
