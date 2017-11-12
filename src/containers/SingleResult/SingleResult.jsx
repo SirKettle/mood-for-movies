@@ -15,7 +15,7 @@ import loadingStates from '../../constants/loadingStates';
 import Loading from '../../components/Loading/Loading';
 import Result from '../../components/Result/Result';
 import NoResults from '../../components/NoResults/NoResults';
-import Header from '../../components/Header/Header';
+import { Connected as Header } from '../Header/Header';
 import styles from '../Results.css';
 
 const mapStateToProps = (state) => {
@@ -72,20 +72,6 @@ export class SingleResult extends Component {
       isOnItunes(currentResult);
       requestCredits(currentResult);
     }
-  }
-
-  getHeaderMenuItems = () => {
-    const { navigateTo } = this.props;
-    if (this.getIsLoading()) {
-      return null;
-    }
-    return [{
-      label: 'Search',
-      onClick: () => { navigateTo('search'); }
-    }, {
-      label: 'Settings',
-      onClick: () => { navigateTo('settings'); }
-    }];
   }
 
   getIsLoading = () => {
@@ -167,7 +153,7 @@ export class SingleResult extends Component {
           <div className={styles.resultWrapper}>
             <Header
               className={headerClassNames}
-              menuItems={this.getHeaderMenuItems()}
+              includeLinks={['search', 'about']}
             />
             { posterImgSrc ?
               (<div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc})` }} />)

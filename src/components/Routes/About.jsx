@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { routeNodeSelector } from 'redux-router5';
-import Header from '../Header/Header';
+import { Connected as Header } from '../../containers/Header/Header';
 import styles from './About.css';
 import typography from '../../css/typography.css';
 import logo from '../../assets/images/choosymovie/choosy-movie-logo-grey.png';
@@ -11,7 +11,10 @@ import tmdb from '../../assets/images/tmdb/powered-by-rectangle-blue.svg';
 function About() {
   return (
     <div className={styles.page}>
-      <Header className={styles.header} />
+      <Header
+        className={styles.header}
+        includeLinks={['search', 'about']}
+      />
       <div className={styles.contents}>
         <h3 className={classnames(typography.margins, typography.will)}>Choosy Movie?</h3>
         <p className={classnames(typography.bottomMargin, typography.harrison)}>

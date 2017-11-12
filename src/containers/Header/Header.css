@@ -13,7 +13,7 @@
   z-index: 9;
 }
 
-.logoLink {
+.logoButton {
   display: block;
   flex: 0 0 auto;
   padding: 0.5rem 0.5rem 0.5rem 1.5rem;
@@ -32,7 +32,12 @@
   color: inherit;
 }
 
-.item {
+.imageButtonImage {
+  width: 35px;
+  height: 35px;
+}
+
+.item, .imageButton {
   padding: 0.5rem 1rem;
   color: inherit;
 
@@ -51,7 +56,7 @@
 }
 
 @media (min-width: 600px) {
-  .logoLink {
+  .logoButton {
     padding: 1.5rem 1.5rem 1.5rem 2.5rem;
   }
 
@@ -59,7 +64,7 @@
     padding-right: 1rem;
   }
 
-  .item {
+  .item, .imageButton {
     padding: 1.5rem 1.5rem;
   }
 }

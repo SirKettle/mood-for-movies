@@ -5,7 +5,7 @@ import { actions as routerActions } from 'redux-router5';
 import * as settingsActions from '../../domains/settings/settingsActions';
 import { trackClick } from '../../domains/ui/uiActions';
 import * as settingsSelectors from '../../domains/settings/settingsSelectors';
-import Header from '../../components/Header/Header';
+import { Connected as Header } from '../Header/Header';
 import RadioGroup from '../../components/RadioGroup/RadioGroup';
 import styles from './Settings.css';
 import typography from '../../css/typography.css';
@@ -50,7 +50,7 @@ export class Settings extends Component {
       <div className={classnames(styles.settings)}>
         <Header
           className={styles.header}
-          menuItems={this.getHeaderMenuItems()}
+          includeLinks={['back']}
         />
         <div className={styles.contents}>
           <h3 className={classnames(typography.bottomMargin, typography.will)}>

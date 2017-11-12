@@ -18,9 +18,9 @@ import preloadImages from '../../utils/preloadImages';
 import Loading from '../../components/Loading/Loading';
 import Result from '../../components/Result/Result';
 import NoResults from '../../components/NoResults/NoResults';
-import Header from '../../components/Header/Header';
 import styles from '../Results.css';
-import typography from '../../css/typography.css';
+import { Connected as Header } from '../Header/Header';
+import leftArrowImage from '../../assets/images/svg/left-arrow.svg';
 
 const mapStateToProps = (state) => {
   return {
@@ -130,22 +130,20 @@ export class Results extends Component {
   }
 
   getHeaderMenuItems = () => {
-    const { currentResultPageInfo, navigateTo } = this.props;
+    const { currentResultPageInfo } = this.props;
     const showPagination = currentResultPageInfo && currentResultPageInfo.total > 1;
     if (this.getIsLoading() || !showPagination) {
-      return null;
+      return [];
     }
     return [{
-      label: 'Settings',
-      onClick: () => { navigateTo('settings'); }
+      src: leftArrowImage,
+      alt: 'previous',
+      onClick: this.handleRequestPrevious
     }, {
-      label: '<',
+      src: leftArrowImage,
+      alt: 'next',
       onClick: this.handleRequestPrevious,
-      className: classnames(typography.phil, styles.arrowFont)
-    }, {
-      label: '>',
-      onClick: this.handleRequestNext,
-      className: classnames(typography.phil, styles.arrowFont)
+      imageClassName: styles.rightArrow
     }];
   }
 
@@ -292,7 +290,8 @@ export class Results extends Component {
           >
             <Header
               className={headerClassNames}
-              menuItems={this.getHeaderMenuItems()}
+              customItems={this.getHeaderMenuItems()}
+              includeLinks={['settings']}
             />
             { posterImgSrc ?
               (<div className={styles.backdrop} style={{ backgroundImage: `url(${posterImgSrc})` }} />)

@@ -6,7 +6,7 @@ import { searchItems } from '../../domains/search/searchActions';
 import { trackClick } from '../../domains/ui/uiActions';
 import * as resultsSelectors from '../../domains/results/resultsSelectors';
 import * as searchSelectors from '../../domains/search/searchSelectors';
-import Header from '../../components/Header/Header';
+import { Connected as Header } from '../Header/Header';
 import MediaList from '../../components/MediaList/MediaList';
 import styles from './Search.css';
 import typography from '../../css/typography.css';
@@ -40,14 +40,6 @@ export class Search extends Component {
 
   componentWillUnmount() {
     window.clearTimeout(this.state.timer);
-  }
-
-  getHeaderMenuItems = () => {
-    const { navigateTo } = this.props;
-    return [{
-      label: 'About',
-      onClick: () => { navigateTo('about'); }
-    }];
   }
 
   requestQuery = (query) => {
@@ -91,7 +83,7 @@ export class Search extends Component {
       <div className={classnames(styles.search)}>
         <Header
           className={styles.header}
-          menuItems={this.getHeaderMenuItems()}
+          includeLinks={['back', 'about']}
         />
         <div className={styles.contents}>
           <h3 className={classnames(typography.bottomMargin, typography.will)}>

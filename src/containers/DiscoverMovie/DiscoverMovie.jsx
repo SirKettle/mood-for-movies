@@ -9,7 +9,7 @@ import * as moodSelectors from '../../domains/mood/moodSelectors';
 import MOODS from '../../constants/moods';
 import backgroundImage from '../../assets/images/lights.png';
 import typography from '../../css/typography.css';
-import Header from '../../components/Header/Header';
+import { Connected as Header } from '../Header/Header';
 import MoodOptions from '../../components/MoodOptions/MoodOptions';
 import Button from '../../components/Button/BaseButton';
 
@@ -29,17 +29,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export class DiscoverMovie extends Component {
-
-  getHeaderMenuItems = () => {
-    const { navigateTo } = this.props;
-    return [{
-      label: 'Search',
-      onClick: () => { navigateTo('search'); }
-    }, {
-      label: 'About',
-      onClick: () => { navigateTo('about'); }
-    }];
-  }
 
   handleToggle = (e, moodKey) => {
     this.props.requestSetMood(moodKey, e.currentTarget.checked);
@@ -101,7 +90,7 @@ export class DiscoverMovie extends Component {
       >
         <Header
           className={styles.header}
-          menuItems={this.getHeaderMenuItems()}
+          includeLinks={['search', 'about']}
         />
         <div className={classnames(styles.intro)}>
           <h2 className={classnames(typography.will)}>
